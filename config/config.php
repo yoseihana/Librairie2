@@ -12,3 +12,5 @@
 		PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC // Récupérer les données de la BD ds un format spécifique pr lire en php, ici en tableau associatif
 		
 	);// Celon qu'on accède a des constantes de class, il faut 2x2pts. 
+        
+        $valideEntites = array('livre', 'code_zone', 'auteur');
