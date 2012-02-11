@@ -17,35 +17,10 @@
 	
         
 	if( $_SERVER['REQUEST_METHOD'] == 'GET' ) // Dtm si la requête est en get ou en post 
-	{
-				
-			/*$c = isset($_GET['c']) ? $_GET['c'] : DEFAULT_CONTROLLER;
-			$a = isset($_GET['a']) ? $_GET['a'] : DEFAULT_ACTION;
-			
-			$content = $a.$c.'.php';
-		
-		if( !@include ( './modeles/'.$c.'.php' )){ include ('./vues/'.DEFAULT_CONTROLLER.'.php');}; 
-			//include ('./modeles/'.$c.'.php'); / './vues/404.php'
-			
-		if( $a == 'lister'){
-		
-			$$c = getList($connex);
-			
-		}elseif ( $a == 'updateone' ){
-		
-			$isbn = $_GET['isbn'];
-			$$c = getOne($connex, $isbn);
-			
-		}elseif( $a == 'deleteone'){
-			
-			$isbn = $_GET['isbn'];
-			$$c = getOne($connex, $isbn);
-			
-		}*/
-            
-            if(isset($_GET['c']))
+	{            
+            if (isset( $_GET['c'] ))
             {
-               if(in_array($_GET['c'], $validEntities))
+               if ( in_array ($_GET['c'], $validEntities))
                {
                    $c = $_GET['c'];
                }
@@ -77,7 +52,7 @@
             
             if($a == $validActions[0]) // action lister
             {
-                $data = getList ($connex);
+                $data  = getList ($connex);
             }
             elseif ($a == $validActions[1] || $c == $validActions[3]) // modifier ou|| voir récupération id
             {
@@ -98,9 +73,59 @@
             } A remettre après */
             
 	}else if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-	;
+           
+             if (isset( $_POST['c'] ))
+            {
+               if ( in_array ($_POST['c'], $validEntities))
+               {
+                   $c = $_POST['c'];
+               }
+               else
+               {
+                   die('Oops mauvais objet');
+               }
+            };
+           
+		
+             if(isset($_POST['a']))
+            {
+               if(in_array($_POST['a'], $validActions))
+               {
+                   $a = $_POST['a'];
+               }
+               else
+               {
+                   die('Oops mauvais action'); // lister
+               }
+            };
+            
+            include ('./modeles/'.$c.'.php');
+            
+            if($a == $validActions[1]) // modifier
+            {
+                $id = $_POST['id'];
+                //update($connex, $id);
+                
+                $data  = getList ($connex);
+            }
+            elseif ($a == $validActions[2] ) // supprimer
+            {
+                $id = $_POST['id'];
+            }
+            elseif ($a == $validActions[3]) // ajouter
+            {
+                $id = $_POST['id'];
+            }
+           /* elseif ( $a == $validActions[3]) // voir
+            {
+            
+            }
+            elseif ($a == $validActions[4]) //ajouter
+            {
+            
+            } A remettre après */
 	}
 	
-        $view = $a . $c .'.php';
+        $view = $a . $c .'.php' ;
         
 	include ('./vues/layout.php');

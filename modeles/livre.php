@@ -39,7 +39,7 @@
                 catch(PDOException $e){
                     die($e->getMessage());
                 }
-		return $livre;
+		return $livre[0];
 	
 	}
 	
