@@ -1,3 +1,3 @@
-<?php
-	echo 'hello';
-	/* Placer ici getOne() ?
+<!-- Placer ici getOne() ?-->
+
+	
