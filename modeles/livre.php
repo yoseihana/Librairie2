@@ -39,27 +39,71 @@
                 catch(PDOException $e){
                     die($e->getMessage());
                 }
-		return $livre[0];
+		return $livre[0]; // ne fonctionnais pas sans le 0
 	
 	}
 	
 	function delete($c, $isbn){
-		$livre = '';
+		$req = 'DELETE FROM livre WHERE isbn = :isbn'; 
+                
+                try{
+                    $ps = $c->prepare($req); 
 		
-		$req = 'SELECT * FROM liver WHERE isbn = ?';		
-		$ps = $c->prepare($req); 
+                    $ps->bindValue(':isbn', $isbn);
+                    $ps->bindValue( ':titre', $_POST['titre'] );
 		
-		$ps->bindValue(1, $isbn); 		
-		$req = $ps->execute(); 
+                    $ps->execute();  
 		
-		return $livre;
+                    
+                }
+                catch(PDOException $e){
+                    die($e->getMessage());
+                }
+		
+                return true;
 	}
         
-        function udpate ($c, $isbn){
-            ;
+        function update ($c, $isbn){
+		
+		$req = 'UPDATE livre SET titre = :titre WHERE isbn = :isbn'; 
+                
+                try{
+                    $ps = $c->prepare($req); 
+		
+                    $ps->bindValue(':isbn', $isbn);
+                    $ps->bindValue( ':titre', $_POST['titre'] );
+		
+                    $ps->execute();  
+		
+                    
+                }
+                catch(PDOException $e){
+                    die($e->getMessage());
+                }
+		
+                return true;
         }
         
          
         function add ($c){
-            ;
+
+		
+		$req = 'INSERT INTO livre value ( :isbn, :titre, :date_parution, :nombre_page, null, null)'; //on place soit le ? ou le nom de var qu'on veut ajouter. On peux tuilier aussi :isbn au lieu du ?. Ici avec : on prépare une requête et la donnée
+		
+                try{
+		$ps = $c->prepare($req); 
+		
+		$ps->bindValue(':isbn', $isbn); 
+                $ps->bindValue (':titre', $_POST['titre']);
+                $ps->bindValue (':date_parution', $_POST['date_parution']);
+                $ps->bindValue (':nombre_page', $_POST['nombre_page']);
+		
+		$ps->execute();
+		
+		$livre = $ps->fetchall(); 
+                }
+                catch(PDOException $e){
+                    die($e->getMessage());
+                }
+		return $livre[0]; 
         }

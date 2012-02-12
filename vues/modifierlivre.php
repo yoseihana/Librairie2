@@ -3,7 +3,7 @@
         <label for="titre">
                Titre
         </label>
-        <input type="text" name="titre" value="<?php echo ($data['isbn']); ?>" />
+        <input type="text" name="titre" value="<?php echo ($data['titre']); ?>" />
     
         
         <input type="hidden" name="c" value="<?php echo ($validEntities['0']); ?>" />

@@ -50,6 +50,7 @@
             
             include ('./modeles/'.$c.'.php');
             
+            
             if($a == $validActions[0]) // action lister
             {
                 $data  = getList ($connex);
@@ -82,7 +83,7 @@
                }
                else
                {
-                   die('Oops mauvais objet');
+                   die('Oops mauvaise objet');
                }
             };
            
@@ -95,7 +96,7 @@
                }
                else
                {
-                   die('Oops mauvais action'); // lister
+                   die('Oops mauvaise action'); // lister
                }
             };
             
@@ -104,26 +105,25 @@
             if($a == $validActions[1]) // modifier
             {
                 $id = $_POST['id'];
-                //update($connex, $id);
-                
+                update($connex, $id);
+                $a = $validActions[0]; // lister
                 $data  = getList ($connex);
             }
             elseif ($a == $validActions[2] ) // supprimer
             {
                 $id = $_POST['id'];
+                delete ($connex, $id);
+                $a = $validActions[0]; // lister
+                $data  = getList ($connex);
             }
             elseif ($a == $validActions[3]) // ajouter
             {
                 $id = $_POST['id'];
             }
-           /* elseif ( $a == $validActions[3]) // voir
-            {
-            
-            }
             elseif ($a == $validActions[4]) //ajouter
             {
-            
-            } A remettre après */
+                //$id = $_POST['id'];
+            }
 	}
 	
         $view = $a . $c .'.php' ;
