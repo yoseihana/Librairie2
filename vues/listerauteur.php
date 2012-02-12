@@ -29,12 +29,12 @@
 </h1>
  <?php if(count($data)): ?>
 <ul>
-	<?php foreach($data as $zone): ?>
+	<?php foreach($data as $auteur): ?>
 	<li>
-		<?php echo $zone['meuble']; ?> <a href="?c=<?php echo ($c); ?>&a=<?php echo ($validActions[1]); ?>&id=<?php echo($zone['code_zone']); ?>">modifie</a> - 
-                <a href="?c=<?php echo ($c); ?>&a=<?php echo ($validActions[2]); ?>&id=<?php echo($zone['code_zone']); ?>">supprimer</a> - 
-                <a href="?c=<?php echo ($c); ?>&a=<?php echo ($validActions[4]); ?>&id=<?php echo($zone['code_zone']); ?>">ajouter</a> -
-                <a href="?c=<?php echo ($c); ?>&a=<?php echo ($validActions[3]); ?>&id=<?php echo($zone['code_zone']); ?>">voir</a>
+		<?php echo $auteur['nom']." ".$auteur['prenom']; ?> <a href="?c=<?php echo ($c); ?>&a=<?php echo ($validActions[1]); ?>&id=<?php echo($auteur['id_auteur']); ?>">modifie</a> - 
+                <a href="?c=<?php echo ($c); ?>&a=<?php echo ($validActions[2]); ?>&id=<?php echo($auteur['id_auteur']); ?>">supprimer</a> - 
+                <a href="?c=<?php echo ($c); ?>&a=<?php echo ($validActions[4]); ?>&id=<?php echo($auteur['id_auteur']); ?>">ajouter</a> -
+                <a href="?c=<?php echo ($c); ?>&a=<?php echo ($validActions[3]); ?>&id=<?php echo($auteur['id_auteur']); ?>">voir</a>
 	</li>
 	<?php endforeach; ?>
 </ul>

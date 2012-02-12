@@ -23,31 +23,31 @@
 				title="Normal" />
          <body>
 
+
 <form action="<?php echo ($_SERVER['PHP_SELF']) ?>" method="post">
     <fieldset>
-        <label for="titre">
-               Titre
+        <label for="id_auteur">
+               ID auteur
         </label>
-        <input type="text" name="titre" value="<?php echo ($data['titre']); ?>" />
-        <label for="isbn">
-               ISBN
+        <input type="text" name="id_auteur" value="<?php echo ($data['id_auteur']); ?>" />
+        <label for="nom">
+               Nom
         </label>
-        <input type="text" name="isbn" value="<?php echo ($data['isbn']); ?>" />
-        <label for="date">
-               Date de parution
+        <input type="text" name="nom" value="<?php echo ($data['nom']); ?>" />
+        <label for="prenom">
+               Prénom
         </label>
-        <input type="text" name="date_parution" value="<?php echo ($data['date_parution']); ?>" />
-        <label for="nombre">
-               Nombre de page
+        <input type="text" name="prenom" value="<?php echo ($data['prenom']); ?>" />
+         <label for="date_naissance">
+               Date de naissance
         </label>
-        <input type="text" name="nombre_page" value="<?php echo ($data['nombre_page']); ?>" />
+        <input type="text" name="date_naissance" value="<?php echo ($data['date_naissance']); ?>" />
     
         
-        <input type="hidden" name="c" value="<?php echo ($validEntities['0']); ?>" />
+        <input type="hidden" name="c" value="<?php echo ($validEntities[2]); ?>" />
         <input type="hidden" name="a" value="<?php echo ($validActions[4]); ?>" />
-        <input type="hidden" name="id" value="<?php echo ($data['isbn']); ?>" />
+        <input type="hidden" name="id" value="<?php echo ($data['id_auteur']); ?>" />
          <input type="submit" value="Ajouter" />
     </fieldset>
 </form>
-             
          </body>

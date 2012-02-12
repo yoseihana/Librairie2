@@ -24,19 +24,21 @@
          <body>
 
 
+<p>
+    Etes-vous sûr de vouloir supprimer ce livre?
+</p>
 
 <form action="<?php echo ($_SERVER['PHP_SELF']) ?>" method="post">
     <fieldset>
-        <label for="titre">
-               Titre
+        <label for="code_zone">
+               Zone
         </label>
-        <input type="text" name="titre" value="<?php echo ($data['titre']); ?>" />
-    
+        <p> <?php echo ($data['meuble']); ?> </p>
         
-        <input type="hidden" name="c" value="<?php echo ($validEntities['0']); ?>" />
-        <input type="hidden" name="a" value="<?php echo ($validActions[1]); ?>" />
-        <input type="hidden" name="id" value="<?php echo ($data['isbn']); ?>" />
-         <input type="submit" value="modifier" />
+        <input type="hidden" name="c" value="<?php echo ($validEntities[1]); ?>" />
+        <input type="hidden" name="a" value="<?php echo ($validActions[4]); ?>" />
+       <!-- <input type="hidden" name="id" value="<//?php echo ($data['isbn']); ?>" />-->
+         <input type="submit" value="Supprimer" />
     </fieldset>
 </form>
              

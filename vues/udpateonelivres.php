@@ -1,3 +1,0 @@
-<!-- Placer ici getOne() ?-->
-
-	

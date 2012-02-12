@@ -22,9 +22,9 @@
 				media="screen"
 				title="Normal" />
 	</head>
-		<?php if( !@include ( $view )){ include ('404.php');}; ?>
+		<?php //if( !@include ( $view )){ include ('404.php');}; ?>
 		<!-- le @ devant le nom de la fct pr éviter le warning-->
-                <?php //include ($view); ?>
+                <?php include ($view); ?>
 
 	</body>
 </html>

@@ -28,7 +28,7 @@
 
             <p><?php
 
-                echo ($data['titre']);
+                echo ($data['nom']);
             ?> </p>
             </fieldset
             </form>

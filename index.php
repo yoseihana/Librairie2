@@ -60,18 +60,16 @@
                 $id = $_GET['id'];
                 $data = getOne($connex, $id);
             }
-            /*elseif ($a == $validActions[2]) // supprimer
+            elseif ($a == $validActions[2]) // supprimer
             {
-             
+                $id = $_GET['id'];
+                $data = delete($connex, $id);
             }
-            elseif ( $a == $validActions[3]) // voir
+            elseif ( $a == $validActions[4]) // ajouter
             {
-            
+                $data = add($connex);
             }
-            elseif ($a == $validActions[4]) //ajouter
-            {
-            
-            } A remettre après */
+
             
 	}else if ($_SERVER['REQUEST_METHOD'] == 'POST'){
            
@@ -126,6 +124,6 @@
             }
 	}
 	
-        $view = $a . $c .'.php' ;
+$view = $a . $c .'.php' ;
         
-	include ('./vues/layout.php');
+include ('./vues/layout.php');

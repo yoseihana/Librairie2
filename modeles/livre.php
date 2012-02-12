@@ -50,7 +50,6 @@
                     $ps = $c->prepare($req); 
 		
                     $ps->bindValue(':isbn', $isbn);
-                    $ps->bindValue( ':titre', $_POST['titre'] );
 		
                     $ps->execute();  
 		
@@ -105,5 +104,5 @@
                 catch(PDOException $e){
                     die($e->getMessage());
                 }
-		return $livre[0]; 
+		return $livre[0];
         }
