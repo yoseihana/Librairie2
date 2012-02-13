@@ -18,7 +18,7 @@
 		
 		<link	rel="stylesheet"
 				type="text/css"
-				href=""
+				href="./screen.css"
 				media="screen"
 				title="Normal" />
          <body>

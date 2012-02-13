@@ -92,7 +92,7 @@
                 try{
 		$ps = $c->prepare($req); 
 		
-		$ps->bindValue(':isbn', $isbn); 
+		$ps->bindValue(':isbn', $_POST['isbn']); 
                 $ps->bindValue (':titre', $_POST['titre']);
                 $ps->bindValue (':date_parution', $_POST['date_parution']);
                 $ps->bindValue (':nombre_page', $_POST['nombre_page']);
