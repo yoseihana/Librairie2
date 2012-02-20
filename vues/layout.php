@@ -13,7 +13,7 @@
 				content="fr" />
 
 		<title>
-			Bibliothèque
+			Bibliothèque - <?php echo $view['data']['view_title']; ?>
 		</title>
 		
 		<link	rel="stylesheet"

@@ -3,20 +3,25 @@
 
 	function getList(){ // récupère une liste de livre
 		
-		global $connex ;
+		global $connex ; // permet de récupérer un var ds une fonction. On se conncet a la bdd
+                
                 $req = 'SELECT titre, isbn
                         FROM livre
                         ORDER BY titre' ;
 		
                 try{
-		$res = $connex->query($req); // récupération ds la BD, renvoi un résultat défini par la class PDO_STATEMENT = résultat
+                    
+                    $res = $connex->query($req); // récupération ds la BD, renvoi un résultat défini par la class PDO_STATEMENT = résultat
 		//Fetch pr récupérer un tuple (=ligne) et le transformer ds le FETCH_MOD dtm
-		$livres = $res->fetchAll(); //ds $livres il va y avoir un tableau de tableau associatif ac comme clef les noms des tables (isbn, nb_page...)
+                    $livres = $res->fetchAll(); //ds $livres il va y avoir un tableau de tableau associatif ac comme clef les noms des tables (isbn, nb_page...)
                 }
-                catch (PDOException $e){
+                catch (PDOException $e)
+                {
                     die( $e->getMessage () );// intéressant en phase développement lorsqu'on a une application, on fait une page qui reprend les erreurs
+                    // header(Location: index.php?c=error&a=e_database');
+                    
                 }
-		//return $list;
+
                 return $livres;
 	}
 	
@@ -25,21 +30,22 @@
                 global $connex ;
 		
 		$req = 'SELECT * FROM livre WHERE isbn = :isbn'; //on place soit le ? ou le nom de var qu'on veut ajouter. On peux tuilier aussi :isbn au lieu du ?. Ici avec : on prépare une requête et la donnée
-		// SELECT DISTINCT livre * aussi
-                try{
-		$ps = $connex->prepare($req); // prépare la requete
-		
-		$ps->bindValue(':isbn', $isbn); // Lier l'isbn, si utilisation isbn au lieu du ?, on change 0 en 'isbn', mais ici garantie de ne pas avoir de problème d'injection sql
-		
-		//$ps->bindParam(0, $isbn); // sera évaluée lorsqu'il y aura la référence à cette valeur
-		
-		$ps->execute(); // execution 
-		
-		$livre = $ps->fetch(); // récupère un résultat, 1 seul livre
+
+                try
+                {
+                    $ps = $connex->prepare($req); // prépare la requete
+                    $ps->bindValue(':isbn', $isbn); // Lier l'isbn, si utilisation isbn au lieu du ?, on change 0 en 'isbn', mais ici garantie de ne pas avoir de problème d'injection sql
+                    $ps->execute(); // execution 
+
+                    $livre = $ps->fetch(); // récupère un résultat, 1 seul livre
+                
                 }
-                catch(PDOException $e){
+                catch(PDOException $e) // si il y a un problème, une exception
+                {
                     die($e->getMessage());
+                    //header ('Location: index.php?c=erreor&a=e_database');
                 }
+                
 		return $livre; // ne fonctionnais pas sans le 0
 	
 	}
@@ -49,7 +55,8 @@
                 
 		$req = 'DELETE FROM livre WHERE isbn = :isbn'; 
                 
-                try{
+                try
+                {
                     $ps = $connex->prepare($req); 
 		
                     $ps->bindValue(':isbn', $isbn);
@@ -118,22 +125,23 @@
         
         function getISBNCount ($isbn)
         {
-            global $connex;
-            $req = 'SELECT count(isbn) AS nb_isbn FROM livre WHERE isbn = :isbn';
+            global $connex; // récupérer la connection
+            $req = 'SELECT count(isbn) AS nb_isbn FROM livre WHERE isbn = :isbn'; // récupère le nbre d'isbn
 
             try
             {
-                $ps = $connex->prepare ( $req ) ;
-                $ps->bindValue ( ':isbn', $isbn ) ;
-                $ps->execute () ;
+                $ps = $connex->prepare ( $req ) ; // connection
+                $ps->bindValue ( ':isbn', $isbn ) ; //les valeurs sont liées
+                $ps->execute () ; // execution
             }
             catch (PDOException $e)
             {
-                die('Oops mauvais objet');
+                die($e->getMessage());
+                //header ('Location: index.php?c=error&a=e_database');
             }
 
             $nbIsbn = $ps->fetch();
-            $nbIsbn = $nbIsbn['nb_isbn'];
+            $nbIsbn = $nbIsbn['nb_isbn']; // extraction du nbre de ISBN trouver
 
-            return $nbIsbn;
+            return $nbIsbn['nb_isbn']; // retourne 0 ou 1
         }
