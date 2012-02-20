@@ -23,7 +23,7 @@
 		$ps->bindValue(':id_auteur', $id_auteur); 
 		$ps->execute(); 
 		
-		$auteur = $ps->fetchall(); 
+		$auteur = $ps->fetch(); 
                 }
                 catch(PDOException $e){
                     die($e->getMessage());
@@ -87,7 +87,7 @@
 		
 		$ps->execute();
 		
-		$livre = $ps->fetchall(); 
+		$livre = $ps->fetch(); 
                 }
                 catch(PDOException $e){
                     die($e->getMessage());

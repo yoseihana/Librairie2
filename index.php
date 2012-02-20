@@ -16,114 +16,23 @@
 	}// ds ce cas-ci, si une des données est erronées, message d'erreur (par ex user 'oot' ds config.php), l'erreur est donc plus lisible pour nous, on sait où elle est, la gestion est plus propre
 	
         
-	if( $_SERVER['REQUEST_METHOD'] == 'GET' ) // Dtm si la requête est en get ou en post 
-	{            
-            if (isset( $_GET['c'] ))
+        if(  isset ( $_REQUEST['a'] ) && isset ( $_REQUEST['c'] ))
+        {
+            if( in_array ( $_REQUEST['a'], $GLOBALS['validActions'] ) && in_array ( $_REQUEST['c'], $GLOBALS['validEntities'] ))
             {
-               if ( in_array ($_GET['c'], $validEntities))
-               {
-                   $c = $_GET['c'];
-               }
-               else
-               {
-                   die('Oops mauvais objet');
-               }
+                $a = $_REQUEST['a'];
+                $c = $_REQUEST['c'];
+            }else{
+                die('Oops problème');
             }
-            else{
-                $c = DEFAULT_CONTROLLER; // livres
-            };
-		
-             if(isset($_GET['a']))
-            {
-               if(in_array($_GET['a'], $validActions))
-               {
-                   $a = $_GET['a'];
-               }
-               else
-               {
-                   die('Oops mauvais action'); // lister
-               }
+         }else
+         {
+               $a = DEFAULT_ACTION;
+               $c = DEFAULT_CONTROLLER;
             }
-            else{
-                $a = DEFAULT_ACTION;
-            };
-            
-            include ('./modeles/'.$c.'.php');
-            
-            
-            if($a == $validActions[0]) // action lister
-            {
-                $data  = getList ($connex);
-            }
-            elseif ($a == $validActions[1] || $c == $validActions[3]) // modifier ou|| voir récupération id
-            {
-                $id = $_GET['id'];
-                $data = getOne($connex, $id);
-            }
-            elseif ($a == $validActions[2]) // supprimer
-            {
-                $id = $_GET['id'];
-                $data = delete($connex, $id);
-            }
-            elseif ( $a == $validActions[4]) // ajouter
-            {
-                $data = add($connex);
-            }
-
-            
-	}else if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-           
-             if (isset( $_POST['c'] ))
-            {
-               if ( in_array ($_POST['c'], $validEntities))
-               {
-                   $c = $_POST['c'];
-               }
-               else
-               {
-                   die('Oops mauvaise objet');
-               }
-            };
-           
-		
-             if(isset($_POST['a']))
-            {
-               if(in_array($_POST['a'], $validActions))
-               {
-                   $a = $_POST['a'];
-               }
-               else
-               {
-                   die('Oops mauvaise action'); // lister
-               }
-            };
-            
-            include ('./modeles/'.$c.'.php');
-            
-            if($a == $validActions[1]) // modifier
-            {
-                $id = $_POST['id'];
-                update($connex, $id);
-                $a = $validActions[0]; // lister
-                $data  = getList ($connex);
-            }
-            elseif ($a == $validActions[2] ) // supprimer
-            {
-                $id = $_POST['id'];
-                delete ($connex, $id);
-                $a = $validActions[0]; // lister
-                $data  = getList ($connex);
-            }
-            elseif ($a == $validActions[3]) // ajouter
-            {
-                $id = $_POST['id'];
-            }
-            elseif ($a == $validActions[4]) //ajouter
-            {
-                //$id = $_POST['id'];
-            }
-	}
-	
-$view = $a . $c .'.php' ;
-        
+                
+  include('controleur/'.$c.'.php');
+  
+  $view = call_user_func ($a);
+                
 include ('./vues/layout.php');

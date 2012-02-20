@@ -23,7 +23,7 @@
 		$ps->bindValue(':code_zone', $code_zone); 
 		$ps->execute(); 
 		
-		$zone = $ps->fetchall(); 
+		$zone = $ps->fetch(); 
                 }
                 catch(PDOException $e){
                     die($e->getMessage());
@@ -86,7 +86,7 @@
 		
 		$ps->execute();
 		
-		$livre = $ps->fetchall(); 
+		$livre = $ps->fetch(); 
                 }
                 catch(PDOException $e){
                     die($e->getMessage());
