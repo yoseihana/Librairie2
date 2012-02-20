@@ -7,8 +7,8 @@
                 <li>
                         <a href="?c=<?php echo $GLOBALS['validEntities']['livre']; ?>&a=<?php echo $GLOBALS['validActions']['voir']; ?>&isbn=<?php echo($livre['isbn']); ?>"><?php echo $livre['titre']; ?></a> <?php //if($connected): ?> 
                         <a href="?c=<?php echo $GLOBALS['validEntities']['livre']; ?>&a=<?php echo $GLOBALS['validActions']['modifier']; ?>&isbn=<?php echo($livre['isbn']); ?>">modifier</a> -
-                        <a href="?c=<?php echo $GLOBALS['validEntities']['livre']; ?>&a=<?php echo $GLOBALS['validActions']['supprimer']; ?>&isbn=<?php echo($livre['isbn']); ?>">modifier</a> -
-                        <a href="?c=<?php echo $GLOBALS['validEntities']['livre']; ?>&a=<?php echo $GLOBALS['validActions']['ajouter']; ?>&isbn=<?php echo($livre['isbn']); ?>">modifier</a> -
+                        <a href="?c=<?php echo $GLOBALS['validEntities']['livre']; ?>&a=<?php echo $GLOBALS['validActions']['supprimer']; ?>&isbn=<?php echo($livre['isbn']); ?>">supprimer</a> -
+                        <a href="?c=<?php echo $GLOBALS['validEntities']['livre']; ?>&a=<?php echo $GLOBALS['validActions']['ajouter']; ?>&isbn=<?php echo($livre['isbn']); ?>">ajouter</a> -
                 </li>
        <?php endforeach; ?>
     </ul>

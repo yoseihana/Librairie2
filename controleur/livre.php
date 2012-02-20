@@ -21,11 +21,11 @@ function modifier()
         
         if( $_SERVER['REQUEST_METHOD'] == 'GET')
         {
-            if(isset( $_GET['id']))
+            if(isset( $_GET['isbn']))
             {
-                if( _isbnExiste ($_GET['id']))
+                if( _isbnExiste ($_GET['isbn']))
                 {
-                    $id = $_GET['id'];
+                    $id = $_GET['isbn'];
                 }
                 else
                 {
@@ -55,6 +55,7 @@ function modifier()
             $a = $GLOBALS['validActions'][0]; // redéfini une action qui est listé 
             $data = getList();
             $html = $a . $c . '.php';
+            //$data['view_title'] = 'Modifier le livre: '.$data['livre']['titre'];
          }
        
          return array ('data' => $data, 'html' => $html);
@@ -125,6 +126,7 @@ function voir() // récupérer 1x les informations d'1 seul livre
         //header('Location:index.php?c=error&a=e_404');
     }
     
+    $data['livres'] = getList();
     $data['livre'] = getOne($isbn);
     $data['view_title'] = 'Fiche du livre: '.$data['livre']['titre'];
     $html = $a.$c.'.php';

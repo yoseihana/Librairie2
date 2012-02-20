@@ -13,22 +13,33 @@
         <label for="date_parution">
               Date de parution
         </label>
-        <input type="text" name="date_parution" value="<?php echo ($view['data']['date_parution']); ?>" />
+        <select name="date_parution" id="date_parution">
+            <?php for($year=1901; $year<2155; $year++): ?>
+            <option <?php if($year == $view['data']['date_parution']): ?> 
+                        selected="selected" 
+                    <?php endif; ?> 
+                        value="<?php echo $year; ?>">
+                <?php echo $year; ?>
+             </option>
+            <?php endfor;?>
+        </select>
         <label for="genre">
                Genre
         </label>
-        <select name="genre">
-            <option value=""><?php echo ($view['data']['genre']); ?></option>
-            <option value="">theatre</option>
-            <option value="">roman</option>
-            <option value="">historique</option>
-            <option value="">fantastique</option>
-
+         <select name="genre" id="genre">
+            <?php $genre=$_GET['genre']; 
+            for($i=0; $i<6; $i++): ?>
+            <option <?php if($genre[$i] == $genre['data']['genre']): ?> 
+                        selected="selected" 
+                    <?php endif; ?> 
+                        value="<?php echo $genre; ?>">
+                <?php echo $genre; ?>
+             </option>
+            <?php endfor;?>
         </select>
-    
         
-        <input type="hidden" name="c" value="<?php echo ($validEntities[0]); ?>" />
-        <input type="hidden" name="a" value="<?php echo ($validActions[1]); ?>" />
+        <input type="hidden" name="c" value="<?php echo ($validEntities['livre']); ?>" />
+        <input type="hidden" name="a" value="<?php echo ($validActions['modifier']); ?>" />
         <input type="hidden" name="id" value="<?php echo ($view['data']['isbn']); ?>" />
          <input type="submit" value="modifier" />
     </fieldset>

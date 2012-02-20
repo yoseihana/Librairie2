@@ -1,24 +1,17 @@
-<form action="<?php echo ($_SERVER['PHP_SELF']) ?>" method="post">
-    <fieldset>
-        <ul>
-            <li>
-                <h2>Titre </h2>
-                <p><?php echo ($view['data']['livre']['titre']); ?> </p>
-            </li>
-            <li>
-                <h2>Date de parution </h2>
-                <p><?php echo ($view['data']['livre']['date_parution']); ?></p>
-            </li>
-            <li>
-                <h2>Nombre de page </h2>
-                <p><?php echo ($view['data']['livre']['nombre_page']); ?></p>
-            </li>
-            <li>
-                <h2>Genre</h2>
-                <p><?php echo ($view['data']['livre']['genre']); ?></p>
-            </li>
-        </ul>
-    </fieldset
-</form>
-</body>
-<!-- Le $data ne s'affiche pas! -->
+<h1>
+	<?php echo $c;?>
+</h1>
+<?php if(count ( $view['data'] ['livres']) ): ?>
+    <ul>
+        <?php foreach($view['data']['livres'] as $livre): ?> <!-- Conmpte si il y a au moins 1 livre -->
+                <li>
+                        <a href="?c=<?php echo $GLOBALS['validEntities']['livre']; ?>&a=<?php echo $GLOBALS['validActions']['voir']; ?>&isbn=<?php echo($livre['isbn']); ?>"><?php echo $livre['titre']; ?></a> <?php //if($connected): ?> 
+                        <a href="?c=<?php echo $GLOBALS['validEntities']['livre']; ?>&a=<?php echo $GLOBALS['validActions']['modifier']; ?>&isbn=<?php echo($livre['isbn']); ?>">modifier</a> -
+                        <a href="?c=<?php echo $GLOBALS['validEntities']['livre']; ?>&a=<?php echo $GLOBALS['validActions']['supprimer']; ?>&isbn=<?php echo($livre['isbn']); ?>">supprimer</a> -
+                        <a href="?c=<?php echo $GLOBALS['validEntities']['livre']; ?>&a=<?php echo $GLOBALS['validActions']['ajouter']; ?>&isbn=<?php echo($livre['isbn']); ?>">ajouter</a> -
+                </li>
+       <?php endforeach; ?>
+    </ul>
+<?php endif; ?>   
+
+<p><?php echo($view['data']['livre']['titre']); ?></p>
