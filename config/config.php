@@ -1,9 +1,9 @@
 <?php
 
-        $GLOBALS['validEntities'] = array('livre'=>'livre', 'zone'=>'zone', 'auteur'=>'auteur'); 
+        $GLOBALS['validEntities'] = array('livre'=>'livre', 'zone'=>'zone', 'auteur'=>'auteur', 'membre'=>'membre', 'error'=>'error'); 
         //$GLOBALS['validEntities'] = array('livre', 'zone', 'auteur'); 
        // $GLOBALS['validActions'] = array('lister', 'modifier', 'supprimer', 'voir', 'ajouter', 'deconnecter', 'connecter', 'e_404');	
-        $GLOBALS['validActions'] = array('lister'=>'lister'  , 'modifier'=>'modifier', 'supprimer'=>'supprimer', 'voir'=>'voir', 'ajouter'=>'ajouter', 'deconnecter'=>'deconnecter', 'connecter'=>'connecter', 'e_404'=>'e_404');
+        $GLOBALS['validActions'] = array('lister'=>'lister'  , 'modifier'=>'modifier', 'supprimer'=>'supprimer', 'voir'=>'voir', 'ajouter'=>'ajouter', 'deconnecter'=>'deconnecter', 'connecter'=>'connecter', 'e_404'=>'e_404', 'e_database'=>'e_database', 'e_user'=>'e_user');
 
         define('DEFAULT_CONTROLLER', $GLOBALS['validEntities']['livre']); // utilisation lorsqu'on vient sur l'application et qu'il n'y a pas de param, par défaut on affiche la liste des livres. Ici livre
 	define('DEFAULT_ACTION', $GLOBALS['validActions']['lister']); // par défaut, les livres seront lister. Ici lister
@@ -18,4 +18,4 @@
 		
 	);// Celon qu'on accède a des constantes de class, il faut 2x2pts. Ici on travaille sur la connexion avec la BD pr ércupérer les données à affcihées ds le site
         
-        $connect = FALSE;
+        $connected = FALSE;

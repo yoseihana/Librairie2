@@ -62,7 +62,7 @@ function delete($isbn) {
     return true;
 }
 
-function update($isbn) {
+function update($data) {
 
     global $connex;
 
@@ -71,16 +71,17 @@ function update($isbn) {
     try {
         $ps = $connex->prepare($req);
 
-        $ps->bindValue(':isbn', $isbn);
-        $ps->bindValue(':titre', $_POST['titre']);
-        $ps->bindValue(':nombre_page', $_POST['nombre_page']);
-        $ps->bindValue(':date_parution', $_POST['date_parution']);
-        $ps->bindValue(':genre', $_POST['genre']);
+        $ps->bindValue(':isbn', $data['isbn']);
+        $ps->bindValue(':titre', $data['titre']);
+        $ps->bindValue(':nombre_page', $data['nombre_page']);
+        $ps->bindValue(':date_parution', $data['date_parution']);
+        $ps->bindValue(':genre', $data['genre']);
 
         $ps->execute();
     }
     catch (PDOException $e) {
         die($e->getMessage());
+        //header('Location: index.php?c=error&a=e_database');
     }
 
     return true;

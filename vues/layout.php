@@ -24,7 +24,16 @@
 	</head>
 		<?php //if( !@include ( $view )){ include ('404.php');}; ?>
 		<!-- le @ devant le nom de la fct pr éviter le warning-->
-                 <?php include($view['html']); ?>
+                
+                <?php if($connected): ?>
+                <p><a href="index.php?c=membre&a=deconnecter">Se déconnecter</a></p>
+                <?php else: ?> <!-- PQ les : ? -->
+                <p><a href="index.php?c=membre&a=connecter">Se connecter</a></p>
+                <?php endif ?>
+                <br/>
+                
+                <?php include($view['html']); 
+                        //include('./vues/connectermembre.php');?>
 
 	</body>
 </html>
