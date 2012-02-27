@@ -1,43 +1,22 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">  
-<html	xmlns="http://www.w3.org/1999/xhtml"
-		xml:lang="fr-BE"
-		lang="fr-BE">
-		
-	<head>
-		<meta 	http-equiv="Content-Type"
-				content="text/html; charset=utf-8" />
-		<meta 	http-equiv="Content-Style-Type"
-				content="text/css" />
-		<meta 	http-equiv="Content-Language"
-				content="fr" />
-
-		<title>
-			Bibliothèque
-		</title>
-		
-		<link	rel="stylesheet"
-				type="text/css"
-				href=""
-				media="screen"
-				title="Normal" />
-         <body>
-
-
 <h1>
-	<?php echo $c;?>
+    <?php echo $c; ?>
 </h1>
- <?php if(count($data)): ?>
-<ul>
-	<?php foreach($data as $auteur): ?>
-	<li>
-		<?php echo $auteur['nom']." ".$auteur['prenom']; ?> <a href="?c=<?php echo ($c); ?>&a=<?php echo ($validActions[1]); ?>&id=<?php echo($auteur['id_auteur']); ?>">modifie</a> - 
-                <a href="?c=<?php echo ($c); ?>&a=<?php echo ($validActions[2]); ?>&id=<?php echo($auteur['id_auteur']); ?>">supprimer</a> - 
-                <a href="?c=<?php echo ($c); ?>&a=<?php echo ($validActions[4]); ?>&id=<?php echo($auteur['id_auteur']); ?>">ajouter</a> -
-                <a href="?c=<?php echo ($c); ?>&a=<?php echo ($validActions[3]); ?>&id=<?php echo($auteur['id_auteur']); ?>">voir</a>
-	</li>
-	<?php endforeach; ?>
-</ul>
-<?php endif; ?>
+<?php if (count($view['data']['auteurs'])): ?>
+    <ul>
+        <?php foreach ($view['data']['auteurs'] as $auteur): ?> <!-- Conmpte si il y a au moins 1 livre -->
+            <li>
+                <h2><a href="?c=<?php echo $GLOBALS['validEntities']['auteur']; ?>&a=<?php echo $GLOBALS['validActions']['voir']; ?>&id_auteur=<?php echo($auteur['id_auteur']); ?>"><?php echo $auteur['nom'] . ' ' . $auteur['prenom']; ?></a> </h2>
+                <br/>
+                <?php if ($connected): ?>
+                    <a href="?c=<?php echo $GLOBALS['validEntities']['auteur']; ?>&a=<?php echo $GLOBALS['validActions']['modifier']; ?>&id_auteur=<?php echo($auteur['id_auteur']); ?>">Modifier</a> -
+                    <a href="?c=<?php echo $GLOBALS['validEntities']['auteur']; ?>&a=<?php echo $GLOBALS['validActions']['supprimer']; ?>&id_auteur=<?php echo($auteur['id_auteur']); ?>">Supprimer</a>
+                <?php endif; ?>
+            </li>
+        <?php endforeach; ?>
+    </ul>
 
-         </body>
+        <div class="ajouter">
+<?php if($connected): ?> <p> <a href="?c=<?php echo $GLOBALS['validEntities']['auteur']; ?>&a=<?php echo $GLOBALS['validActions']['ajouter']; ?>">Ajouter un auteur</a></p><?php endif; ?>
+        </div>
+
+<?php endif; ?>      

@@ -58,41 +58,63 @@ function modifier()
     
 }
 
-function ajouter() { // A modifier!!!!
-    global $a;
-    global $c;
+function ajouter() 
+{
+    global $a, $c, $validActions, $validEntities;
 
-    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-        if (isset($_GET['id'])) {
-            if (_isbnExiste($_GET['id'])) {
-                $id = $_GET['id'];
-            }
-            else {
-                die('Oops ');
-            }
-        }
-        else {
-            die('Oops mauvais');
-        }
-
-        $data = getOne($id); // affiche 1 seul livre avec son id
-        $html = $a . $c . '.php';
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') 
+    {
+        
+      add();
+        
+       header('Location:'.$_SERVER['PHP_SELF']); // donne la page index.php qui est par défaut
     }
-    elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        if (isset($_POST['id'])) {
-            $id = $_POST['id'];
-        }
-        else {
-            die('objet');
-        }
+    elseif ($_SERVER['REQUEST_METHOD'] == 'GET') 
+    {
+        
+       
+        $data['view_title'] = 'Ajout de livre: ';
+        $html = $a . $c .'.php';
+        
+        return array('data' => $data, 'html' => $html); // returne
+    }
+}
 
-        update($id); // modifier en post on clique sur le bouton
-        $a    = $GLOBALS['valideAction'][0]; // redéfini une action qui est listé 
-        $data = getList();
-        $html = $a . $c . '.php';
+function supprimer() 
+{
+    global $a, $c, $validActions, $validEntities;
+
+    if (isset($_REQUEST['isbn'])) 
+    {
+        $isbn = $_REQUEST['isbn'];
+        if (!_isbnExiste($isbn)) 
+        {
+            header('Location:index.php?c=error&a=e_404');
+        }
+    }
+    else 
+    {
+        header('Location:index.php?c=error&a=e_404');
     }
 
-    return array('data' => $data, 'html' => $html);
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') 
+    {
+        
+      delete($isbn);
+        
+       header('Location:'.$_SERVER['PHP_SELF']); // donne la page index.php qui est par défaut
+    }
+    elseif ($_SERVER['REQUEST_METHOD'] == 'GET') 
+    {
+        
+        $data['livre'] = getOne($isbn);
+        $data['view_title'] = 'Supression du livre: ' . $data['livre']['titre'];
+        $html = $a . $c . '.php';
+        
+        return array('data' => $data, 'html' => $html); // returne
+    }
+
+    
 }
 
 function voir() { // récupérer 1x les informations d'1 seul livre

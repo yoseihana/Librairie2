@@ -1,10 +1,12 @@
 <?php
 
-	function getList($c){ 
-		$req = 'SELECT * FROM auteur'; 
+	function getList(){ 
+            global $connex;
+            
+		$req = 'SELECT * FROM auteur ORDER BY nom ASC'; 
 		
                 try{
-		$res = $c->query($req);
+		$res = $connex->query($req);
 		$auteur = $res->fetchAll();
                 }
                 catch (PDOException $e){
@@ -13,12 +15,13 @@
                 return $auteur;
 	}
 	
-	function getOne($c, $id_auteur){
-		
+	function getOne($id_auteur){
+                global $connex;
+            
 		$req = 'SELECT * FROM auteur WHERE id_auteur = :id_auteur';
 		
                 try{
-		$ps = $c->prepare($req);
+		$ps = $connex->prepare($req);
 		
 		$ps->bindValue(':id_auteur', $id_auteur); 
 		$ps->execute(); 
@@ -32,13 +35,14 @@
 	
 	}
 	
-	function delete($c, $id_auteur){
+	function delete($data){
+            
+            global $connex;
 		$req = 'DELETE FROM auteur WHERE id_auteur = :id_auteur'; 
                 
                 try{
-                    $ps = $c->prepare($req); 
-		
-                    $ps->bindValue(':id_auteur', $id_auteur);
+                    $ps = $connex->prepare($req);
+                    $ps->bindValue(':id_auteur', $data['id_auteur']);
                     $ps->execute();  
 		
                     
@@ -50,47 +54,90 @@
                 return true;
 	}
         
-        function update ($c, $id_auteur){
-		
-		$req = 'UPDATE auteur SET nom = :nom WHERE id_auteur = :id_auteur'; 
-                
-                try{
-                    $ps = $c->prepare($req); 
-		
-                    $ps->bindValue(':id_auteur', $id_auteur);
-                    $ps->bindValue( ':nom', $_POST['nom'] );
-		
-                    $ps->execute();  
-		
-                    
-                }
-                catch(PDOException $e){
-                    die($e->getMessage());
-                }
-		
-                return true;
-        }
+ function update($data) {
+
+    global $connex;
+
+    $req = 'UPDATE auteur SET nom = :nom, prenom = :prenom, date_naissance = :date_naissance WHERE id_auteur = :id_auteur';
+
+    try {
+        $ps = $connex->prepare($req);
+
+        $ps->bindValue(':id_auteur', $data['id_auteur']);
+        $ps->bindValue(':nom', $data['nom']);
+        $ps->bindValue(':prenom', $data['prenom']);
+        
+       /* if(':date_naissance' !== '0000-00-00')
+        {*/
+       $ps -> bindValue(':date_naissance', $data['date_naissance']);
+            
+       /* }*/
+
+       
+        $ps->execute();
+    }
+    catch (PDOException $e) {
+        die($e->getMessage());
+        //header('Location: index.php?c=error&a=e_database');
+    }
+
+    return true;
+}
         
          
-        function add ($c){
+ function add() {
 
-		
-		$req = 'INSERT INTO auteur value ( :id_auteur, :nom, :prenom, :date_naissance)';
-		
-                try{
-		$ps = $c->prepare($req); 
-		
-		$ps->bindValue(':id_auteur', $id_auteur); 
-                $ps->bindValue (':nom', $_POST['nom']);
-                $ps->bindValue (':prenom', $_POST['prenom']);
-                $ps->bindValue (':date_naissance', $_POST['date_naissance']);
-		
-		$ps->execute();
-		
-		$livre = $ps->fetch(); 
-                }
-                catch(PDOException $e){
-                    die($e->getMessage());
-                }
-		return $auteur;
-        }
+    
+   if(!getidAuteurCount($_POST['id_auteur']))
+    {
+        global $connex;
+
+    $req = 'INSERT INTO auteur VALUES (:id_auteur, :nom, :prenom, :date_naissance);';
+   // $req2 = 'INSERT INTO ecrit VALUES (:isbn, :id_auteur)';
+    
+    
+    try {
+        $ps = $connex->prepare($req);
+
+        $ps->bindValue(':id_auteur', $_POST['id_auteur']);
+        $ps->bindValue(':nom', $_POST['nom']);
+        $ps->bindValue(':prenom', $_POST['prenom']);
+        $ps->bindValue(':date_naissance', $_POST['date_naissance']);
+        $ps->execute();
+        
+        /*$ps = $connex->prepare($req2);
+        $ps->bindValue(':isbn', $_POST['isbn']);
+        $ps->bindValue(':id_auteur', $_POST['id_auteur']);
+        $ps->execute();*/
+    }
+    catch (PDOException $e) {
+        die($e->getMessage());
+        //header('Location: index.php?c=error&a=e_database');
+    }
+
+    return true;
+   }
+    else {
+        return false;
+   }
+}
+ 
+function getidAuteurCount($id_auteur) {
+    global $connex; // récupérer la connection
+    $req = 'SELECT count(id_auteur) AS nb_id_auteur FROM auteur WHERE id_auteur = :id_auteur'; // récupère le nbre d'isbn
+
+    try {
+        $ps = $connex->prepare($req); // connection
+        $ps->bindValue(':id_auteur', $id_auteur); //les valeurs sont liées
+        $ps->execute(); // execution
+    }
+    catch (PDOException $e) {
+        die($e->getMessage());
+        //header ('Location: index.php?c=error&a=e_database');
+    }
+
+    $nbidAuteur = $ps->fetch();
+    $nbidAuteur = $nbidAuteur['nb_id_auteur']; // extraction du nbre de ISBN trouver
+
+    return $nbidAuteur['nb_id_auteur']; // retourne 0 ou 1
+}

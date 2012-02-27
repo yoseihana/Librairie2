@@ -42,12 +42,13 @@ session_start();
                $a = DEFAULT_ACTION; // lister
                $c = DEFAULT_CONTROLLER; //livre
          }
-                
+ 
+         
   include('controleur/'.$c.'.php');// charge le bon controleur necessaire
   
   $view = call_user_func ($a); // appel la fct correspondant à l'action donnée, call_user_func appel une autre fct avec le nom $a lister(lister) et retourne la valeur ds $view
  //$view retourn $view['data'] : les données pr ma vue et $view['html']: le nom de ma vue, est retourné en 
   
   $connected = isset($_SESSION['connected']) ? $_SESSION['connected'] : false;
-  
+
 include ('./vues/layout.php');

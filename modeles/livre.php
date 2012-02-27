@@ -40,7 +40,7 @@ function getOne($isbn) { // récupère un livre
         //header ('Location: index.php?c=erreor&a=e_database');
     }
 
-    return $livre; // ne fonctionnais pas sans le 0
+    return $livre;
 }
 
 function delete($isbn) {
@@ -89,35 +89,50 @@ function update($data) {
 
 function add() {
 
-    global $connex;
+    
+   if(!getISBNCount($_POST['isbn']))
+    {
+        global $connex;
 
-    $req = 'INSERT INTO livre value ( :isbn, :titre, :date_parution, :nombre_page, null, null)'; //on place soit le ? ou le nom de var qu'on veut ajouter. On peux tuilier aussi :isbn au lieu du ?. Ici avec : on prépare une requête et la donnée
-
+    $req = 'INSERT INTO livre VALUES (:isbn, :titre, :date_parution, :nombre_page, :code_zone, :genre);'; //on place soit le ? ou le nom de var qu'on veut ajouter. On peux tuilier aussi :isbn au lieu du ?. Ici avec : on prépare une requête et la donnée
+   // $req2 = 'INSERT INTO ecrit VALUES (:isbn, :id_auteur)';
+    
+    
     try {
         $ps = $connex->prepare($req);
 
         $ps->bindValue(':isbn', $_POST['isbn']);
         $ps->bindValue(':titre', $_POST['titre']);
-        $ps->bindValue(':date_parution', $_POST['date_parution']);
         $ps->bindValue(':nombre_page', $_POST['nombre_page']);
-
+        $ps->bindValue(':date_parution', $_POST['date_parution']);
+        $ps->bindValue(':code_zone', $_POST['code_zone']);
+        $ps->bindValue(':genre', $_POST['genre']);
         $ps->execute();
-
-        $livre = $ps->fetch();
+        
+        /*$ps = $connex->prepare($req2);
+        $ps->bindValue(':isbn', $_POST['isbn']);
+        $ps->bindValue(':id_auteur', $_POST['id_auteur']);
+        $ps->execute();*/
     }
     catch (PDOException $e) {
         die($e->getMessage());
+        //header('Location: index.php?c=error&a=e_database');
     }
-    return $livre[0];
+
+    return true;
+   }
+    else {
+        return false;
+   }
 }
 
 function getISBNCount($isbn) {
     global $connex; // récupérer la connection
-    $req = 'SELECT count(isbn) AS nb_isbn FROM livre WHERE isbn = :isbn'; // récupère le nbre d'isbn
+    $req = 'SELECT count(isbn) AS nb_isbn FROM livre WHERE isbn = ?'; // récupère le nbre d'isbn
 
     try {
         $ps = $connex->prepare($req); // connection
-        $ps->bindValue(':isbn', $isbn); //les valeurs sont liées
+        $ps->bindValue(1, $isbn); //les valeurs sont liées
         $ps->execute(); // execution
     }
     catch (PDOException $e) {

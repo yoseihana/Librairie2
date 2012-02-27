@@ -1,17 +1,23 @@
-<form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
+<form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
     <fieldset>
         <label from="email">
-            Email
+            Email:
         </label>
-        <input type="text" name="email" id="email" /> <br/>
+        <br/>
+        <input type="text" name="email" id="email" />
+        <br/>
         <label from="mdp">
-            Mot de passe
+            Mot de passe:
         </label>
-        <input type="password" name="mdp" id="mdp" /> <br/>
-        <input type="submit" value="verifier" />
+        <br/>
+        <input type="password" name="mdp" id="mdp" />
+        <br/>
+        <div class="bouton">
+            <input type="submit" value="Verifier" />
+        </div>
     </fieldset>
     
-    <input type="hidden" name="a" value="<?php echo $validActions['connecter'] ?>"
-    <input type="hidden" name="c" value="<?php echo $validEntities['membre'] ?>"
-    
+    <input type="hidden" name="a" value="<?php echo $validActions['connecter'] ?>" />
+    <input type="hidden" name="c" value="<?php echo $validEntities['membre'] ?>" />
+
 </form>

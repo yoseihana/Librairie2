@@ -22,18 +22,20 @@
 				media="screen"
 				title="Normal" />  
 	</head>
-		<?php //if( !@include ( $view )){ include ('404.php');}; ?>
-		<!-- le @ devant le nom de la fct pr éviter le warning-->
-                
+    <body>
+		<div class="header">
+            <div class="connection">
                 <?php if($connected): ?>
                 <p><a href="index.php?c=membre&a=deconnecter">Se déconnecter</a></p>
-                <?php else: ?> <!-- PQ les : ? -->
-                <p><a href="index.php?c=membre&a=connecter">Se connecter</a></p>
+                <?php else: ?>
+                <p><a href="index.php?a=connecter&c=membre">Se connecter</a></p>
                 <?php endif ?>
-                <br/>
-                
-                <?php include($view['html']); 
-                        //include('./vues/connectermembre.php');?>
+            </div>
+		</div>
+
+        <div class="content">
+                <?php include($view['html']); ?>
+        </div>
 
 	</body>
 </html>
