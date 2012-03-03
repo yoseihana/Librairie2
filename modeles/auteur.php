@@ -5,7 +5,7 @@ function getList()
     global $connex;
 
     //$req = 'SELECT * FROM auteur ORDER BY nom ASC';
-    $req = 'SELECT livre.*, ecrit.*, auteur.*, zone.* FROM livre LEFT JOIN ecrit ON livre.isbn = ecrit.isbn LEFT JOIN auteur ON ecrit.id_auteur = auteur.id_auteur LEFT JOIN zone ON livre.code_zone = zone.code_zone WHERE livre.isbn = :isbn';
+
 
     try {
         $res = $connex->query($req);
@@ -147,24 +147,4 @@ function getidAuteurCount($id_auteur)
     $nbidAuteur = $nbidAuteur['nb_id_auteur']; // extraction du nbre de ISBN trouver
 
     return $nbidAuteur['nb_id_auteur']; // retourne 0 ou 1
-}
-
-function getAuthorsForBook($author)
-{
-    global $connex;
-    $req = 'SELECT livre.*, ecrit.*, auteur.*, zone.* FROM livre LEFT JOIN ecrit ON livre.isbn = ecrit.isbn LEFT JOIN auteur ON ecrit.id_auteur = auteur.id_auteur LEFT JOIN zone ON livre.code_zone = zone.code_zone WHERE livre.isbn = :isbn'; // jointure exetrne
-
-    try {
-        $ps = $connex->prepare($req);
-
-        $ps->bindValue(':isbn', $data['isbn']);
-
-        $ps->execute();
-    }
-    catch (PDOException $e) {
-        die($e->getMessage());
-        //header('Location: index.php?c=error&a=e_database');
-    }
-
-    return true;
 }

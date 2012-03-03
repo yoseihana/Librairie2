@@ -66,6 +66,13 @@
             </option>
 
         </select>
+        <br/>
+        <label for="image">
+            Ajouter une image
+        </label>
+        <br/>
+        <input type="file" name="file" id="image">
+        <input type="hidden" name="MAX_FILE_SIZE" value="1024">
 
         <input type="hidden" name="c" value="<?php echo ($validEntities['livre']); ?>" />
         <input type="hidden" name="a" value="<?php echo ($validActions['modifier']); ?>" />

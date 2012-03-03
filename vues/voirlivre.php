@@ -41,6 +41,16 @@
     </h3>
 
     <p><?php echo($view['data']['livre']['genre']); ?></p>
+
+    <h3>
+        Nom
+    </h3>
+
+    <p><?php echo($view['data']['livre']['nom']); ?></p>
+    <pre>
+    <?php print_r($view['data']['livre']['prenom']); ?></pre>
+
+    <img src="'.$uploadDir.'/'.$name.'" alt="image" />
 </div>
 <div class="ajouter">
     <?php if ($connected): ?> <p><a

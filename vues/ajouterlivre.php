@@ -1,5 +1,5 @@
 <h1><?php echo $c . ' a ' . $a; ?></h1>
-<form action="<?php echo ($_SERVER['PHP_SELF']) ?>" method="post">
+<form action="<?php echo ($_SERVER['PHP_SELF']) ?>" method="post" enctype="multipart/form-data">
     <fieldset>
         <label for="titre">
             Titre:
@@ -53,6 +53,25 @@
             </option>
 
         </select>
+
+        <label for="prenom">
+            Nom et prénom:
+        </label>
+        <br/>
+
+        <select name="id_auteur" id="prenom">
+            <option value="roman">
+                <?//php echo $view['data']['auteur']['nom'].' '.$view['data']['auteur']['prenom']; ?>
+            </option>
+
+        </select>
+        <br/>
+        <label for="image">
+            Ajouter une image
+        </label>
+        <br/>
+        <input type="file" name="file" id="image">
+
         <input type="hidden" name="c" value="<?php echo ($validEntities['livre']); ?>"/>
         <input type="hidden" name="a" value="<?php echo ($validActions['ajouter']); ?>"/>
 
