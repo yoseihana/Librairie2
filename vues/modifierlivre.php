@@ -1,6 +1,6 @@
 <h1><?php echo $c . ' a ' . $a; ?></h1>
 
-<form action="<?php echo ($_SERVER['PHP_SELF']) ?>" method="post">
+<form action="<?php echo ($_SERVER['PHP_SELF']) ?>" method="post" enctype="multipart/form-data">
     <fieldset>
         <label for="titre">
             Titre:
@@ -68,8 +68,10 @@
             Ajouter une image
         </label>
         <br/>
-        <input type="file" name="file" id="image">
-        <input type="hidden" name="MAX_FILE_SIZE" value="1024">
+        <input type="file" name="file" id="file"/>
+        <input type="hidden" name="MAX_FILE_SIZE" value="1024"/>
+        <input type="button" value="envoyer"/>
+        <?php echo'<img src="../img/' . $name . '" alt="image" />'; ?>
 
         <input type="hidden" name="c" value="<?php echo ($validControllers['livre']); ?>"/>
         <input type="hidden" name="a" value="<?php echo ($validActions['modifier']); ?>"/>

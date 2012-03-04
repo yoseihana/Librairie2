@@ -42,13 +42,13 @@
     <p><?php echo($view['data']['livre']['genre']); ?></p>
 
     <h3>
-        Nom
+        Nom et prénom
     </h3>
 
     <p><?php echo($view['data']['livre']['auteur']['nom']); ?></p>
     <pre><?php print_r($view['data']['livre']['auteur']['prenom']); ?></pre>
 
-    <img src="'.$uploadDir.'/'.$name.'" alt="image"/>
+    <img src="'.$uploadDir.'/'.$name.'" alt="image" />
 </div>
 <div class="ajouter">
     <?php if ($connected): ?>

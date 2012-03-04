@@ -153,53 +153,62 @@ function _testIsbn($isbn) {
 function valideExtension() {
     $valideExtension = array('jpg', 'gif', 'jpeg', 'png');
 
-    if ($_FILES['file']['error'] == 0) {
-        $nom_fichier = $_FILES['file']['name'];
-        $partie_nom = explode('.', $nom_fichier);
-        $extension = $partie_nom[count($partie_nom - 1)];
+    var_dump($_FILES);
 
-        $uploadDirection = './imgb/';
-        $nomImage = time() . rand(0, 10000) . '.' . $extension;
+    if (is_uploaded_file($_FILES['file']['name']) == 0)
+    {
+        if (!$_FILES['file']['error'])
+        {
+            // Lorsque tout va bien
+            print $_FILES['file']['size']; // fichier se nomme file et on va chercher la clé error
+            print $_FILES['file']['name'];
+            $nom_fichier = $_FILES['file']['name'];
+            $partie_nom = explode('.', $nom_fichier); //explosion du fichier lorsqu'il y a un . et mettre ds un tableau les différents éléments
+            $extension = $partie_nom[count($partie_nom) - 1]; //Compte le nbre d'élément qu'il y a ds un tableau -1 pr avoir le dernier
 
-        if ($extension == in_array($extension, $valideExtension)) {
-            //echo '<img src="'.$uploadDirection.$nomImage.'" title="Mon image" />';
-            header('Location:index.php?c=livre&a=lister.php');
+            $uploadDir = '../img/'; // définition du répertoire
+            $name = time() . rand(0, 100000) . '.' . $extension; //Création du nom de l'image
+
+            if ($extension == in_array($extension, $valideExtension))
+            {
+                echo'<img src="' . $uploadDir . '/' . $name . '" alt="image" /> ';
+                //Pr récupérer les différentes actions, ds un tableau selon les types tel valideAction ms en file et on liste les ≠ extentions qu'on accepte et on vérifie si l'extention est dedans et si on l'accepte
+            }
+            else
+            {
+                echo'l\'extension fichier n\'est pas correcte';
+            }
+            $tmp_name = $_FILES['file']['tmp_name']; //placement de l'image ds un fichier temporaire
+            if (!move_uploaded_file($tmp_name, $uploadDir . '/' . $name)) // déplacement de l'image, c'est un booléen comme fct donc utilisation pr un if, on le fait et en mm tps on vérifie si c'est fait
+            {
+                //gestion erreur
+                echo 'Erreur!';
+            }
         }
         else
         {
-            echo 'Le type de fichier n\'est pas accepté';
-        }
-
-
-        $nomTemporaire = $_FILES['file']['tmp_name'];
-        move_uploaded_file($nomTemporaire, $uploadDirection . '/' . $nomImage);
-
-        if (!move_uploaded_file($nomTemporaire, $uploadDirection . '/' . $nomImage)) {
-            echo 'Il y a eu une erreur dans le chargement de l\'image!';
+            switch ($_FILES['file']['error'])
+            {
+                case 1:
+                    echo 'Le fichier est trop grand';
+                    break;
+                case 2:
+                    echo 'Le fichier est plus grand que la taille spécifiée dans le formulaire';
+                    break;
+                case 3:
+                    echo 'La totalitée du fichiée n\'a pas été reçu';
+                    break;
+                case 4:
+                    echo 'Aucun fichier n\'a été téléchargé';
+                    break;
+                case 7:
+                    echo 'Le fichier n\'a pas été écrit sur le serveur';
+                    break;
+            }
         }
     }
     else
     {
-        switch ($_FILES['file']['error'])
-        {
-            case 1;
-                echo 'Le fichier dépasse la taille maximale';
-                break;
-            case 2;
-                echo 'Le fichier envoyé est suppérieur à la taille définie dans le HTML ';
-                break;
-            case 3;
-                echo 'Le serveur n\'a pas reçu la totalitée';
-                break;
-            case 4;
-                echo 'Aucun fichier n\'a été télécharger';
-                break;
-            case 6;
-                echo 'Le repertoir temporaire est manquant';
-                break;
-            case 7;
-                echo 'Echec de l\'écriture';
-                break;
-        }
+        echo'Erreur!';
     }
 }
