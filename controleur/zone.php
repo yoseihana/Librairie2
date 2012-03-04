@@ -8,7 +8,7 @@ function lister()
     global $a, $c;
 
     $data['view_title'] = 'Liste des zones';
-    $data['zones'] = getList(); 
+    $data['zones'] = getAllAuthors();
     $html = $a . $c . '.php';
     return array('data' => $data, 'html' => $html);
 }
@@ -129,7 +129,7 @@ function voir() { // récupérer 1x les informations d'1 seul livre
         //header('Location:index.php?c=error&a=e_404');
     }
 
-    $data['zones']     = getList();
+    $data['zones']     = getAllAuthors();
     $data['zone']      = getOne($code_zone);
     $data['view_title'] = 'Fiche de la zone: ' . $data['zone']['piece'];
     $html               = $a . $c . '.php';

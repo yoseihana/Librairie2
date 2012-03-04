@@ -1,6 +1,6 @@
 <?php
 
-include 'modeles/' . $c . '.php'; //pr se connecter à la BdD
+include 'modeles/auteur.php'; // pr se connecter à la BdD
 // Produire les données à affichée et les données à utiliser. REgarde ce qu'on demande 
 
 function lister() 
@@ -9,7 +9,7 @@ function lister()
     global $c;
 
     $data['view_title'] = 'Liste des auteurs';
-    $data['auteurs']     = getList(); // Utilisation d'une fct dans le modèle. Utilisation de $c dedans?
+    $data['auteurs']     = getAllAuthors(); // Utilisation d'une fct dans le modèle. Utilisation de $c dedans?
     $html              = $a . $c . '.php';
     return array('data' => $data, 'html' => $html);
 }
@@ -133,7 +133,7 @@ function voir() { // récupérer 1x les informations d'1 seul livre
         //header('Location:index.php?c=error&a=e_404');
     }
 
-    $data['auteurs']     = getList();
+    $data['auteurs']     = getAllAuthors();
     $data['auteur']      = getOne($id_auteur);
     $data['view_title'] = 'Fiche de l\'auteur: ' . $data['auteur']['nom'];
     $html               = $a . $c . '.php';

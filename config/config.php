@@ -1,10 +1,27 @@
 <?php
 
-        $GLOBALS['validEntities'] = array('livre'=>'livre', 'zone'=>'zone', 'auteur'=>'auteur', 'membre'=>'membre', 'error'=>'error'); 
-        $GLOBALS['validActions'] = array('lister'=>'lister'  , 'modifier'=>'modifier', 'supprimer'=>'supprimer', 'voir'=>'voir', 'ajouter'=>'ajouter', 'deconnecter'=>'deconnecter', 'connecter'=>'connecter', 'e_404'=>'e_404', 'e_database'=>'e_database', 'e_user'=>'e_user');
+    $validControllers = array(
+        'livre'=>'livre',
+        'zone'=>'zone',
+        'auteur'=>'auteur',
+        'membre'=>'membre',
+        'error'=>'error'
+    );
+    $validActions = array(
+        'lister'=>'lister',
+        'modifier'=>'modifier',
+        'supprimer'=>'supprimer',
+        'voir'=>'voir',
+        'ajouter'=>'ajouter',
+        'deconnecter'=>'deconnecter',
+        'connecter'=>'connecter',
+        'e_404'=>'e_404',
+        'e_database'=>'e_database',
+        'e_user'=>'e_user'
+    );
 
-        define('DEFAULT_CONTROLLER', $GLOBALS['validEntities']['livre']); // utilisation lorsqu'on vient sur l'application et qu'il n'y a pas de param, par défaut on affiche la liste des livres. Ici livre
-	define('DEFAULT_ACTION', $GLOBALS['validActions']['lister']); // par défaut, les livres seront lister. Ici lister
+    define('DEFAULT_CONTROLLER', $validControllers ['livre']); // utilisation lorsqu'on vient sur l'application et qu'il n'y a pas de param, par défaut on affiche la liste des livres. Ici livre
+	define('DEFAULT_ACTION', $validActions['lister']); // par défaut, les livres seront lister. Ici lister
 	
 	define('DSN','mysql:host=localhost;dbname=bibli'); // le seul endroit où il peut avoir le mysql pour le SGBD, c'est le format type du DSN
 	define('USER', 'root');

@@ -18,6 +18,6 @@
     </fieldset>
     
     <input type="hidden" name="a" value="<?php echo $validActions['connecter'] ?>" />
-    <input type="hidden" name="c" value="<?php echo $validEntities['membre'] ?>" />
+    <input type="hidden" name="c" value="<?php echo $validControllers['membre'] ?>" />
 
 </form>

@@ -1,7 +1,7 @@
 <?php
 
 
-function getList() {
+function getAllZones() {
     global $connex;
 
     $req = 'SELECT *
@@ -20,7 +20,7 @@ function getList() {
     return $zones;
 }
 
-function getOne($code_zone) {
+function findZoneByCode($code_zone) {
     global $connex;
 
     $req = 'SELECT * FROM zone WHERE code_zone = :code_zone';
@@ -39,7 +39,7 @@ function getOne($code_zone) {
     return $zone;
 }
 
-function delete($code_zone) {
+function deleteZone($code_zone) {
     global $connex;
 
     $req = 'DELETE FROM zone WHERE code_zone = :code_zone';
@@ -58,7 +58,7 @@ function delete($code_zone) {
     return true;
 }
 
-function update($data) {
+function updateZone($data) {
 
     global $connex;
 
@@ -81,7 +81,7 @@ function update($data) {
     return true;
 }
 
-function add() {
+function addZone() {
 
     
    if(!getCodeZoneCount($_POST['code_zone']))

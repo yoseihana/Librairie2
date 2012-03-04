@@ -1,178 +1,167 @@
 <?php
 
-include 'modeles/' . $c . '.php'; //pr se connecter à la BdD
-// Produire les données à affichée et les données à utiliser. REgarde ce qu'on demande 
+include 'modeles/livre.php';
+include 'modeles/auteur.php';
+include 'modeles/zone.php';
 
-function lister()
-{ // création de la $data et $html
-    global $a, $c; // pr déclarer les variables qui sont en dehors de la fonction, elles sont globale
-
-    $data['view_title'] = 'Liste des livres';
-    $data['livres'] = getList(); // Utilisation d'une fct dans le modèle. Utilisation de $c dedans?
-
-    $nbLivres = count($data['livres']);
-
-    for ($i = 0; $i < $nbLivres; $i++)
-    {
-        $isbn = $data['livres'][$i]['isbn'];
-
-
-    } //Permet d'avoir une nouvelle req pour afficher l'auteur en lui-même
-
-    $html = $a . $c . '.php';
-    return array('data' => $data, 'html' => $html);
-}
-
-function modifier()
-{
-    global $a, $c, $validActions, $validEntities;
-
-    if (isset($_REQUEST['isbn']))
-    { // vérifie si il y a bien qqch ds URL, tjs en GET
-        $isbn = $_REQUEST['isbn'];
-        if (!_isbnExiste($isbn))
-        {
-            die('l\'isbn fournit n\'existe pas dans la base de donnée!');
-            //header('Location:index.php?c=error&a=e_404');
-        }
-    }
-    else
-    {
-        die('vous devez fournir un isbn pour voir le livre');
-        //header('Location:index.php?c=error&a=e_404');
-    }
-
-    if ($_SERVER['REQUEST_METHOD'] == 'POST')
-    {
-        $champsLivre['titre'] = $_POST['titre'];
-        $champsLivre['nombre_page'] = $_POST['nombre_page'];
-        $champsLivre['date_parution'] = $_POST['date_parution'];
-        $champsLivre['genre'] = $_POST['genre'];
-        $champsLivre['isbn'] = $isbn;
-
-        update($champsLivre);
-
-        header('Location:' . $_SERVER['PHP_SELF'] . '?a=' . $validActions['voir'] . '&c=' . $validEntities['livre'] . '&isbn=' . $isbn); // donne la page index.php qui est par défaut
-    }
-    elseif ($_SERVER['REQUEST_METHOD'] == 'GET')
-    {
-        $data['livre'] = getOne($isbn);
-        $data['view_title'] = 'Modification du livre: ' . $data['livre']['titre'];
-        $html = $a . $c . '.php';
-
-        return array('data' => $data, 'html' => $html); // returne
-    }
-
-}
-
-function ajouter()
-{
-    global $a, $c, $validActions, $validEntities;
-
-    if ($_SERVER['REQUEST_METHOD'] == 'POST')
-    {
-        add();
-
-        header('Location:' . $_SERVER['PHP_SELF']); // donne la page index.php qui est par défaut
-    }
-    elseif ($_SERVER['REQUEST_METHOD'] == 'GET')
-    {
-        $data['view_title'] = 'Ajout de livre: ';
-        $html = $a . $c . '.php';
-
-        return array('data' => $data, 'html' => $html); // returne
-    }
-}
-
-function supprimer()
-{
-    global $a, $c, $validActions, $validEntities;
-
-    if (isset($_REQUEST['isbn']))
-    {
-        $isbn = $_REQUEST['isbn'];
-        if (!_isbnExiste($isbn))
-        {
-            header('Location:index.php?c=error&a=e_404');
-        }
-    }
-    else
-    {
-        header('Location:index.php?c=error&a=e_404');
-    }
-
-    if ($_SERVER['REQUEST_METHOD'] == 'POST')
-    {
-        delete($isbn);
-
-        header('Location:' . $_SERVER['PHP_SELF']); // donne la page index.php qui est par défaut
-    }
-    elseif ($_SERVER['REQUEST_METHOD'] == 'GET')
-    {
-        $data['livre'] = getOne($isbn);
-        $data['view_title'] = 'Supression du livre: ' . $data['livre']['titre'];
-        $html = $a . $c . '.php';
-
-        return array('data' => $data, 'html' => $html); // returne
-    }
-
-}
-
-function voir()
-{ // récupérer 1x les informations d'1 seul livre
+function lister() {
     global $a, $c;
 
-    if (isset($_GET['isbn']))
-    { // vérifie si il y a bien qqch ds URL, tjs en GET
-        $isbn = $_GET['isbn'];
-        if (!_isbnExiste($isbn))
-        {
-            die('l\'isbn fournit n\'existe pas dans la base de donnée!');
-            //header('Location:index.php?c=error&a=e_404');
-        }
+    $data['view_title'] = 'Liste des livres';
+    $data['livres'] = getAllBooks();
+
+    $html = $a . $c . '.php';
+    return array('data' => $data, 'html' => $html);
+}
+
+function modifier() {
+    global $a, $c, $validActions, $validEntities;
+
+    // Récupère l'isbn depuis $_REQUEST avec gestion d'erreurs
+    $isbn = _getIsbnFromRequest();
+
+    // Test l'existance de l'isbn dans la DB
+    _testIsbn($isbn);
+
+    // POST - modifier le livre en DB
+    // GET - données pour le formulaire
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $champs['livre']['isbn'] = $isbn;
+        $champs['livre']['titre'] = $_POST['titre'];
+        $champs['livre']['nombre_page'] = $_POST['nombre_page'];
+        $champs['livre']['date_parution'] = $_POST['date_parution'];
+        $champs['livre']['genre'] = $_POST['genre'];
+        $champs['livre']['code_zone'] = $_POST['code_zone'];
+
+        $champs['auteur']['id_auteur'] = $_POST['id_auteur'];
+
+        updateBook($champs);
+
+        header('Location:' . voirLivreUrl($isbn)); // donne la page index.php qui est par défaut
     }
-    else
+    elseif ($_SERVER['REQUEST_METHOD'] == 'GET')
     {
-        die('vous devez fournir un isbn pour voir le livre');
-        //header('Location:index.php?c=error&a=e_404');
+        $livre = findBookByIsbn($isbn);
+
+        $data['view_title'] = 'Modification du livre: ' . $livre['titre'];
+        $data['livre'] = $livre; // Le livre à modifier
+        $data['livre']['auteur'] = findAuthorByBook($livre['isbn']);
+        $data['livre']['zone'] = findZoneByCode($livre['code_zone']);
+        $data['auteurs'] = getAllAuthors(); // La liste des auteurs
+        $data['zones'] = getAllZones(); // La liste des zones
+
+        $html = $a . $c . '.php';
+        return array('data' => $data, 'html' => $html); // returne
+    }
+}
+
+function ajouter() {
+    global $a, $c;
+
+    // POST - modifier le livre en DB
+    // GET - données pour le formulaire
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $champs['livre']['isbn'] = $_POST['isbn']; // ou _getIsbnFromRequest()
+        $champs['livre']['titre'] = $_POST['titre'];
+        $champs['livre']['nombre_page'] = $_POST['nombre_page'];
+        $champs['livre']['date_parution'] = $_POST['date_parution'];
+        $champs['livre']['genre'] = $_POST['genre'];
+        $champs['livre']['code_zone'] = $_POST['code_zone'];
+
+        $champs['auteur']['id_auteur'] = $_POST['id_auteur'];
+
+        addBook($champs);
+
+        // Redirection
+        header('Location:' . $_SERVER['PHP_SELF']); // donne la page index.php qui est par défaut
+    }
+    elseif ($_SERVER['REQUEST_METHOD'] == 'GET')
+    {
+        $data['view_title'] = 'Ajout d\'un livre';
+        $data['auteurs'] = getAllAuthors(); // La liste des auteurs
+        $data['zones'] = getAllZones(); // La liste des zones
+
+        $html = $a . $c . '.php';
+        return array('data' => $data, 'html' => $html); // returne
+    }
+}
+
+function supprimer() {
+    global $a, $c, $validActions, $validEntities;
+
+    $isbn = _getIsbnFromRequest();
+    _testIsbn($isbn);
+
+    // POST - modifier le livre en DB
+    // GET - données pour le formulaire
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        deleteBook($isbn);
+
+        // Redirection
+        header('Location:' . $_SERVER['PHP_SELF']); // donne la page index.php qui est par défaut
+    }
+    elseif ($_SERVER['REQUEST_METHOD'] == 'GET')
+    {
+        $livre = findBookByIsbn($isbn);
+
+        $data['view_title'] = 'Supression du livre: ' . $livre['titre'];
+        $data['livre'] = $livre;
+
+        $html = $a . $c . '.php';
+        return array('data' => $data, 'html' => $html); // returne
     }
 
-    $data['livres'] = getList();
-    $data['livre'] = getOne($isbn);
-    $data['view_title'] = 'Fiche du livre: ' . $data['livre']['titre'];
+}
+
+function voir() { // récupérer 1x les informations d'1 seul livre
+    global $a, $c;
+
+    $isbn = _getIsbnFromRequest();
+    _testIsbn($isbn);
+
+    $livre = findBookByIsbn($isbn);
+
+    $data['view_title'] = 'Fiche du livre: ' . $livre['titre'];
+    $data['livres'] = getAllBooks();
+    $data['livre'] = $livre; // Le livre à voir
+    $data['livre']['auteur'] = findAuthorByBook($livre['isbn']);
+    $data['livre']['zone'] = findZoneByCode($livre['code_zone']);
 
     $html = $a . $c . '.php';
     return array('data' => $data, 'html' => $html);
 
 }
 
-function _isbnExiste($isbn)
-{ // uniquement ds se fichier, commence par un _ car utiliser uniquement ici
-    if (!getISBNCount($isbn))
-    { // compte le nbre d'occurance d'ISBN, il devrait y en avoir que 1 car clé primaire
-        return false;
+function _getIsbnFromRequest() {
+    global $a;
+
+    if (!isset($_REQUEST['isbn'])) {
+        die('vous devez fournir un isbn pour ' . $a . ' un livre');
+        //header('Location:index.php?c=error&a=e_404');
     }
-    else
-    {
-        return true;
+
+    return $_REQUEST['isbn'];
+}
+
+function _testIsbn($isbn) {
+    if (countBookByIsbn($isbn) < 1) {
+        die('l\'isbn fournit n\'existe pas dans la base de donnée!');
+        //header('Location:index.php?c=error&a=e_404');
     }
 }
 
-function valideExtension ()
-{
+function valideExtension() {
     $valideExtension = array('jpg', 'gif', 'jpeg', 'png');
 
-    if($_FILES['file']['error'] == 0)
-    {
+    if ($_FILES['file']['error'] == 0) {
         $nom_fichier = $_FILES['file']['name'];
-        $partie_nom = explode('.', $nom_fichier) ;
-        $extension = $partie_nom[count($partie_nom -1)];
+        $partie_nom = explode('.', $nom_fichier);
+        $extension = $partie_nom[count($partie_nom - 1)];
 
         $uploadDirection = './imgb/';
-        $nomImage = time().rand(0,10000).'.'.$extension;
+        $nomImage = time() . rand(0, 10000) . '.' . $extension;
 
-        if($extension == in_array($extension, $valideExtension))
-        {
+        if ($extension == in_array($extension, $valideExtension)) {
             //echo '<img src="'.$uploadDirection.$nomImage.'" title="Mon image" />';
             header('Location:index.php?c=livre&a=lister.php');
         }
@@ -183,16 +172,15 @@ function valideExtension ()
 
 
         $nomTemporaire = $_FILES['file']['tmp_name'];
-        move_uploaded_file ($nomTemporaire, $uploadDirection.'/'.$nomImage);
+        move_uploaded_file($nomTemporaire, $uploadDirection . '/' . $nomImage);
 
-        if(!move_uploaded_file ($nomTemporaire, $uploadDirection.'/'.$nomImage))
-        {
+        if (!move_uploaded_file($nomTemporaire, $uploadDirection . '/' . $nomImage)) {
             echo 'Il y a eu une erreur dans le chargement de l\'image!';
         }
     }
     else
     {
-        switch($_FILES['file']['error'])
+        switch ($_FILES['file']['error'])
         {
             case 1;
                 echo 'Le fichier dépasse la taille maximale';

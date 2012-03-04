@@ -1,10 +1,10 @@
 <?php
 
-function getList()
+function getAllAuthors()
 {
     global $connex;
 
-    //$req = 'SELECT * FROM auteur ORDER BY nom ASC';
+    $req = 'SELECT * FROM auteur ORDER BY nom ASC';
 
 
     try {
@@ -17,7 +17,7 @@ function getList()
     return $auteur;
 }
 
-function getOne($id_auteur)
+function findAuthorById($id_auteur)
 {
     global $connex;
 
@@ -25,7 +25,6 @@ function getOne($id_auteur)
 
     try {
         $ps = $connex->prepare($req);
-
         $ps->bindValue(':id_auteur', $id_auteur);
         $ps->execute();
 
@@ -38,7 +37,25 @@ function getOne($id_auteur)
 
 }
 
-function delete($data)
+function findAuthorByBook($isbn) {
+    global $connex;
+
+    $req ='SELECT a.* FROM auteur AS a JOIN ecrit AS e ON a.id_auteur = e.id_auteur WHERE e.isbn = :isbn';
+
+    try {
+        $ps = $connex->prepare($req);
+        $ps->bindValue(':isbn', $isbn);
+        $ps->execute();
+
+        $auteur = $ps->fetch();
+    }
+    catch (PDOException $e) {
+        die($e->getMessage());
+    }
+    return $auteur;
+}
+
+function deleteAuthor($data)
 {
 
     global $connex;
@@ -58,7 +75,7 @@ function delete($data)
     return true;
 }
 
-function update($data)
+function updateAuthor($data)
 {
 
     global $connex;
@@ -91,11 +108,11 @@ function update($data)
 
 // Ajouter fct getAuthorsForBook. Utilisation de jointure, pr lier les 2 tables. Fair idem dans le blog. Utilisation de jointure
 
-function add()
+function addAuthor($author)
 {
 
 
-    if (!getidAuteurCount($_POST['id_auteur'])) {
+    if (!getidAuteurCount($author['id_auteur'])) {
         global $connex;
 
         $req = 'INSERT INTO auteur VALUES (:id_auteur, :nom, :prenom, :date_naissance);';
@@ -105,10 +122,10 @@ function add()
         try {
             $ps = $connex->prepare($req);
 
-            $ps->bindValue(':id_auteur', $_POST['id_auteur']);
-            $ps->bindValue(':nom', $_POST['nom']);
-            $ps->bindValue(':prenom', $_POST['prenom']);
-            $ps->bindValue(':date_naissance', $_POST['date_naissance']);
+            $ps->bindValue(':id_auteur', $author['id_auteur']);
+            $ps->bindValue(':nom', $author['nom']);
+            $ps->bindValue(':prenom', $author['prenom']);
+            $ps->bindValue(':date_naissance', $author['date_naissance']);
             $ps->execute();
 
             /*$ps = $connex->prepare($req2);

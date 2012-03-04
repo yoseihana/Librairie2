@@ -6,13 +6,13 @@
             Titre:
         </label>
         <br/>
-        <input type="text" name="titre" value="<?php echo ($view['data']['livre']['titre']); ?>" />
+        <input type="text" name="titre" value="<?php echo ($view['data']['livre']['titre']); ?>"/>
         <br/>
         <label for="nombre_page">
             Nombre de page:
         </label>
         <br/>
-        <input type="text" name="nombre_page" value="<?php echo ($view['data']['livre']['nombre_page']); ?>" />
+        <input type="text" name="nombre_page" value="<?php echo ($view['data']['livre']['nombre_page']); ?>"/>
         <br/>
         <label for="date_parution">
             Date de parution:
@@ -20,12 +20,12 @@
         <br/>
         <select name="date_parution" id="date_parution">
             <?php for ($year = 1901; $year < 2155; $year++): ?>
-                <option <?php if ($year == $view['data']['livre']['date_parution']): ?> 
-                        selected="selected" 
-                    <?php endif; ?> 
-                    value="<?php echo $year; ?>">
-                        <?php echo $year; ?>
-                </option>
+            <option <?php if ($year == $view['data']['livre']['date_parution']): ?>
+                selected="selected"
+                <?php endif; ?>
+                value="<?php echo $year; ?>">
+                <?php echo $year; ?>
+            </option>
             <?php endfor; ?>
         </select>
         <br/>
@@ -34,39 +34,36 @@
         </label>
         <br/>
         <select name="genre" id="genre">
-            <option <?php if ('roman' == $view['data']['livre']['genre']): ?> 
-                    selected="selected" 
-                <?php endif; ?> 
-                value="roman">
-                Roman
-            </option>
-            <option <?php if ('policier' == $view['data']['livre']['genre']): ?> 
-                    selected="selected" 
-                <?php endif; ?> 
-                value="policier">
-                Policier
-            </option>
-            <option <?php if ('historique' == $view['data']['livre']['genre']): ?> 
-                    selected="selected" 
-                <?php endif; ?> 
-                value="historique">
-                Historique
-            </option>
-            <option <?php if ('théâtre' == $view['data']['livre']['genre']): ?> 
-                    selected="selected" 
-                <?php endif; ?> 
-                value="théâtre">
-                Théâtre
-            </option>
-            <option <?php if ('fantastique' == $view['data']['livre']['genre']): ?> 
-                    selected="selected" 
-                <?php endif; ?> 
-                value="fantastique">
-                Fantastique
-            </option>
-
+            <option <?php if ('roman' == $view['data']['livre']['genre']): ?>selected="selected"<?php endif; ?>value="roman">Roman</option>
+            <option <?php if ('policier' == $view['data']['livre']['genre']): ?>selected="selected"<?php endif; ?>value="policier">Policier</option>
+            <option <?php if ('historique' == $view['data']['livre']['genre']): ?>selected="selected"<?php endif; ?>value="historique">Historique</option>
+            <option <?php if ('théâtre' == $view['data']['livre']['genre']): ?>selected="selected"<?php endif; ?>value="théâtre">Théâtre</option>
+            <option <?php if ('fantastique' == $view['data']['livre']['genre']): ?>selected="selected"<?php endif; ?>value="fantastique">Fantastique</option>
         </select>
         <br/>
+        <label for="zone">
+            Zone :
+        </label>
+        <br/>
+        <select name="code_zone" id="zone">
+        <?php foreach($view['data']['zones'] as $zone): ?>
+            <option <?php if ($view['data']['livre']['code_zone'] == $zone['code_zone']):?>selected="selected"<?php endif;?> value="<?php echo $zone['code_zone']; ?>"><?php echo $zone['piece'].' - '.$zone['meuble']; ?></option>
+        <?php endforeach; ?>
+        </select>
+        <br/>
+        <label for="auteur">
+            Auteur :
+        </label>
+        <br/>
+        <select name="id_auteur" id="auteur">
+            <?php foreach($view['data']['auteurs'] as $auteur): ?>
+            <option <?php if ($view['data']['livre']['auteur']['id_auteur'] == $auteur['id_auteur']):?>selected="selected"<?php endif;?> value="<?php echo $auteur['id_auteur']; ?>"><?php echo $auteur['nom'].' '.$auteur['prenom']; ?></option>
+            <?php endforeach; ?>
+        </select>
+        <br/>
+
+
+
         <label for="image">
             Ajouter une image
         </label>
@@ -74,11 +71,12 @@
         <input type="file" name="file" id="image">
         <input type="hidden" name="MAX_FILE_SIZE" value="1024">
 
-        <input type="hidden" name="c" value="<?php echo ($validEntities['livre']); ?>" />
-        <input type="hidden" name="a" value="<?php echo ($validActions['modifier']); ?>" />
-        <input type="hidden" name="isbn" value="<?php echo ($view['data']['livre']['isbn']); ?>" />
+        <input type="hidden" name="c" value="<?php echo ($validControllers['livre']); ?>"/>
+        <input type="hidden" name="a" value="<?php echo ($validActions['modifier']); ?>"/>
+        <input type="hidden" name="isbn" value="<?php echo ($view['data']['livre']['isbn']); ?>"/>
+
         <div class="bouton">
-            <input type="submit" value="Modifier" />
+            <input type="submit" value="Modifier"/>
         </div>
     </fieldset>
 </form>
