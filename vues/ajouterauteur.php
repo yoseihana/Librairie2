@@ -1,5 +1,6 @@
 <?php if ($connected)
-{ ?>
+{
+    ?>
 <h1><?php echo $c . ' a ' . $a; ?></h1>
 <form action="<?php echo ($_SERVER['PHP_SELF']) ?>" method="post">
     <fieldset>
@@ -7,25 +8,25 @@
             Nom:
         </label>
         <br/>
-        <input type="text" name="nom" value="Nom"/>
+        <input type="text" name="nom" value="Nom" id="nom"/>
         <br/>
         <label for="prenom">
             Prénom:
         </label>
         <br/>
-        <input type="text" name="prenom" value="Prénom"/>
+        <input type="text" name="prenom" value="Prénom" id="prenom"/>
         <br/>
         <label for="id_auteur">
             ID auteur:
         </label>
         <br/>
-        <input type="text" name="id_auteur" value="4"/>
+        <input type="text" name="id_auteur" value="4" id="id_auteur"/>
         <br/>
         <label for="date_naissance">
             Date de naissance:
         </label>
         <br/>
-        <input type="text" name="date_naissance" value="YYYY/MM/JJ"/>
+        <input type="text" name="date_naissance" value="YYYY/MM/JJ" id="date_naissance"/>
 
 
         <input type="hidden" name="c" value="<?php echo ($validEntities['auteur']); ?>"/>

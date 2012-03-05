@@ -65,14 +65,13 @@
         </select>
         <br/>
 
-
         <label for="fichier">
             Ajouter une image
         </label>
         <br/>
+        <img src="./img/<?php echo $view['data']['livre']['image'] ?>" alt="image"/>
+        <br/>
         <input type="file" name="fichier" id="fichier"/>
-
-        <?//php echo'<img src="../img/' . $name . '" alt="image" />'; ?>
 
         <input type="hidden" name="photo" value="<?php echo$view['data'][1]['image'] ?>"/>
         <input type="hidden" name="c" value="<?php echo ($validControllers['livre']); ?>"/>
