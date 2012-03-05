@@ -1,3 +1,5 @@
+<?php if ($connected)
+{ ?>
 <h1><?php echo $c . ' a ' . $a; ?></h1>
 
 <form action="<?php echo ($_SERVER['PHP_SELF']) ?>" method="post">
@@ -29,3 +31,8 @@
         </div>
     </fieldset>
 </form>
+<?php
+} else
+{
+    echo '<p>Vous devez vous connecter pour acceder à cette page </p>';
+} ?>

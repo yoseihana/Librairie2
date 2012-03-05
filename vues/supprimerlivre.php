@@ -1,3 +1,5 @@
+<?php if ($connected)
+{ ?>
 <h1>
     <?php echo $c . ' a ' . $a; ?>
 </h1>
@@ -8,15 +10,22 @@
 <form action="<?php echo ($_SERVER['PHP_SELF']) ?>" method="POST">
     <fieldset>
         <h3>
-               Titre:
+            Titre:
         </h3>
+
         <p class="supprimer">"<?php echo ($view['data']['livre']['titre']); ?>"</p>
-        
-        <input type="hidden" name="c" value="<?php echo ($validEntities['livre']); ?>" />
-        <input type="hidden" name="a" value="<?php echo ($validActions['supprimer']); ?>" />
-        <input type="hidden" name="isbn" value="<?php echo ($view['data']['livre']['isbn']); ?>" />
+
+        <input type="hidden" name="c" value="<?php echo ($validEntities['livre']); ?>"/>
+        <input type="hidden" name="a" value="<?php echo ($validActions['supprimer']); ?>"/>
+        <input type="hidden" name="isbn" value="<?php echo ($view['data']['livre']['isbn']); ?>"/>
+
         <div class="bouton">
-            <input type="submit" value="Supprimer" />
+            <input type="submit" value="Supprimer"/>
         </div>
     </fieldset>
 </form>
+<?php
+} else
+{
+    echo '<p>Vous devez vous connecter pour acceder à cette page </p>';
+} ?>

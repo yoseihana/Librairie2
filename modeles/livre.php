@@ -2,7 +2,8 @@
 
 //Contient les fct pr travailler avec la BD de livre. Aller chercher dans la BD
 
-function getAllBooks() { // récupère une liste de livre
+function getAllBooks()
+{ // récupère une liste de livre
     global $connex; // permet de récupérer un var ds une fonction. On se conncet a la bdd
 
     $req = 'SELECT titre, isbn FROM livre ORDER BY titre';
@@ -22,7 +23,8 @@ function getAllBooks() { // récupère une liste de livre
     return $livres;
 }
 
-function findBookByIsbn($isbn) { // récupère un livre
+function findBookByIsbn($isbn)
+{ // récupère un livre
     global $connex;
 
     //on place soit le ? ou le nom de var qu'on veut ajouter. On peux tuilier aussi :isbn au lieu du ?. Ici avec : on prépare une requête et la donnée
@@ -45,33 +47,59 @@ function findBookByIsbn($isbn) { // récupère un livre
     return $livre;
 }
 
-function deleteBook($isbn) {
+function findBookByAuthor($id_auteur)
+{
+    global $connex;
+
+    $req = 'SELECT l.* FROM livre AS l JOIN ecrit AS e ON l.isbn = e.isbn WHERE e.id_auteur = :id_auteur';
+
+    try
+    {
+        $ps = $connex->prepare($req);
+        $ps->bindValue(':id_auteur', $id_auteur);
+        $ps->execute();
+
+        $livre = $ps->fetch();
+    }
+    catch (PDOException $e)
+    {
+        die($e->getMessage());
+    }
+    return $livre;
+}
+
+function deleteBook($isbn)
+{
     global $connex;
 
     $req = 'DELETE FROM livre WHERE isbn = :isbn';
 
-    try {
+    try
+    {
         $ps = $connex->prepare($req);
 
         $ps->bindValue(':isbn', $isbn);
 
         $ps->execute();
     }
-    catch (PDOException $e) {
+    catch (PDOException $e)
+    {
         die($e->getMessage());
     }
 
     return true;
 }
 
-function updateBook($data) {
+function updateBook($data)
+{
 
     global $connex;
 
     $req1 = 'UPDATE livre SET titre = :titre, nombre_page = :nombre_page, date_parution = :date_parution, genre = :genre WHERE isbn = :isbn';
     $req2 = 'UPDATE ecrit SET id_auteur = :id_auteur WHERE isbn = :isbn';
 
-    try {
+    try
+    {
         $connex->beginTransaction();
 
         $ps = $connex->prepare($req1);
@@ -89,7 +117,8 @@ function updateBook($data) {
 
         $connex->commit();
     }
-    catch (PDOException $e) {
+    catch (PDOException $e)
+    {
         $connex->rollBack();
         die($e->getMessage());
         //header('Location: index.php?c=error&a=e_database');
@@ -98,13 +127,15 @@ function updateBook($data) {
     return true;
 }
 
-function addBook($data) {
+function addBook($data)
+{
     global $connex;
 
     //on place soit le ? ou le nom de var qu'on veut ajouter. On peux tuilier aussi :isbn au lieu du ?. Ici avec : on prépare une requête et la donnée
     $req = 'INSERT INTO livre VALUES (:isbn, :titre, :date_parution, :nombre_page, :code_zone, :genre);';
 
-    try {
+    try
+    {
         $ps = $connex->prepare($req);
 
         $ps->bindValue(':isbn', $data['isbn']);
@@ -115,7 +146,8 @@ function addBook($data) {
         $ps->bindValue(':genre', $data['genre']);
         $ps->execute();
     }
-    catch (PDOException $e) {
+    catch (PDOException $e)
+    {
         die($e->getMessage());
         //header('Location: index.php?c=error&a=e_database');
     }
@@ -123,17 +155,20 @@ function addBook($data) {
     return true;
 }
 
-function countBookByIsbn($isbn) {
+function countBookByIsbn($isbn)
+{
     global $connex;
 
     $req = 'SELECT count(isbn) AS nb_isbn FROM livre WHERE isbn = :isbn';
 
-    try {
+    try
+    {
         $ps = $connex->prepare($req);
         $ps->bindValue(':isbn', $isbn);
         $ps->execute();
     }
-    catch (PDOException $e) {
+    catch (PDOException $e)
+    {
         die($e->getMessage());
         //header ('Location: index.php?c=error&a=e_database');
     }

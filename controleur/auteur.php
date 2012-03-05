@@ -1,152 +1,158 @@
 <?php
 
 include 'modeles/auteur.php'; // pr se connecter à la BdD
+include 'modeles/livre.php';
+include 'modeles/zone.php';
 // Produire les données à affichée et les données à utiliser. REgarde ce qu'on demande 
 
-function lister() 
-{// création de la $data et $html
-    global $a; // pr déclarer les variables qui sont en dehors de la fonction, elles sont globale
-    global $c;
+function lister()
+{ // création de la $data et $html
+    global $a, $c; // pr déclarer les variables qui sont en dehors de la fonction, elles sont globale
 
     $data['view_title'] = 'Liste des auteurs';
-    $data['auteurs']     = getAllAuthors(); // Utilisation d'une fct dans le modèle. Utilisation de $c dedans?
-    $html              = $a . $c . '.php';
+    $data['auteurs'] = getAllAuthors();
+    $html = $a . $c . '.php';
     return array('data' => $data, 'html' => $html);
 }
 
-function modifier() 
+function modifier()
 {
     global $a, $c, $validActions, $validEntities;
 
-    if (isset($_REQUEST['id_auteur'])) 
+    if (isset($_REQUEST['id_auteur']))
     { // vérifie si il y a bien qqch ds URL, tjs en GET
         $id_auteur = $_REQUEST['id_auteur'];
-        if (!_idAuteurExiste($id_auteur)) 
+        if (!_idAuteurExiste($id_auteur))
         {
             die('l\'id auteur fournit n\'existe pas dans la base de donnée!');
             //header('Location:index.php?c=error&a=e_404');
         }
     }
-    else 
+    else
     {
         die('vous devez fournir un id auteur pour voir le livre');
         //header('Location:index.php?c=error&a=e_404');
     }
 
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') 
+    if ($_SERVER['REQUEST_METHOD'] == 'POST')
     {
-        $champsAuteur['nom'] = $_POST['nom'];
-        $champsAuteur['prenom'] = $_POST['prenom'];
-        $champsAuteur['date_naissance'] = $_POST['date_naissance'];
-        $champsAuteur['id_auteur'] = $id_auteur;
-        
-        update($champsAuteur);
-        
-       header('Location:'.$_SERVER['PHP_SELF'].'?a='.$validActions['lister'].'&c='.$validEntities['auteur']/*.'&id_auteur='.$id_auteur*/); // donne la page index.php qui est par défaut
+        $champs['auteur']['nom'] = $_POST['nom'];
+        $champs['auteur']['prenom'] = $_POST['prenom'];
+        $champs['auteur']['date_naissance'] = $_POST['date_naissance'];
+        $champs['auteur']['id_auteur'] = $id_auteur;
+
+        updateAuthor($champs);
+
+        header('Location:' . $_SERVER['PHP_SELF'] . '?a=' . $validActions['lister'] . '&c=' . $validEntities['auteur'] /*.'&id_auteur='.$id_auteur*/); // donne la page index.php qui est par défaut
     }
-    elseif ($_SERVER['REQUEST_METHOD'] == 'GET') 
+    elseif ($_SERVER['REQUEST_METHOD'] == 'GET')
     {
-        
+
         $data['auteur'] = getOne($id_auteur);
         $data['view_title'] = 'Modification de l\'auteur: ' . $data['auteur']['nom'];
         $html = $a . $c . '.php';
-        
+
         return array('data' => $data, 'html' => $html); // returne
     }
 
-    
+
 }
 
-function ajouter() 
+function ajouter()
 {
     global $a, $c, $validActions, $validEntities;
 
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') 
+    if ($_SERVER['REQUEST_METHOD'] == 'POST')
     {
-        
-      add();
-        
-       header('Location:'.$_SERVER['PHP_SELF'].'?a=lister&c=auteur'); // donne la page index.php qui est par défaut
+
+        add();
+
+        header('Location:' . $_SERVER['PHP_SELF'] . '?a=lister&c=auteur'); // donne la page index.php qui est par défaut
     }
-    elseif ($_SERVER['REQUEST_METHOD'] == 'GET') 
+    elseif ($_SERVER['REQUEST_METHOD'] == 'GET')
     {
-        
-       
+
+
         $data['view_title'] = 'Ajout de\'un auteur: ';
-        $html = $a . $c .'.php';
-        
+        $html = $a . $c . '.php';
+
         return array('data' => $data, 'html' => $html); // returne
     }
 }
 
-function supprimer() 
+function supprimer()
 {
     global $a, $c, $validActions, $validEntities;
 
-    if (isset($_REQUEST['id_auteur'])) 
+    if (isset($_REQUEST['id_auteur']))
     {
         $id_auteur = $_REQUEST['id_auteur'];
-        if (!_idAuteurExiste($id_auteur)) 
+        if (!_idAuteurExiste($id_auteur))
         {
             header('Location:index.php?c=error&a=e_404');
         }
     }
-    else 
+    else
     {
         header('Location:index.php?c=error&a=e_404');
     }
 
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') 
+    if ($_SERVER['REQUEST_METHOD'] == 'POST')
     {
 
-      delete($id_auteur);
-        
-       header('Location:'.$_SERVER['PHP_SELF'].'?a='.$validActions['lister'].'&c='.$validEntities['auteur'].'&id_auteur='.$id_auteur ); // donne la page index.php qui est par défaut
+        delete($id_auteur);
+
+        header('Location:' . $_SERVER['PHP_SELF'] . '?a=' . $validActions['lister'] . '&c=' . $validEntities['auteur'] . '&id_auteur=' . $id_auteur); // donne la page index.php qui est par défaut
     }
-    elseif ($_SERVER['REQUEST_METHOD'] == 'GET') 
+    elseif ($_SERVER['REQUEST_METHOD'] == 'GET')
     {
-        
+
         $data['auteur'] = getOne($id_auteur);
         $data['view_title'] = 'Supression de l\'auteur: ' . $data['auteur']['nom'];
         $html = $a . $c . '.php';
-        
+
         return array('data' => $data, 'html' => $html); // returne
     }
 
-    
+
 }
 
-function voir() { // récupérer 1x les informations d'1 seul livre
+function voir()
+{ // récupérer 1x les informations d'1 seul livre
     global $a, $c;
 
-    if (isset($_GET['id_auteur'])) { // vérifie si il y a bien qqch ds URL, tjs en GET
-        
-        $id_auteur = $_GET['id_auteur'];
-        
-        if (!_idAuteurExiste($id_auteur)) {
-            die('l\'id auteur fournit n\'existe pas dans la base de donnée!');
-            //header('Location:index.php?c=error&a=e_404');
-        }
-    }
-    else {
-        die('vous devez fournir un id auteur pour voir le livre');
-        //header('Location:index.php?c=error&a=e_404');
-    }
+    $id_auteur = _getIdauteurFromRequest();
+    _testIdAuteur($id_auteur);
 
-    $data['auteurs']     = getAllAuthors();
-    $data['auteur']      = getOne($id_auteur);
-    $data['view_title'] = 'Fiche de l\'auteur: ' . $data['auteur']['nom'];
-    $html               = $a . $c . '.php';
+    $auteur = findAuthorById($id_auteur);
+
+    $data['auteurs'] = getAllAuthors();
+    $data['auteur'] = $auteur; // auteur à voir
+    $data['view_title'] = 'Fiche de l\'auteur: ' . $auteur['nom'];
+    $data['auteur']['livre'] = findBookByAuthor($auteur['id_auteur']);
+    $html = $a . $c . '.php';
 
     return array('data' => $data, 'html' => $html);
 }
 
-function _idAuteurExiste($id_auteur) 
-{ // uniquement ds se fichier, commence par un _ car utiliser uniquement ici
-    if (!getidAuteurCount($id_auteur)) {
-        return false;
+function _testIdAuteur($id_auteur)
+{
+    if (countAuthorByIdautor($id_auteur) < 1)
+    {
+        die ('l\'id auteur n\'est pas dans la base de donnée');
+        //header('Location:index.php?c=error&a=e_404');
     }
-    else {
-        return true;
+}
+
+function _getIdauteurFromRequest()
+{
+    global $a;
+
+    if (!isset($_GET['id_auteur']))
+    {
+        die('vous devez fournir un id auteur pour ' . $a . ' un livre');
+        //header('Location:index.php?c=error&a=e_404');
     }
+
+    return $_GET['id_auteur'];
 }

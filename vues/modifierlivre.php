@@ -1,3 +1,5 @@
+<?php if ($connected)
+{ ?>
 <h1><?php echo $c . ' a ' . $a; ?></h1>
 
 <form action="<?php echo ($_SERVER['PHP_SELF']) ?>" method="post" enctype="multipart/form-data">
@@ -46,9 +48,9 @@
         </label>
         <br/>
         <select name="code_zone" id="zone">
-        <?php foreach($view['data']['zones'] as $zone): ?>
-            <option <?php if ($view['data']['livre']['code_zone'] == $zone['code_zone']):?>selected="selected"<?php endif;?> value="<?php echo $zone['code_zone']; ?>"><?php echo $zone['piece'].' - '.$zone['meuble']; ?></option>
-        <?php endforeach; ?>
+            <?php foreach ($view['data']['zones'] as $zone): ?>
+            <option <?php if ($view['data']['livre']['code_zone'] == $zone['code_zone']): ?>selected="selected"<?php endif;?> value="<?php echo $zone['code_zone']; ?>"><?php echo $zone['piece'] . ' - ' . $zone['meuble']; ?></option>
+            <?php endforeach; ?>
         </select>
         <br/>
         <label for="auteur">
@@ -56,12 +58,11 @@
         </label>
         <br/>
         <select name="id_auteur" id="auteur">
-            <?php foreach($view['data']['auteurs'] as $auteur): ?>
-            <option <?php if ($view['data']['livre']['auteur']['id_auteur'] == $auteur['id_auteur']):?>selected="selected"<?php endif;?> value="<?php echo $auteur['id_auteur']; ?>"><?php echo $auteur['nom'].' '.$auteur['prenom']; ?></option>
+            <?php foreach ($view['data']['auteurs'] as $auteur): ?>
+            <option <?php if ($view['data']['livre']['auteur']['id_auteur'] == $auteur['id_auteur']): ?>selected="selected"<?php endif;?> value="<?php echo $auteur['id_auteur']; ?>"><?php echo $auteur['nom'] . ' ' . $auteur['prenom']; ?></option>
             <?php endforeach; ?>
         </select>
         <br/>
-
 
 
         <label for="image">
@@ -82,3 +83,8 @@
         </div>
     </fieldset>
 </form>
+<?php
+} else
+{
+    echo '<p>Vous devez vous connecter pour acceder à cette page </p>';
+} ?>

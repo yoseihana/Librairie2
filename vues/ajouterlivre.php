@@ -1,3 +1,5 @@
+<?php if ($connected)
+{ ?>
 <h1><?php echo $c . ' a ' . $a; ?></h1>
 <form action="<?php echo ($_SERVER['PHP_SELF']) ?>" method="post" enctype="multipart/form-data">
     <fieldset>
@@ -82,3 +84,8 @@
 </form>
 
 <!-- Souci dans l'ajout on ne fait pas avec l'isbn -->
+<?php
+} else
+{
+    echo '<p>Vous devez vous connecter pour acceder à cette page </p>';
+} ?>
