@@ -92,7 +92,6 @@ function deleteBook($isbn)
 
 function updateBook($data)
 {
-
     global $connex;
 
     $req1 = 'UPDATE livre SET titre = :titre, nombre_page = :nombre_page, date_parution = :date_parution, genre = :genre WHERE isbn = :isbn';

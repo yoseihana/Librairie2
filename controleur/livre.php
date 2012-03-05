@@ -4,7 +4,8 @@ include 'modeles/livre.php';
 include 'modeles/auteur.php';
 include 'modeles/zone.php';
 
-function lister() {
+function lister()
+{
     global $a, $c;
 
     $data['view_title'] = 'Liste des livres';
@@ -14,7 +15,8 @@ function lister() {
     return array('data' => $data, 'html' => $html);
 }
 
-function modifier() {
+function modifier()
+{
     global $a, $c, $validActions, $validEntities;
 
     // Récupère l'isbn depuis $_REQUEST avec gestion d'erreurs
@@ -25,7 +27,8 @@ function modifier() {
 
     // POST - modifier le livre en DB
     // GET - données pour le formulaire
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST')
+    {
         $champs['livre']['isbn'] = $isbn;
         $champs['livre']['titre'] = $_POST['titre'];
         $champs['livre']['nombre_page'] = $_POST['nombre_page'];
@@ -51,16 +54,18 @@ function modifier() {
         $data['zones'] = getAllZones(); // La liste des zones
 
         $html = $a . $c . '.php';
-        return array('data' => $data, 'html' => $html); // returne
+        return array('data' => $data, 'html' => $html);
     }
 }
 
-function ajouter() {
+function ajouter()
+{
     global $a, $c;
 
     // POST - modifier le livre en DB
     // GET - données pour le formulaire
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST')
+    {
         $champs['livre']['isbn'] = $_POST['isbn']; // ou _getIsbnFromRequest()
         $champs['livre']['titre'] = $_POST['titre'];
         $champs['livre']['nombre_page'] = $_POST['nombre_page'];
@@ -86,7 +91,8 @@ function ajouter() {
     }
 }
 
-function supprimer() {
+function supprimer()
+{
     global $a, $c, $validActions, $validEntities;
 
     $isbn = _getIsbnFromRequest();
@@ -94,7 +100,8 @@ function supprimer() {
 
     // POST - modifier le livre en DB
     // GET - données pour le formulaire
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST')
+    {
         deleteBook($isbn);
 
         // Redirection
@@ -113,7 +120,8 @@ function supprimer() {
 
 }
 
-function voir() { // récupérer 1x les informations d'1 seul livre
+function voir()
+{ // récupérer 1x les informations d'1 seul livre
     global $a, $c;
 
     $isbn = _getIsbnFromRequest();
@@ -132,10 +140,12 @@ function voir() { // récupérer 1x les informations d'1 seul livre
 
 }
 
-function _getIsbnFromRequest() {
+function _getIsbnFromRequest()
+{
     global $a;
 
-    if (!isset($_REQUEST['isbn'])) {
+    if (!isset($_REQUEST['isbn']))
+    {
         die('vous devez fournir un isbn pour ' . $a . ' un livre');
         //header('Location:index.php?c=error&a=e_404');
     }
@@ -143,14 +153,17 @@ function _getIsbnFromRequest() {
     return $_REQUEST['isbn'];
 }
 
-function _testIsbn($isbn) {
-    if (countBookByIsbn($isbn) < 1) {
+function _testIsbn($isbn)
+{
+    if (countBookByIsbn($isbn) < 1)
+    {
         die('l\'isbn fournit n\'existe pas dans la base de donnée!');
         //header('Location:index.php?c=error&a=e_404');
     }
 }
 
-function valideExtension() {
+function valideExtension()
+{
     $valideExtension = array('jpg', 'gif', 'jpeg', 'png');
 
     var_dump($_FILES);

@@ -17,22 +17,11 @@ function lister()
 
 function modifier()
 {
-    global $a, $c, $validActions, $validEntities;
+    global $a, $c;
 
-    if (isset($_REQUEST['id_auteur']))
-    { // vérifie si il y a bien qqch ds URL, tjs en GET
-        $id_auteur = $_REQUEST['id_auteur'];
-        if (!_idAuteurExiste($id_auteur))
-        {
-            die('l\'id auteur fournit n\'existe pas dans la base de donnée!');
-            //header('Location:index.php?c=error&a=e_404');
-        }
-    }
-    else
-    {
-        die('vous devez fournir un id auteur pour voir le livre');
-        //header('Location:index.php?c=error&a=e_404');
-    }
+    $id_auteur = _getIdauteurFromRequest();
+    _testIdAuteur($id_auteur);
+
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST')
     {
@@ -43,19 +32,19 @@ function modifier()
 
         updateAuthor($champs);
 
-        header('Location:' . $_SERVER['PHP_SELF'] . '?a=' . $validActions['lister'] . '&c=' . $validEntities['auteur'] /*.'&id_auteur='.$id_auteur*/); // donne la page index.php qui est par défaut
+        header('Location:' . voirAuteurUrl($id_auteur)); // donne la page index.php qui est par défaut
     }
     elseif ($_SERVER['REQUEST_METHOD'] == 'GET')
     {
 
-        $data['auteur'] = getOne($id_auteur);
-        $data['view_title'] = 'Modification de l\'auteur: ' . $data['auteur']['nom'];
+        $auteur = findAuthorById($id_auteur);
+
+        $data['view_title'] = 'Modification de l\auteur: ' . $auteur['nom'];
+        $data['auteur'] = $auteur; // Le livre à modifier
         $html = $a . $c . '.php';
 
-        return array('data' => $data, 'html' => $html); // returne
+        return array('data' => $data, 'html' => $html);
     }
-
-
 }
 
 function ajouter()
@@ -113,8 +102,6 @@ function supprimer()
 
         return array('data' => $data, 'html' => $html); // returne
     }
-
-
 }
 
 function voir()

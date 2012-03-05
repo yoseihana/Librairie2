@@ -6,7 +6,7 @@
     <?php foreach ($view['data']['auteurs'] as $auteur): ?> <!-- Conmpte si il y a au moins 1 livre -->
     <li>
         <h2><a
-            href="<?php echo voirAuteurUrl($auteur['isbn']); ?>"><?php echo $auteur['nom'] . ' ' . $auteur['prenom']; ?></a>
+            href="<?php echo voirAuteurUrl($auteur['id_auteur']); ?>"><?php echo $auteur['nom'] . ' ' . $auteur['prenom']; ?></a>
         </h2>
         <br/>
         <?php if ($connected): ?>
@@ -40,11 +40,8 @@
     <h3>
         Livre(s) de cet auteur
     </h3>
-    <select name="isbn" id="isbn">
-        <?php foreach ($view['data']['livres'] as $livre): ?>
-        <option value="<?php echo $livre['isbn']; ?>"><?php echo $livre['titre']; ?></option>
-        <?php endforeach; ?>
-    </select>
+
+    <p><?php echo $view['data']['auteur']['livre']['titre']; ?></p>
 </div>
 <div class="ajouter">
 <p><?php if ($connected): ?> <p><a

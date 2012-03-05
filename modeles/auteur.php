@@ -98,8 +98,8 @@ function updateAuthor($data)
         $ps->bindValue(':id_auteur', $data['id_auteur']);
         $ps->bindValue(':nom', $data['nom']);
         $ps->bindValue(':prenom', $data['prenom']);
-
         $ps->bindValue(':date_naissance', $data['date_naissance']);
+
         $ps->execute();
     }
     catch (PDOException $e)
