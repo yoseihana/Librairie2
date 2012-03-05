@@ -47,7 +47,7 @@ function findBookByIsbn($isbn)
     return $livre;
 }
 
-function findBookByAuthor($id_auteur)
+function findBooksByAuthor($id_auteur)
 {
     global $connex;
 
@@ -68,11 +68,11 @@ function findBookByAuthor($id_auteur)
     return $livre;
 }
 
-function findBookByZone($code_zone)
+function findBooksByZone($code_zone)
 {
     global $connex;
 
-    $req = 'SELECT l.*  FROM livre AS l JOIN zone AS z ON l.code_zone = z.code_zone WHERE z.code_zone = :code_zone';
+    $req = 'SELECT * FROM livre AS l WHERE l.code_zone = :code_zone';
 
     try
     {
@@ -152,23 +152,32 @@ function addBook($data)
 {
     global $connex;
 
-    //on place soit le ? ou le nom de var qu'on veut ajouter. On peux tuilier aussi :isbn au lieu du ?. Ici avec : on prépare une requête et la donnée
-    $req = 'INSERT INTO livre VALUES (:isbn, :titre, :date_parution, :nombre_page, :code_zone, :genre);';
+    $req1 = 'INSERT INTO livre VALUES (:isbn, :titre, :date_parution, :nombre_page, :code_zone, :genre)';
+    $req2 = 'INSERT INTO ecrit VALUES (:isbn, :id_auteur)';
 
     try
     {
-        $ps = $connex->prepare($req);
+        $connex->beginTransaction();
 
-        $ps->bindValue(':isbn', $data['isbn']);
-        $ps->bindValue(':titre', $data['titre']);
-        $ps->bindValue(':nombre_page', $data['nombre_page']);
-        $ps->bindValue(':date_parution', $data['date_parution']);
-        $ps->bindValue(':code_zone', $data['code_zone']);
-        $ps->bindValue(':genre', $data['genre']);
+        $ps = $connex->prepare($req1);
+        $ps->bindValue(':isbn', $data['livre']['isbn']);
+        $ps->bindValue(':titre', $data['livre']['titre']);
+        $ps->bindValue(':nombre_page', $data['livre']['nombre_page']);
+        $ps->bindValue(':date_parution', $data['livre']['date_parution']);
+        $ps->bindValue(':code_zone', $data['livre']['code_zone']);
+        $ps->bindValue(':genre', $data['livre']['genre']);
         $ps->execute();
+
+        $ps = $connex->prepare($req2);
+        $ps->bindValue(':isbn', $data['livre']['isbn']);
+        $ps->bindValue(':id_auteur', $data['auteur']['id_auteur']);
+        $ps->execute();
+
+        $connex->commit();
     }
     catch (PDOException $e)
     {
+        $connex->rollBack();
         die($e->getMessage());
         //header('Location: index.php?c=error&a=e_database');
     }

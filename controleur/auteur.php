@@ -116,7 +116,7 @@ function voir()
     $data['auteurs'] = getAllAuthors();
     $data['auteur'] = $auteur; // auteur à voir
     $data['view_title'] = 'Fiche de l\'auteur: ' . $auteur['nom'];
-    $data['auteur']['livre'] = findBookByAuthor($auteur['id_auteur']);
+    $data['auteur']['livre'] = findBooksByAuthor($auteur['id_auteur']);
     $html = $a . $c . '.php';
 
     return array('data' => $data, 'html' => $html);

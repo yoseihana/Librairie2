@@ -66,7 +66,7 @@ function ajouter()
     // GET - données pour le formulaire
     if ($_SERVER['REQUEST_METHOD'] == 'POST')
     {
-        $champs['livre']['isbn'] = $_POST['isbn']; // ou _getIsbnFromRequest()
+        $champs['livre']['isbn'] = $_POST['isbn'];
         $champs['livre']['titre'] = $_POST['titre'];
         $champs['livre']['nombre_page'] = $_POST['nombre_page'];
         $champs['livre']['date_parution'] = $_POST['date_parution'];
@@ -78,7 +78,7 @@ function ajouter()
         addBook($champs);
 
         // Redirection
-        header('Location:' . $_SERVER['PHP_SELF']); // donne la page index.php qui est par défaut
+        header('Location:' . voirLivreUrl($champs['livre']['isbn'])); // donne la page index.php qui est par défaut
     }
     elseif ($_SERVER['REQUEST_METHOD'] == 'GET')
     {
@@ -105,7 +105,7 @@ function supprimer()
         deleteBook($isbn);
 
         // Redirection
-        header('Location:' . $_SERVER['PHP_SELF']); // donne la page index.php qui est par défaut
+        header('Location:' . listerLivreUrl()); // donne la page index.php qui est par défaut
     }
     elseif ($_SERVER['REQUEST_METHOD'] == 'GET')
     {
