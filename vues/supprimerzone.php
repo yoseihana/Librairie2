@@ -1,5 +1,6 @@
 <?php if ($connected)
-{ ?>
+{
+    ?>
 <h1>
     <?php echo $c . ' a ' . $a; ?>
 </h1>
@@ -15,7 +16,7 @@
 
         <p> <?php echo ($view['data']['zone']['piece'] . ' - ' . $view['data']['zone']['meuble']); ?> </p>
 
-        <input type="hidden" name="c" value="<?php echo ($validEntities['zone']); ?>"/>
+        <input type="hidden" name="c" value="<?php echo ($validControllers['zone']); ?>"/>
         <input type="hidden" name="a" value="<?php echo ($validActions['supprimer']); ?>"/>
         <input type="hidden" name="code_zone" value="<?php echo ($view['data']['zone']['code_zone']); ?>"/>
 

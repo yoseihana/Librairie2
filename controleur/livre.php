@@ -17,7 +17,7 @@ function lister()
 
 function modifier()
 {
-    global $a, $c, $validActions, $validEntities;
+    global $a, $c;
 
     // Récupère l'isbn depuis $_REQUEST avec gestion d'erreurs
     $isbn = _getIsbnFromRequest();
@@ -46,7 +46,7 @@ function modifier()
     }
     elseif ($_SERVER['REQUEST_METHOD'] == 'GET')
     {
-        $livre = findBookByIsbn($isbn);
+        $livre = findBooksByIsbn($isbn);
 
         $data['view_title'] = 'Modification du livre: ' . $livre['titre'];
         $data['livre'] = $livre; // Le livre à modifier
@@ -95,7 +95,7 @@ function ajouter()
 
 function supprimer()
 {
-    global $a, $c, $validActions, $validEntities;
+    global $a, $c;
 
     $isbn = _getIsbnFromRequest();
     _testIsbn($isbn);
@@ -111,7 +111,7 @@ function supprimer()
     }
     elseif ($_SERVER['REQUEST_METHOD'] == 'GET')
     {
-        $livre = findBookByIsbn($isbn);
+        $livre = findBooksByIsbn($isbn);
 
         $data['view_title'] = 'Supression du livre: ' . $livre['titre'];
         $data['livre'] = $livre;
@@ -129,7 +129,7 @@ function voir()
     $isbn = _getIsbnFromRequest();
     _testIsbn($isbn);
 
-    $livre = findBookByIsbn($isbn);
+    $livre = findBooksByIsbn($isbn);
 
     $data['view_title'] = 'Fiche du livre: ' . $livre['titre'];
     $data['livres'] = getAllBooks();

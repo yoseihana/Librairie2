@@ -1,5 +1,6 @@
 <?php if ($connected)
-{ ?>
+{
+    ?>
 <h1>
     <?php echo $c . ' a ' . $a; ?>
 </h1>
@@ -15,7 +16,7 @@
 
         <p class="supprimeru"> <?php echo ($view['data']['auteur']['prenom'] . ' ' . $view['data']['auteur']['nom']); ?> </p>
 
-        <input type="hidden" name="c" value="<?php echo ($validEntities['auteur']); ?>"/>
+        <input type="hidden" name="c" value="<?php echo ($validControllers['auteur']); ?>"/>
         <input type="hidden" name="a" value="<?php echo ($validActions['supprimer']); ?>"/>
         <input type="hidden" name="id_auteur" value="<?php echo ($view['data']['auteur']['id_auteur']); ?>"/>
 

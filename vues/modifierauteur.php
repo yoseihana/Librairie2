@@ -23,7 +23,7 @@
         <br/>
         <input type="text" name="date_naissance" id="date_naissance" value="<?php echo ($view['data']['auteur']['date_naissance']); ?>"/>
 
-        <input type="hidden" name="c" value="<?php echo ($validEntities['auteur']); ?>"/>
+        <input type="hidden" name="c" value="<?php echo ($validControllers['auteur']); ?>"/>
         <input type="hidden" name="a" value="<?php echo ($validActions['modifier']); ?>"/>
         <input type="hidden" name="id_auteur" value="<?php echo ($view['data']['auteur']['id_auteur']); ?>"/>
 

@@ -24,7 +24,7 @@ function getAllBooks()
     return $livres;
 }
 
-function findBookByIsbn($isbn)
+function findBooksByIsbn($isbn)
 { // récupère un livre
     global $connex;
 
@@ -48,7 +48,7 @@ function findBookByIsbn($isbn)
     return $livre;
 }
 
-function findBookByAuthor($id_auteur)
+function findBooksByAuthor($id_auteur)
 {
     global $connex;
 
@@ -69,11 +69,11 @@ function findBookByAuthor($id_auteur)
     return $livre;
 }
 
-function findBookByZone($code_zone)
+function findBooksByZone($code_zone)
 {
     global $connex;
 
-    $req = 'SELECT l.*  FROM livre AS l JOIN zone AS z ON l.code_zone = z.code_zone WHERE z.code_zone = :code_zone';
+    $req = 'SELECT l.*  FROM livre AS l WHERE l.code_zone = :code_zone';
 
     try
     {
@@ -196,6 +196,8 @@ function addBook($data)
 
     return true;
 }
+
+//récupérer le dernier id via pdo. Avec la valeur, s'en servire pr afficher la fiche de la zone et l'auteur
 
 function countBookByIsbn($isbn)
 {

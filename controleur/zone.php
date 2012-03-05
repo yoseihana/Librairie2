@@ -17,7 +17,7 @@ function lister()
 
 function modifier()
 {
-    global $a, $c, $validActions, $validEntities;
+    global $a, $c;
 
     // Récupère l'isbn depuis $_REQUEST avec gestion d'erreurs
     $code_zone = _getCodezoneFromRequest();
@@ -33,7 +33,7 @@ function modifier()
         $champs['zone']['meuble'] = $_POST['meuble'];
         $champs['zone']['piece'] = $_POST['piece'];
 
-        updateBook($champs);
+        updateZone($champs);
 
         header('Location:' . voirZoneUrl($code_zone)); // donne la page index.php qui est par défaut
     }
@@ -51,60 +51,61 @@ function modifier()
 
 function ajouter()
 {
-    global $a, $c, $validActions, $validEntities;
+    global $a, $c;
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST')
     {
+        $code_zone = $_POST['code_zone'];
 
-        add();
+        $champs['zone']['code_zone'] = $code_zone;
+        $champs['zone']['piece'] = $_POST['piece'];
+        $champs['zone']['meuble'] = $_POST['meuble'];
 
-        header('Location:' . $_SERVER['PHP_SELF'] . '?a=lister&c=zone'); // donne la page index.php qui est par défaut
+        if (countZoneByCode($code_zone) > 0)
+        {
+            $champs['view_title'] = 'Ajout de la zone: ';
+            $champs['erreur'] = 'code_zone "' . $code_zone . '" existe déjà';
+
+            $html = $a . $c . '.php';
+            return array('data' => $champs, 'html' => $html);
+        }
+
+        addZone($champs);
+
+        header('Location:' . listerZoneUrl()); // donne la page index.php qui est par défaut
     }
     elseif ($_SERVER['REQUEST_METHOD'] == 'GET')
     {
-
-
         $data['view_title'] = 'Ajout de la zone: ';
-        $html = $a . $c . '.php';
 
+        $html = $a . $c . '.php';
         return array('data' => $data, 'html' => $html); // returne
     }
 }
 
 function supprimer()
 {
-    global $a, $c, $validActions, $validEntities;
+    global $a, $c;
 
-    if (isset($_REQUEST['code_zone']))
-    {
-        $code_zone = $_REQUEST['code_zone'];
-        if (!_codeZoneExiste($code_zone))
-        {
-            header('Location:index.php?c=error&a=e_404');
-        }
-    }
-    else
-    {
-        header('Location:index.php?c=error&a=e_404');
-    }
+    $code_zone = _getCodezoneFromRequest();
+    _testCodezone($code_zone);
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST')
     {
+        deleteZone($code_zone);
 
-        delete($code_zone);
-
-        header('Location:' . $_SERVER['PHP_SELF'] . '?a=' . $validActions['lister'] . '&c=' . $validEntities['zone'] . '&code_zone=' . $code_zone);
+        header('Location:' . listerZoneUrl());
     }
     elseif ($_SERVER['REQUEST_METHOD'] == 'GET')
     {
+        $zone = findZoneByCode($code_zone);
 
-        $data['zone'] = getOne($code_zone);
-        $data['view_title'] = 'Supression da zone: ' . $data['zone']['piece'] . ' - ' . $data['zone']['meuble'];
+        $data['view_title'] = 'Supression da zone: ' . $zone['piece'] . ' - ' . $zone['meuble'];
+        $data['zone'] = $zone;
+
         $html = $a . $c . '.php';
-
         return array('data' => $data, 'html' => $html); // returne
     }
-
 
 }
 
@@ -141,7 +142,7 @@ function _getCodezoneFromRequest()
 
 function _testCodezone($code_zone)
 {
-    if (getCodeZoneCount($code_zone) < 1)
+    if (countZoneByCode($code_zone) < 1)
     {
         die('le code zone fournit n\'existe pas dans la base de donnée!');
         //header('Location:index.php?c=error&a=e_404');

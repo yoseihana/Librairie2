@@ -16,12 +16,6 @@
         <br/>
         <input type="text" name="prenom" value="Prénom" id="prenom"/>
         <br/>
-        <label for="id_auteur">
-            ID auteur:
-        </label>
-        <br/>
-        <input type="text" name="id_auteur" value="4" id="id_auteur"/>
-        <br/>
         <label for="date_naissance">
             Date de naissance:
         </label>
@@ -29,7 +23,7 @@
         <input type="text" name="date_naissance" value="YYYY/MM/JJ" id="date_naissance"/>
 
 
-        <input type="hidden" name="c" value="<?php echo ($validEntities['auteur']); ?>"/>
+        <input type="hidden" name="c" value="<?php echo ($validControllers['auteur']); ?>"/>
         <input type="hidden" name="a" value="<?php echo ($validActions['ajouter']); ?>"/>
 
         <div class="bouton">

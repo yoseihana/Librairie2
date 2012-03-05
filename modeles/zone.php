@@ -54,9 +54,7 @@ function deleteZone($code_zone)
     try
     {
         $ps = $connex->prepare($req);
-
         $ps->bindValue(':code_zone', $code_zone);
-
         $ps->execute();
     }
     catch (PDOException $e)
@@ -78,9 +76,9 @@ function updateZone($data)
     {
         $ps = $connex->prepare($req);
 
-        $ps->bindValue(':code_zone', $data['code_zone']);
-        $ps->bindValue(':piece', $data['piece']);
-        $ps->bindValue(':meuble', $data['meuble']);
+        $ps->bindValue(':code_zone', $data['zone']['code_zone']);
+        $ps->bindValue(':piece', $data['zone']['piece']);
+        $ps->bindValue(':meuble', $data['zone']['meuble']);
 
         $ps->execute();
     }
@@ -95,45 +93,28 @@ function updateZone($data)
 
 function addZone()
 {
+    global $connex;
 
+    $req = 'INSERT INTO zone VALUES (:code_zone, :piece, :meuble);'; //on place soit le ? ou le nom de var qu'on veut ajouter. On peux tuilier aussi :isbn au lieu du ?. Ici avec : on prépare une requête et la donnée
 
-    if (!getCodeZoneCount($_POST['code_zone']))
+    try
     {
-        global $connex;
+        $ps = $connex->prepare($req);
 
-        $req = 'INSERT INTO zone VALUES (:code_zone, :piece, :meuble);'; //on place soit le ? ou le nom de var qu'on veut ajouter. On peux tuilier aussi :isbn au lieu du ?. Ici avec : on prépare une requête et la donnée
-        // $req2 = 'INSERT INTO ecrit VALUES (:isbn, :id_auteur)';
+        $ps->bindValue(':code_zone', $_POST['code_zone']);
+        $ps->bindValue(':piece', $_POST['piece']);
+        $ps->bindValue(':meuble', $_POST['meuble']);
+        $ps->execute();
 
-
-        try
-        {
-            $ps = $connex->prepare($req);
-
-            $ps->bindValue(':code_zone', $_POST['code_zone']);
-            $ps->bindValue(':piece', $_POST['piece']);
-            $ps->bindValue(':meuble', $_POST['meuble']);
-            $ps->execute();
-
-            /*$ps = $connex->prepare($req2);
-            $ps->bindValue(':isbn', $_POST['isbn']);
-            $ps->bindValue(':id_auteur', $_POST['id_auteur']);
-            $ps->execute();*/
-        }
-        catch (PDOException $e)
-        {
-            die($e->getMessage());
-            //header('Location: index.php?c=error&a=e_database');
-        }
-
-        return true;
     }
-    else
+    catch (PDOException $e)
     {
-        return false;
+        die($e->getMessage());
+        //header('Location: index.php?c=error&a=e_database');
     }
 }
 
-function getCodeZoneCount($code_zone)
+function countZoneByCode($code_zone)
 {
     global $connex;
     $req = 'SELECT count(code_zone) AS nb_code_zone FROM zone WHERE code_zone = :code_zone';

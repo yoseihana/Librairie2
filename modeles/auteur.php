@@ -90,30 +90,21 @@ function updateAuthor($data)
     global $connex;
 
     $req1 = 'UPDATE auteur SET nom = :nom, prenom = :prenom, date_naissance = :date_naissance WHERE id_auteur = :id_auteur';
-    $req2 = 'UPDATE ecrit SET id_auteur = :id_auteur WHERE isbn = :isbn';
 
     try
     {
-        $connex->beginTransaction();
 
         $ps = $connex->prepare($req1);
 
-        $ps->bindValue(':id_auteur', $data['id_auteur']);
-        $ps->bindValue(':nom', $data['nom']);
-        $ps->bindValue(':prenom', $data['prenom']);
-        $ps->bindValue(':date_naissance', $data['date_naissance']);
-        $ps->execute();
-
-        $ps = $connex->prepare($req2);
-        $ps->bindValue(':isbn', $data['livre']['isbn']);
         $ps->bindValue(':id_auteur', $data['auteur']['id_auteur']);
+        $ps->bindValue(':nom', $data['auteur']['nom']);
+        $ps->bindValue(':prenom', $data['auteur']['prenom']);
+        $ps->bindValue(':date_naissance', $data['auteur']['date_naissance']);
         $ps->execute();
 
-        $connex->commit();
     }
     catch (PDOException $e)
     {
-        $connex->rollBack();
         die($e->getMessage());
         //header('Location: index.php?c=error&a=e_database');
     }
@@ -121,36 +112,27 @@ function updateAuthor($data)
     return true;
 }
 
-function addAuthor($author)
+function addAuthor($data)
 {
-    if (!getidAuteurCount($author['id_auteur']))
+    global $connex;
+
+    $req = 'INSERT INTO auteur VALUES (null, :nom, :prenom, :date_naissance);';
+
+    try
     {
-        global $connex;
+        $ps = $connex->prepare($req);
 
-        $req = 'INSERT INTO auteur VALUES (:id_auteur, :nom, :prenom, :date_naissance);';
-        // $req2 = 'INSERT INTO ecrit VALUES (:isbn, :id_auteur)';
+        $ps->bindValue(':nom', $data['auteur']['nom']);
+        $ps->bindValue(':prenom', $data['auteur']['prenom']);
+        $ps->bindValue(':date_naissance', $data['auteur']['date_naissance']);
+        $ps->execute();
 
-        try
-        {
-            $ps = $connex->prepare($req);
-
-            $ps->bindValue(':id_auteur', $author['id_auteur']);
-            $ps->bindValue(':nom', $author['nom']);
-            $ps->bindValue(':prenom', $author['prenom']);
-            $ps->bindValue(':date_naissance', $author['date_naissance']);
-            $ps->execute();
-        }
-        catch (PDOException $e)
-        {
-            die($e->getMessage());
-            //header('Location: index.php?c=error&a=e_database');
-        }
-
-        return true;
+        //contacter PDO pr connaitre le dernier index charger --> ici id, via pdo getlast inserted id et la retourner dans la fct addAuthor ici
     }
-    else
+    catch (PDOException $e)
     {
-        return false;
+        die($e->getMessage());
+        //header('Location: index.php?c=error&a=e_database');
     }
 }
 

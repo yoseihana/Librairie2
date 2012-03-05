@@ -49,14 +49,19 @@ function modifier()
 
 function ajouter()
 {
-    global $a, $c, $validActions, $validEntities;
+    global $a, $c;
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST')
     {
 
-        add();
+        $champs['auteur']['nom'] = $_POST['nom'];
+        $champs['auteur']['prenom'] = $_POST['prenom'];
+        $champs['auteur']['date_naissance'] = $_POST['date_naissance'];
 
-        header('Location:' . $_SERVER['PHP_SELF'] . '?a=lister&c=auteur'); // donne la page index.php qui est par défaut
+        //$insertedid = l'utiliser pr récuperer l'id insérer et ainsi redirigé vers la page
+        addAuthor($champs);
+
+        header('Location:' . listerAuteurUrl()); // donne la page index.php qui est par défaut
     }
     elseif ($_SERVER['REQUEST_METHOD'] == 'GET')
     {
@@ -71,35 +76,25 @@ function ajouter()
 
 function supprimer()
 {
-    global $a, $c, $validActions, $validEntities;
+    global $a, $c;
 
-    if (isset($_REQUEST['id_auteur']))
-    {
-        $id_auteur = $_REQUEST['id_auteur'];
-        if (!_idAuteurExiste($id_auteur))
-        {
-            header('Location:index.php?c=error&a=e_404');
-        }
-    }
-    else
-    {
-        header('Location:index.php?c=error&a=e_404');
-    }
+    $id_auteur = _getIdauteurFromRequest();
+    _testIdAuteur($id_auteur);
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST')
     {
+        deleteAuthor($id_auteur);
 
-        delete($id_auteur);
-
-        header('Location:' . $_SERVER['PHP_SELF'] . '?a=' . $validActions['lister'] . '&c=' . $validEntities['auteur'] . '&id_auteur=' . $id_auteur); // donne la page index.php qui est par défaut
+        header('Location:' . listerAuteurUrl()); // donne la page index.php qui est par défaut
     }
     elseif ($_SERVER['REQUEST_METHOD'] == 'GET')
     {
+        $auteur = findAuthorById($id_auteur);
 
-        $data['auteur'] = getOne($id_auteur);
-        $data['view_title'] = 'Supression de l\'auteur: ' . $data['auteur']['nom'];
+        $data['view_title'] = 'Supression de l\'auteur: ' . $auteur['nom'];
+        $data['auteur'] = $auteur;
+
         $html = $a . $c . '.php';
-
         return array('data' => $data, 'html' => $html); // returne
     }
 }
@@ -135,11 +130,11 @@ function _getIdauteurFromRequest()
 {
     global $a;
 
-    if (!isset($_GET['id_auteur']))
+    if (!isset($_REQUEST['id_auteur']))
     {
         die('vous devez fournir un id auteur pour ' . $a . ' un livre');
         //header('Location:index.php?c=error&a=e_404');
     }
 
-    return $_GET['id_auteur'];
+    return $_REQUEST['id_auteur'];
 }

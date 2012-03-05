@@ -1,5 +1,6 @@
 <?php if ($connected)
-{ ?>
+{
+    ?>
 <h1><?php echo $c . ' a ' . $a; ?></h1>
 
 <form action="<?php echo ($_SERVER['PHP_SELF']) ?>" method="post">
@@ -16,7 +17,7 @@
         <br/>
         <input type="text" name="meuble" value="<?php echo ($view['data']['zone']['meuble']); ?>"/>
 
-        <input type="hidden" name="c" value="<?php echo ($validEntities['zone']); ?>"/>
+        <input type="hidden" name="c" value="<?php echo ($validControllers['zone']); ?>"/>
         <input type="hidden" name="a" value="<?php echo ($validActions['modifier']); ?>"/>
         <input type="hidden" name="code_zone" value="<?php echo ($view['data']['zone']['code_zone']); ?>"/>
 
