@@ -80,9 +80,13 @@ div.connection {
     padding-top: 2em;
 }
 
-    div.connection a {
-        color: rgb(128, 128, 128);
-    }
+div.connection p {
+    float: left;
+}
+
+div.connection a {
+    color: rgb(128, 128, 128);
+}
 
 div.content {
     background-color: rgba(128, 128, 128, .8);
@@ -93,88 +97,105 @@ div.content {
     border: 1px solid black;
 }
 
-    div.content h1 {
-        font-size: 2em;
-        font-family: Futura, sans-serif;
-        color: #f5f5f5;
-        text-transform: uppercase;
-        margin-bottom: 1em;
-    }
+div.content h1 {
+    font-size: 2em;
+    font-family: Futura, sans-serif;
+    color: #f5f5f5;
+    text-transform: uppercase;
+    margin-bottom: 1em;
+}
 
-    div.content li {
-        margin: 0.5em;
-        list-style-type: circle;
-        color: white;
-    }
+div.content li {
+    margin: 0.5em;
+    list-style-type: circle;
+    color: white;
+}
 
-    div.content h2 {
-        font-size: 1.5em;
-        margin-bottom:0.5em;
-    }
+div.content h2 {
+    font-size: 1.5em;
+    margin-bottom: 0.5em;
+}
 
-        div.content h2 a {
-            color: white;
-        }
+div.content h2 a {
+    color: white;
+}
 
-        div.content a{
-            color: black;
-        }
+div.content a {
+    color: black;
+}
 
-    div.content p {
-        color: white;
-    }
+div.content p {
+    color: white;
+}
 
 label {
     color: white;
     text-transform: uppercase;
 }
 
-input{
-    margin-bottom:1em;
+input {
+    margin-bottom: 1em;
 }
 
 div.ajouter {
     text-align: right;
 }
 
-    div.ajouter a{
-        background-color:black;
-        padding: 1em;
-        color: white;
-        -webkit-border-radius: 10px;
-        -moz-border-radius: 10px;
-        border-radius: 10px;
-    }
+div.ajouter a {
+    background-color: black;
+    padding: 1em;
+    color: white;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
 
-div.voir{
+div.voir {
     border: 1px solid black;
-    width:50%;
+    width: 50%;
     padding: 1em;
 }
 
-    div.voir h3{
-        font-weight: bold;
-        padding-bottom:0.5em;
-        text-decoration: underline;
-    }
-
-    div.voir p{
-        padding-bottom: 0.5em;
-    }
-    
-        div.content p.first{
-            font-style: italic;
-        }
-div.bouton{
-   margin-top: 1em;
+div.voir h3 {
+    font-weight: bold;
+    padding-bottom: 0.5em;
+    text-decoration: underline;
 }
 
-p.supprimer{
+div.voir p {
+    padding-bottom: 0.5em;
+}
+
+div.content p.first {
     font-style: italic;
-
 }
 
-p.erreur{
+div.bouton {
+    margin-top: 1em;
+}
+
+p.supprimer {
+    font-style: italic;
+}
+
+p.erreur {
     font-weight: bold;
     font-family: Futura, sans-serif;
+}
+
+div.menu {
+    float: right;
+}
+
+div.menu li {
+    float: left;
+    margin-right: 1em;
+}
+
+div.menu li a {
+    color: white;
+    background-color: rgb(128, 128, 128);
+    padding: 0.75em;
+    -moz-border-radius: 0.5em;
+    -webkit-border-radius: 0.5em;
 }

@@ -1,37 +1,43 @@
 <?php
 
 
-function getAllZones() {
+function getAllZones()
+{
     global $connex;
 
     $req = 'SELECT *
-                        FROM zone
-                        ORDER BY piece';
+            FROM zone
+            ORDER BY piece';
 
-    try {
+    try
+    {
 
-        $res = $connex->query($req); 
+        $res = $connex->query($req);
         $zones = $res->fetchAll();
     }
-    catch (PDOException $e) {
-        die($e->getMessage()); 
+    catch (PDOException $e)
+    {
+        die($e->getMessage());
     }
 
     return $zones;
 }
 
-function findZoneByCode($code_zone) {
+function findZoneByCode($code_zone)
+{
     global $connex;
 
     $req = 'SELECT * FROM zone WHERE code_zone = :code_zone';
-    try {
-        $ps = $connex->prepare($req); 
+    try
+    {
+        $ps = $connex->prepare($req);
         $ps->bindValue(':code_zone', $code_zone);
         $ps->execute();
 
         $zone = $ps->fetch();
     }
-    catch (PDOException $e) { 
+    catch (PDOException $e)
+    {
         die($e->getMessage());
         //header ('Location: index.php?c=erreor&a=e_database');
     }
@@ -39,32 +45,37 @@ function findZoneByCode($code_zone) {
     return $zone;
 }
 
-function deleteZone($code_zone) {
+function deleteZone($code_zone)
+{
     global $connex;
 
     $req = 'DELETE FROM zone WHERE code_zone = :code_zone';
 
-    try {
+    try
+    {
         $ps = $connex->prepare($req);
 
         $ps->bindValue(':code_zone', $code_zone);
 
         $ps->execute();
     }
-    catch (PDOException $e) {
+    catch (PDOException $e)
+    {
         die($e->getMessage());
     }
 
     return true;
 }
 
-function updateZone($data) {
+function updateZone($data)
+{
 
     global $connex;
 
     $req = 'UPDATE zone SET piece = :piece, meuble = :meuble WHERE code_zone = :code_zone';
 
-    try {
+    try
+    {
         $ps = $connex->prepare($req);
 
         $ps->bindValue(':code_zone', $data['code_zone']);
@@ -73,7 +84,8 @@ function updateZone($data) {
 
         $ps->execute();
     }
-    catch (PDOException $e) {
+    catch (PDOException $e)
+    {
         die($e->getMessage());
         //header('Location: index.php?c=error&a=e_database');
     }
@@ -81,58 +93,65 @@ function updateZone($data) {
     return true;
 }
 
-function addZone() {
+function addZone()
+{
 
-    
-   if(!getCodeZoneCount($_POST['code_zone']))
+
+    if (!getCodeZoneCount($_POST['code_zone']))
     {
         global $connex;
 
-    $req = 'INSERT INTO zone VALUES (:code_zone, :piece, :meuble);'; //on place soit le ? ou le nom de var qu'on veut ajouter. On peux tuilier aussi :isbn au lieu du ?. Ici avec : on prépare une requête et la donnée
-   // $req2 = 'INSERT INTO ecrit VALUES (:isbn, :id_auteur)';
-    
-    
-    try {
-        $ps = $connex->prepare($req);
+        $req = 'INSERT INTO zone VALUES (:code_zone, :piece, :meuble);'; //on place soit le ? ou le nom de var qu'on veut ajouter. On peux tuilier aussi :isbn au lieu du ?. Ici avec : on prépare une requête et la donnée
+        // $req2 = 'INSERT INTO ecrit VALUES (:isbn, :id_auteur)';
 
-        $ps->bindValue(':code_zone', $_POST['code_zone']);
-        $ps->bindValue(':piece', $_POST['piece']);
-        $ps->bindValue(':meuble', $_POST['meuble']);
-        $ps->execute();
-        
-        /*$ps = $connex->prepare($req2);
-        $ps->bindValue(':isbn', $_POST['isbn']);
-        $ps->bindValue(':id_auteur', $_POST['id_auteur']);
-        $ps->execute();*/
-    }
-    catch (PDOException $e) {
-        die($e->getMessage());
-        //header('Location: index.php?c=error&a=e_database');
-    }
 
-    return true;
-   }
-    else {
+        try
+        {
+            $ps = $connex->prepare($req);
+
+            $ps->bindValue(':code_zone', $_POST['code_zone']);
+            $ps->bindValue(':piece', $_POST['piece']);
+            $ps->bindValue(':meuble', $_POST['meuble']);
+            $ps->execute();
+
+            /*$ps = $connex->prepare($req2);
+            $ps->bindValue(':isbn', $_POST['isbn']);
+            $ps->bindValue(':id_auteur', $_POST['id_auteur']);
+            $ps->execute();*/
+        }
+        catch (PDOException $e)
+        {
+            die($e->getMessage());
+            //header('Location: index.php?c=error&a=e_database');
+        }
+
+        return true;
+    }
+    else
+    {
         return false;
-   }
+    }
 }
 
-function getCodeZoneCount($code_zone) {
-    global $connex; 
-    $req = 'SELECT count(code_zone) AS nb_code_zone FROM zone WHERE code_zone = :code_zone'; 
+function getCodeZoneCount($code_zone)
+{
+    global $connex;
+    $req = 'SELECT count(code_zone) AS nb_code_zone FROM zone WHERE code_zone = :code_zone';
 
-    try {
-        $ps = $connex->prepare($req); 
-        $ps->bindValue(':code_zone', $code_zone); 
+    try
+    {
+        $ps = $connex->prepare($req);
+        $ps->bindValue(':code_zone', $code_zone);
         $ps->execute(); // execution
     }
-    catch (PDOException $e) {
+    catch (PDOException $e)
+    {
         die($e->getMessage());
         //header ('Location: index.php?c=error&a=e_database');
     }
 
     $nbCodeZone = $ps->fetch();
-    $nbCodeZone = $nbCodeZone['nb_code_zone']; 
+    $nbCodeZone = $nbCodeZone['nb_code_zone'];
 
-    return $nbCodeZone['nb_code_zone']; 
+    return $nbCodeZone['nb_code_zone'];
 }

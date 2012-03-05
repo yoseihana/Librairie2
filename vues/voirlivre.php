@@ -8,9 +8,9 @@
         <h2><a href="<?php echo voirLivreUrl($livre['isbn']); ?>"><?php echo $livre['titre']; ?></a></h2>
         <?php if ($connected): ?>
         <br/>
-        <a href="<?php echo modifierLivreUrl($livre['isbn']); ?>">Modifier</a>
+        <a href="<?php echo modifierLivreUrl($livre['isbn']); ?>"> Modifier</a>
         -
-        <a href="<?php echo supprimerLivreUrl($livre['isbn']); ?>">Supprimer</a>
+        <a href="<?php echo supprimerLivreUrl($livre['isbn']); ?>"> Supprimer</a>
         <?php endif; ?>
     </li>
     <?php endforeach; ?>

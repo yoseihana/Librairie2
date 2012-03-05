@@ -68,6 +68,28 @@ function findBookByAuthor($id_auteur)
     return $livre;
 }
 
+function findBookByZone($code_zone)
+{
+    global $connex;
+
+    $req = 'SELECT l.*  FROM livre AS l JOIN zone AS z ON l.code_zone = z.code_zone WHERE z.code_zone = :code_zone';
+
+    try
+    {
+        $ps = $connex->prepare($req);
+        $ps->bindValue(':code_zone', $code_zone);
+        $ps->execute();
+
+        $zone = $ps->fetch();
+
+    } catch (PDOException $e)
+    {
+        die($e->getMessage());
+    }
+
+    return $zone;
+}
+
 function deleteBook($isbn)
 {
     global $connex;

@@ -89,21 +89,31 @@ function updateAuthor($data)
 
     global $connex;
 
-    $req = 'UPDATE auteur SET nom = :nom, prenom = :prenom, date_naissance = :date_naissance WHERE id_auteur = :id_auteur';
+    $req1 = 'UPDATE auteur SET nom = :nom, prenom = :prenom, date_naissance = :date_naissance WHERE id_auteur = :id_auteur';
+    $req2 = 'UPDATE ecrit SET id_auteur = :id_auteur WHERE isbn = :isbn';
 
     try
     {
-        $ps = $connex->prepare($req);
+        $connex->beginTransaction();
+
+        $ps = $connex->prepare($req1);
 
         $ps->bindValue(':id_auteur', $data['id_auteur']);
         $ps->bindValue(':nom', $data['nom']);
         $ps->bindValue(':prenom', $data['prenom']);
         $ps->bindValue(':date_naissance', $data['date_naissance']);
-
         $ps->execute();
+
+        $ps = $connex->prepare($req2);
+        $ps->bindValue(':isbn', $data['livre']['isbn']);
+        $ps->bindValue(':id_auteur', $data['auteur']['id_auteur']);
+        $ps->execute();
+
+        $connex->commit();
     }
     catch (PDOException $e)
     {
+        $connex->rollBack();
         die($e->getMessage());
         //header('Location: index.php?c=error&a=e_database');
     }

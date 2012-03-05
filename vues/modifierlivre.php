@@ -1,5 +1,6 @@
 <?php if ($connected)
-{ ?>
+{
+    ?>
 <h1><?php echo $c . ' a ' . $a; ?></h1>
 
 <form action="<?php echo ($_SERVER['PHP_SELF']) ?>" method="post" enctype="multipart/form-data">
@@ -8,13 +9,13 @@
             Titre:
         </label>
         <br/>
-        <input type="text" name="titre" value="<?php echo ($view['data']['livre']['titre']); ?>"/>
+        <input type="text" name="titre" id="titre" value="<?php echo ($view['data']['livre']['titre']); ?>"/>
         <br/>
         <label for="nombre_page">
             Nombre de page:
         </label>
         <br/>
-        <input type="text" name="nombre_page" value="<?php echo ($view['data']['livre']['nombre_page']); ?>"/>
+        <input type="text" name="nombre_page" id="nombre_page" value="<?php echo ($view['data']['livre']['nombre_page']); ?>"/>
         <br/>
         <label for="date_parution">
             Date de parution:
@@ -65,15 +66,16 @@
         <br/>
 
 
-        <label for="image">
+        <label for="fichier">
             Ajouter une image
         </label>
         <br/>
-        <input type="file" name="file" id="file"/>
-        <input type="hidden" name="MAX_FILE_SIZE" value="1024"/>
+        <input type="file" name="fichier" id="fichier"/>
+
         <input type="button" value="envoyer"/>
         <?php echo'<img src="../img/' . $name . '" alt="image" />'; ?>
 
+        <input type="hidden" name="photo" value="<?php echo$view['data'][''] ?>"/>
         <input type="hidden" name="c" value="<?php echo ($validControllers['livre']); ?>"/>
         <input type="hidden" name="a" value="<?php echo ($validActions['modifier']); ?>"/>
         <input type="hidden" name="isbn" value="<?php echo ($view['data']['livre']['isbn']); ?>"/>

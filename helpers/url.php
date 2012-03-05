@@ -105,3 +105,56 @@ function ajouterAuteurUrl()
 
     return $_SERVER['PHP_SELF'] . '?' . http_build_query($params);
 }
+
+function listerZoneUrl()
+{
+    global $validActions, $validControllers;
+
+    $params['a'] = $validActions['lister'];
+    $params['c'] = $validControllers['zone'];
+
+    return $_SERVER['PHP_SELF'] . '?' . http_build_query($params);
+}
+
+function modifierZoneUrl($code_zone)
+{
+    global $validActions, $validControllers;
+
+    $params['a'] = $validActions['modifier'];
+    $params['c'] = $validControllers['zone'];
+    $params['code_zone'] = $code_zone;
+
+    return $_SERVER['PHP_SELF'] . '?' . http_build_query($params);
+}
+
+function ajouterZoneUrl()
+{
+    global $validActions, $validControllers;
+
+    $params['a'] = $validActions['ajouter'];
+    $params['c'] = $validControllers['zone'];
+
+    return $_SERVER['PHP_SELF'] . '?' . http_build_query($params);
+}
+
+function supprimerZoneUrl($code_zone)
+{
+    global $validActions, $validControllers;
+
+    $params['a'] = $validActions['supprimer'];
+    $params['c'] = $validControllers['zone'];
+    $params['code_zone'] = $code_zone;
+
+    return $_SERVER['PHP_SELF'] . '?' . http_build_query($params);
+}
+
+function voirZoneUrl($code_zone)
+{
+    global $validActions, $validControllers;
+
+    $params['a'] = $validActions['voir'];
+    $params['c'] = $validControllers['zone'];
+    $params['code_zone'] = $code_zone;
+
+    return $_SERVER['PHP_SELF'] . '?' . http_build_query($params);
+}
