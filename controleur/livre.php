@@ -25,6 +25,7 @@ function modifier()
     // Test l'existance de l'isbn dans la DB
     _testIsbn($isbn);
 
+    //verifierImage();
     // POST - modifier le livre en DB
     // GET - données pour le formulaire
     if ($_SERVER['REQUEST_METHOD'] == 'POST')
@@ -37,6 +38,7 @@ function modifier()
         $champs['livre']['code_zone'] = $_POST['code_zone'];
 
         $champs['auteur']['id_auteur'] = $_POST['id_auteur'];
+
 
         updateBook($champs);
 
@@ -66,7 +68,7 @@ function ajouter()
     // GET - données pour le formulaire
     if ($_SERVER['REQUEST_METHOD'] == 'POST')
     {
-        $champs['livre']['isbn'] = $_POST['isbn']; // ou _getIsbnFromRequest()
+        $champs['livre']['isbn'] = $_POST['isbn'];
         $champs['livre']['titre'] = $_POST['titre'];
         $champs['livre']['nombre_page'] = $_POST['nombre_page'];
         $champs['livre']['date_parution'] = $_POST['date_parution'];
@@ -78,7 +80,7 @@ function ajouter()
         addBook($champs);
 
         // Redirection
-        header('Location:' . $_SERVER['PHP_SELF']); // donne la page index.php qui est par défaut
+        header('Location:' . voirLivreUrl($champs['livre']['isbn'])); // donne la page index.php qui est par défaut
     }
     elseif ($_SERVER['REQUEST_METHOD'] == 'GET')
     {
@@ -105,7 +107,7 @@ function supprimer()
         deleteBook($isbn);
 
         // Redirection
-        header('Location:' . $_SERVER['PHP_SELF']); // donne la page index.php qui est par défaut
+        header('Location:' . listerLivreUrl()); // donne la page index.php qui est par défaut
     }
     elseif ($_SERVER['REQUEST_METHOD'] == 'GET')
     {
@@ -165,7 +167,7 @@ function _testIsbn($isbn)
 
 function verifierImage()
 {
-    $validExtentions = array('jpg', 'png', 'jpeg', 'JPEG', 'gif');
+    /*$validExtentions = array('jpg', 'png', 'jpeg', 'JPEG', 'gif');
     $fichier = $_FILES['fichier'];
 
     if (is_uploaded_file($fichier['name']))
@@ -206,5 +208,5 @@ function verifierImage()
                 echo 'Le fichier n\'a pas été écrit sur le serveur';
                 break;
         }
-    }
+    }*/
 }

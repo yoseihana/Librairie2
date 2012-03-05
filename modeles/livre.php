@@ -116,7 +116,7 @@ function deleteBook($isbn)
 function updateBook($data)
 {
     //Pour l'envoie de fichier
-    /* $fichier = $_FILES['fichier'];
+    $fichier = $_FILES['fichier'];
 
     if (!$fichier['error'])
     {
@@ -132,7 +132,7 @@ function updateBook($data)
     {
         $name = $_POST['photo'];
 
-    }*/
+    }
 
     global $connex;
 

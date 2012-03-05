@@ -120,7 +120,7 @@ function voir()
     $data['view_title'] = 'Fiche de la zone: ' . $zone['piece'] . ' - ' . $zone['meuble'];
     $data['zones'] = getAllZones();
     $data['zone'] = $zone; // Le livre à voir
-    $data['zone']['livre'] = findBookByZone($zone['code_zone']);
+    $data['zone']['livre'] = findBooksByZone($zone['code_zone']);
 
     $html = $a . $c . '.php';
     return array('data' => $data, 'html' => $html);

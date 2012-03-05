@@ -1,6 +1,4 @@
-<?php if ($connected)
-{
-    ?>
+<?php if ($connected) : ?>
 <h1><?php echo $c . ' a ' . $a; ?></h1>
 
 <form action="<?php echo ($_SERVER['PHP_SELF']) ?>" method="post" enctype="multipart/form-data">
@@ -83,8 +81,7 @@
         </div>
     </fieldset>
 </form>
-<?php
-} else
-{
+<?php else:
+    // Redirection vers la page de login ou une page d'erreur, c'est pas mieux ?
     echo '<p>Vous devez vous connecter pour acceder à cette page </p>';
-} ?>
+endif; ?>
