@@ -3,7 +3,8 @@
 //Contient les fct pr travailler avec la BD de livre. Aller chercher dans la BD
 
 function getAllBooks()
-{ // récupère une liste de livre
+{
+    // récupère une liste de livre
     global $connex; // permet de récupérer un var ds une fonction. On se conncet a la bdd
 
     $req = 'SELECT titre, isbn FROM livre ORDER BY titre';
@@ -114,9 +115,27 @@ function deleteBook($isbn)
 
 function updateBook($data)
 {
+    //Pour l'envoie de fichier
+    $fichier = $_FILES['fichier'];
+
+    if (!$fichier['error'])
+    {
+        $extention = explode('.', $fichier['name']);
+        $upload_dir = './img';
+
+        $name = $_POST['isbn'] . '.' . $extention[1];
+        $tmp_name = $fichier['tmp_name'];
+
+        move_uploaded_file($tmp_name, $upload_dir . '/' . $name);
+    }
+    else
+    {
+        $name = $_POST['photo'];
+    }
+
     global $connex;
 
-    $req1 = 'UPDATE livre SET titre = :titre, nombre_page = :nombre_page, date_parution = :date_parution, genre = :genre WHERE isbn = :isbn';
+    $req1 = 'UPDATE livre SET titre = :titre, nombre_page = :nombre_page, date_parution = :date_parution, genre = :genre, image = :image WHERE isbn = :isbn';
     $req2 = 'UPDATE ecrit SET id_auteur = :id_auteur WHERE isbn = :isbn';
 
     try
@@ -129,6 +148,7 @@ function updateBook($data)
         $ps->bindValue(':nombre_page', $data['livre']['nombre_page']);
         $ps->bindValue(':date_parution', $data['livre']['date_parution']);
         $ps->bindValue(':genre', $data['livre']['genre']);
+        $ps->bindValue(':image', $name);
         $ps->execute();
 
         $ps = $connex->prepare($req2);

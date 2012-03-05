@@ -49,7 +49,7 @@
 
     <p><?php echo ($view['data']['livre']['auteur']['prenom']); ?></p>
 
-    <img src="'.$uploadDir.'/'.$name.'" alt="image"/>
+    <img src="./img/<?php echo $view['data']['livre']['image'] ?>" alt="image"/>
 </div>
 <div class="ajouter">
     <?php if ($connected): ?>

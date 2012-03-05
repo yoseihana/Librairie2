@@ -72,10 +72,9 @@
         <br/>
         <input type="file" name="fichier" id="fichier"/>
 
-        <input type="button" value="envoyer"/>
-        <?php echo'<img src="../img/' . $name . '" alt="image" />'; ?>
+        <?//php echo'<img src="../img/' . $name . '" alt="image" />'; ?>
 
-        <input type="hidden" name="photo" value="<?php echo$view['data'][''] ?>"/>
+        <input type="hidden" name="photo" value="<?php echo$view['data'][1]['image'] ?>"/>
         <input type="hidden" name="c" value="<?php echo ($validControllers['livre']); ?>"/>
         <input type="hidden" name="a" value="<?php echo ($validActions['modifier']); ?>"/>
         <input type="hidden" name="isbn" value="<?php echo ($view['data']['livre']['isbn']); ?>"/>
