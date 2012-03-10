@@ -117,6 +117,7 @@ function updateBook($data)
 {
     //Pour l'envoie de fichier
     $fichier = $_FILES['fichier'];
+    $validExtentions = array('jpg', 'png', 'jpeg', 'JPEG', 'gif', 'JPEG');
 
     if (!$fichier['error'])
     {
@@ -127,6 +128,15 @@ function updateBook($data)
         $tmp_name = $fichier['tmp_name'];
 
         move_uploaded_file($tmp_name, $upload_dir . '/' . $name);
+
+        /* if ($extention == in_array($name, $validExtentions))
+        {
+            move_uploaded_file($tmp_name, $upload_dir . '/' . $name);
+        }
+        else
+        {
+            //echo 'erreur!'; --> introduit une erreur de header
+        }*/
     }
     else
     {

@@ -41,7 +41,7 @@
         Livre(s) de cet auteur
     </h3>
 
-    <p><?php echo $view['data']['auteur']['livre']['titre']; ?></p>
+    <p><?php echo ($view['data']['auteur']['livre'] != null) ? $view['data']['auteur']['livre']['titre'] : 'Il n\'y a pas de livre pour cet auteur'; ?></p>
 </div>
 <div class="ajouter">
 <p><?php if ($connected): ?> <p><a

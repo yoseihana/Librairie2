@@ -34,7 +34,7 @@
         Livre dans cette zone:
     </h3>
 
-    <p><?php echo($view['data']['zone']['livre']['titre']) ?></p>
+    <p><?php echo ($view['data']['zone']['livre'] != null) ? $view['data']['zone']['livre']['titre'] : 'Il n\'y a pas de livre sur cette commode'; ?></p>
 </div>
 <div class="ajouter">
     <?php if ($connected): ?><a

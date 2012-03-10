@@ -45,9 +45,7 @@
         Nom et prénom
     </h3>
 
-    <p><?php echo($view['data']['livre']['auteur']['nom']); ?></p>
-
-    <p><?php echo ($view['data']['livre']['auteur']['prenom']); ?></p>
+    <p><?php echo ($view['data']['livre']['auteur'] != null) ? $view['data']['livre']['auteur']['nom'] . ' ' . $view['data']['livre']['auteur']['prenom'] : 'Il n\'y a pas d\'auteur enregistré pour ce livre'; ?></p>
 
     <img src="./img/<?php echo $view['data']['livre']['image'] ?>" alt="image"/>
 </div>
