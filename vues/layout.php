@@ -40,7 +40,7 @@
                 <a href="./index.php?a=lister&c=auteur" title="Lister les auteurs">Auteurs</a>
             </li>
             <li>
-                <a href="./index.php?a=lister&c=zone" title="Lister les zones">Zones</a>
+                <a href="<?php echo listerZoneUrl() ?>" title="Lister les zones">Zones</a>
             </li>
         </ol>
     </div>
