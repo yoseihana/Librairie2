@@ -51,6 +51,6 @@
 </div>
 <div class="ajouter">
     <?php if ($connected): ?>
-    <p><a href="?c=<?php echo ajouterLivreUrl(); ?>">Ajouter un livre</a></p>
+    <p><a href="<?php echo ajouterLivreUrl(); ?>">Ajouter un livre</a></p>
     <?php endif; ?>
 </div>

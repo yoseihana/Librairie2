@@ -179,7 +179,7 @@ function updateBook($data)
     return true;
 }
 
-function addBook($data)
+function addBook()
 {
     global $connex;
 
@@ -190,12 +190,12 @@ function addBook($data)
     {
         $ps = $connex->prepare($req);
 
-        $ps->bindValue(':isbn', $data['isbn']);
-        $ps->bindValue(':titre', $data['titre']);
-        $ps->bindValue(':nombre_page', $data['nombre_page']);
-        $ps->bindValue(':date_parution', $data['date_parution']);
-        $ps->bindValue(':code_zone', $data['code_zone']);
-        $ps->bindValue(':genre', $data['genre']);
+        $ps->bindValue(':isbn', $_POST['isbn']);
+        $ps->bindValue(':titre', $_POST['titre']);
+        $ps->bindValue(':nombre_page', $_POST['nombre_page']);
+        $ps->bindValue(':date_parution', $_POST['date_parution']);
+        $ps->bindValue(':code_zone', $_POST['code_zone']);
+        $ps->bindValue(':genre', $_POST['genre']);
         $ps->execute();
     }
     catch (PDOException $e)
