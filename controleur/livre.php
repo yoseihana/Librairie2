@@ -25,22 +25,54 @@ function modifier()
     // Test l'existance de l'isbn dans la DB
     _testIsbn($isbn);
 
-    //verifierImage();
     // POST - modifier le livre en DB
     // GET - données pour le formulaire
     if ($_SERVER['REQUEST_METHOD'] == 'POST')
     {
-        $champs['livre']['isbn'] = $isbn;
-        $champs['livre']['titre'] = $_POST['titre'];
-        $champs['livre']['nombre_page'] = $_POST['nombre_page'];
-        $champs['livre']['date_parution'] = $_POST['date_parution'];
-        $champs['livre']['genre'] = $_POST['genre'];
-        $champs['livre']['code_zone'] = $_POST['code_zone'];
+        if (empty($_FILES['fichier']['name']))
+        {
 
-        $champs['auteur']['id_auteur'] = $_POST['id_auteur'];
+            $name = $_POST['image'];
+
+        } else
+        {
+
+            $verifImage = verifierImage();
+            $name = $verifImage['name'];
+            $error = $verifImage['error'];
+        }
 
 
-        updateBook($champs);
+        if (empty($error))
+        {
+            $champs['livre']['isbn'] = $isbn;
+            $champs['livre']['titre'] = $_POST['titre'];
+            $champs['livre']['nombre_page'] = $_POST['nombre_page'];
+            $champs['livre']['date_parution'] = $_POST['date_parution'];
+            $champs['livre']['genre'] = $_POST['genre'];
+            $champs['livre']['code_zone'] = $_POST['code_zone'];
+            $champs['livre']['image'] = $name;
+
+            $champs['auteur']['id_auteur'] = $_POST['id_auteur'];
+
+
+            updateBook($champs, $champs['livre']['image']);
+        }
+        else
+        {
+            $livre = findBooksByIsbn($isbn);
+
+            $data['view_title'] = 'Modification du livre: ' . $livre['titre'];
+            $data['livre'] = $livre; // Le livre à modifier
+            $data['livre']['auteur'] = findAuthorByBook($livre['isbn']);
+            $data['livre']['zone'] = findZoneByCode($livre['code_zone']);
+            $data['auteurs'] = getAllAuthors(); // La liste des auteurs
+            $data['zones'] = getAllZones(); // La liste des zones
+            $data['error'] = $error;
+
+            $html = $a . $c . '.php';
+            return array('data' => $data, 'html' => $html);
+        }
 
         header('Location:' . voirLivreUrl($isbn)); // donne la page index.php qui est par défaut
     }
@@ -63,24 +95,33 @@ function modifier()
 function ajouter()
 {
     global $a, $c;
-
+    $champs = array();
     // POST - modifier le livre en DB
     // GET - données pour le formulaire
     if ($_SERVER['REQUEST_METHOD'] == 'POST')
     {
-        $champs['livre']['isbn'] = $_POST['isbn'];
-        $champs['livre']['titre'] = $_POST['titre'];
-        $champs['livre']['nombre_page'] = $_POST['nombre_page'];
-        $champs['livre']['date_parution'] = $_POST['date_parution'];
-        $champs['livre']['genre'] = $_POST['genre'];
-        $champs['livre']['code_zone'] = $_POST['code_zone'];
 
-        $champs['auteur']['id_auteur'] = $_POST['id_auteur'];
+        $verifImage = verifierImage();
+        $name = $verifImage['name'];
+        $error = $verifImage['error'];
 
-        addBook($champs);
+        if (empty($error))
+        {
+            $champs['isbn'] = $_POST['isbn'];
+            $champs['titre'] = $_POST['titre'];
+            $champs['nombre_page'] = $_POST['nombre_page'];
+            $champs['date_parution'] = $_POST['date_parution'];
+            $champs['genre'] = $_POST['genre'];
+            $champs['code_zone'] = $_POST['code_zone'];
+            $champs['image'] = $name;
+
+            $champs['id_auteur'] = $_POST['id_auteur'];
+
+            addBook($champs);
+        }
 
         // Redirection
-        header('Location:' . voirLivreUrl($champs['livre']['isbn'])); // donne la page index.php qui est par défaut
+        header('Location:' . voirLivreUrl($champs['isbn'])); // donne la page index.php qui est par défaut
     }
     elseif ($_SERVER['REQUEST_METHOD'] == 'GET')
     {
@@ -164,28 +205,29 @@ function _testIsbn($isbn)
     }
 }
 
-
 function verifierImage()
 {
-    /*$validExtentions = array('jpg', 'png', 'jpeg', 'JPEG', 'gif');
+    global $validExtentions, $upload_dir;
+
     $fichier = $_FILES['fichier'];
+    $extention = explode('.', $fichier['name']);
+    $extentionFichier = $extention[1];
 
-    if (is_uploaded_file($fichier['name']))
+    $name = 'f' . rand(0, 100) . time() . '.' . $extentionFichier;
+    $error = '';
+
+    if (is_uploaded_file($fichier['tmp_name']))
     {
-        $extention = explode('.', $fichier['name']);
-        $extentionFichier = $extention[1];
 
-        $upload_dir = './img';
-        $name = $_POST['name'] . '.' . $extention[1];
         $tmp_name = $fichier['tmp_name'];
 
-        if ($extention == in_array($extentionFichier, $validExtentions))
+        if (in_array($extentionFichier, $validExtentions))
         {
-            move_uploaded_file($tmp_name, $upload_dir . '/' . $name);
+            move_uploaded_file($tmp_name, $upload_dir . '/' . $name); // Finir test
         }
         else
         {
-            echo 'erreur!';
+            die('Error extentions'); // voir une autre solution
         }
     }
     else
@@ -193,20 +235,22 @@ function verifierImage()
         switch ($_FILES['fichier']['error'])
         {
             case 1:
-                echo 'Le fichier est trop grand';
+                $error = 'Le fichier est trop grand';
                 break;
             case 2:
-                echo 'Le fichier est plus grand que la taille spécifiée dans le formulaire';
+                $error = 'Le fichier est plus grand que la taille spécifiée dans le formulaire';
                 break;
             case 3:
-                echo 'La totalitée du fichiée n\'a pas été reçu';
+                $error = 'La totalitée du fichiée n\'a pas été reçu';
                 break;
             case 4:
-                echo 'Aucun fichier n\'a été téléchargé';
+                $error = 'Aucun fichier n\'a été téléchargé';
                 break;
             case 7:
-                echo 'Le fichier n\'a pas été écrit sur le serveur';
+                $error = 'Le fichier n\'a pas été écrit sur le serveur';
                 break;
         }
-    }*/
+    }
+
+    return array('error' => $error, 'name' => $name);
 }

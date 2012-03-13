@@ -68,14 +68,15 @@
             <?php endforeach; ?>
         </select>
         <br/>
-        <label for="image">
+        <label for="fichier">
             Ajouter une image
         </label>
         <br/>
-        <input type="file" name="file" id="image">
+        <input type="file" name="fichier" id="fichier">
 
         <input type="hidden" name="c" value="<?php echo ($validControllers['livre']); ?>"/>
         <input type="hidden" name="a" value="<?php echo ($validActions['ajouter']); ?>"/>
+        <input type="hidden" name="image" value="<?php echo $view['data']['livre']['image'] ?>"/>
 
         <div class="bouton">
             <input type="submit" value="Ajouter"/>

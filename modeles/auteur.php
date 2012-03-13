@@ -62,7 +62,7 @@ function findAuthorByBook($isbn)
     return $auteur;
 }
 
-function deleteAuthor($data)
+function deleteAuthor($id_auteur)
 {
 
     global $connex;
@@ -71,9 +71,8 @@ function deleteAuthor($data)
     try
     {
         $ps = $connex->prepare($req);
-        $ps->bindValue(':id_auteur', $data['id_auteur']);
+        $ps->bindValue(':id_auteur', $id_auteur);
         $ps->execute();
-
 
     }
     catch (PDOException $e)
@@ -84,12 +83,12 @@ function deleteAuthor($data)
     return true;
 }
 
-function updateAuthor($data)
+function updateAuthor($data, $name)
 {
 
     global $connex;
 
-    $req1 = 'UPDATE auteur SET nom = :nom, prenom = :prenom, date_naissance = :date_naissance WHERE id_auteur = :id_auteur';
+    $req1 = 'UPDATE auteur SET nom = :nom, prenom = :prenom, date_naissance = :date_naissance, image = :image WHERE id_auteur = :id_auteur';
 
     try
     {
@@ -100,6 +99,7 @@ function updateAuthor($data)
         $ps->bindValue(':nom', $data['auteur']['nom']);
         $ps->bindValue(':prenom', $data['auteur']['prenom']);
         $ps->bindValue(':date_naissance', $data['auteur']['date_naissance']);
+        $ps->bindValue(':image', $name);
         $ps->execute();
 
     }
@@ -112,19 +112,20 @@ function updateAuthor($data)
     return true;
 }
 
-function addAuthor($data)
+function addAuthor($champs)
 {
     global $connex;
 
-    $req = 'INSERT INTO auteur VALUES (null, :nom, :prenom, :date_naissance);';
+    $req = 'INSERT INTO auteur VALUES (null, :nom, :prenom, :date_naissance, :image);';
 
     try
     {
         $ps = $connex->prepare($req);
 
-        $ps->bindValue(':nom', $data['auteur']['nom']);
-        $ps->bindValue(':prenom', $data['auteur']['prenom']);
-        $ps->bindValue(':date_naissance', $data['auteur']['date_naissance']);
+        $ps->bindValue(':nom', $champs['nom']);
+        $ps->bindValue(':prenom', $champs['prenom']);
+        $ps->bindValue(':date_naissance', $champs['date_naissance']);
+        $ps->bindValue(':image', $champs['image']);
         $ps->execute();
 
         //contacter PDO pr connaitre le dernier index charger --> ici id, via pdo getlast inserted id et la retourner dans la fct addAuthor ici

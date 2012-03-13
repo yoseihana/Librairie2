@@ -42,6 +42,7 @@
     </h3>
 
     <p><?php echo ($view['data']['auteur']['livre'] != null) ? $view['data']['auteur']['livre']['titre'] : 'Il n\'y a pas de livre pour cet auteur'; ?></p>
+    <img src="./img/<?php echo $view['data']['auteur']['image'] ?>" alt="image"/>
 </div>
 <div class="ajouter">
 <p><?php if ($connected): ?> <p><a

@@ -113,36 +113,8 @@ function deleteBook($isbn)
     return true;
 }
 
-function updateBook($data)
+function updateBook($data, $name)
 {
-    //Pour l'envoie de fichier
-    $fichier = $_FILES['fichier'];
-    $validExtentions = array('jpg', 'png', 'jpeg', 'JPEG', 'gif', 'JPEG');
-
-    if (!$fichier['error'])
-    {
-        $extention = explode('.', $fichier['name']);
-        $upload_dir = './img';
-
-        $name = $_POST['isbn'] . '.' . $extention[1];
-        $tmp_name = $fichier['tmp_name'];
-
-        move_uploaded_file($tmp_name, $upload_dir . '/' . $name);
-
-        /* if ($extention == in_array($name, $validExtentions))
-        {
-            move_uploaded_file($tmp_name, $upload_dir . '/' . $name);
-        }
-        else
-        {
-            //echo 'erreur!'; --> introduit une erreur de header
-        }*/
-    }
-    else
-    {
-        $name = $_POST['photo'];
-
-    }
 
     global $connex;
 
@@ -179,27 +151,37 @@ function updateBook($data)
     return true;
 }
 
-function addBook()
+function addBook($champs)
 {
     global $connex;
 
     //on place soit le ? ou le nom de var qu'on veut ajouter. On peux tuilier aussi :isbn au lieu du ?. Ici avec : on prépare une requête et la donnée
-    $req = 'INSERT INTO livre VALUES (:isbn, :titre, :date_parution, :nombre_page, :code_zone, :genre);';
-
+    $req1 = 'INSERT INTO livre VALUES (:isbn, :titre, :date_parution, :nombre_page, :code_zone, :genre, :image);';
+    $req2 = 'INSERT INTO ecrit VALUES (:isbn, :id_auteur)';
     try
     {
-        $ps = $connex->prepare($req);
+        $connex->beginTransaction();
 
-        $ps->bindValue(':isbn', $_POST['isbn']);
-        $ps->bindValue(':titre', $_POST['titre']);
-        $ps->bindValue(':nombre_page', $_POST['nombre_page']);
-        $ps->bindValue(':date_parution', $_POST['date_parution']);
-        $ps->bindValue(':code_zone', $_POST['code_zone']);
-        $ps->bindValue(':genre', $_POST['genre']);
+        $ps = $connex->prepare($req1);
+        $ps->bindValue(':isbn', $champs['isbn']);
+        $ps->bindValue(':titre', $champs['titre']);
+        $ps->bindValue(':nombre_page', $champs['nombre_page']);
+        $ps->bindValue(':date_parution', $champs['date_parution']);
+        $ps->bindValue(':code_zone', $champs['code_zone']);
+        $ps->bindValue(':genre', $champs['genre']);
+        $ps->bindValue(':image', $champs['image']);
         $ps->execute();
+
+        $ps = $connex->prepare($req2);
+        $ps->bindValue(':isbn', $champs['isbn']);
+        $ps->bindValue(':id_auteur', $champs['id_auteur']);
+        $ps->execute();
+
+        $connex->commit();
     }
     catch (PDOException $e)
     {
+        $connex->rollBack();
         die($e->getMessage());
         //header('Location: index.php?c=error&a=e_database');
     }
