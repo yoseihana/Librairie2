@@ -98,6 +98,7 @@ function ajouter()
         }
 
         header('Location:' . listerAuteurUrl()); // donne la page index.php qui est par défaut
+
     }
     elseif ($_SERVER['REQUEST_METHOD'] == 'GET')
     {

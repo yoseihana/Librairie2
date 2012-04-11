@@ -34,10 +34,10 @@
     <div class="menu">
         <ol>
             <li>
-                <a href="./index.php?a=lister&c=livre" title="Lister les livres">Livres</a>
+                <a href="<?php echo listerLivreUrl() ?>" title="Lister les livres">Livres</a>
             </li>
             <li>
-                <a href="./index.php?a=lister&c=auteur" title="Lister les auteurs">Auteurs</a>
+                <a href="<?php echo listerAuteurUrl() ?>" title="Lister les auteurs">Auteurs</a>
             </li>
             <li>
                 <a href="<?php echo listerZoneUrl() ?>" title="Lister les zones">Zones</a>
@@ -46,7 +46,9 @@
     </div>
 
 </div>
-
+<div id="title">
+    <p><a href="index.php" title="Retour à la page accueil" all="Retour à la page accueil">Gestion de bibliothèque de l'INPRES</a></p>
+</div>
 <div class="content">
     <?php include($view['html']); ?>
 </div>

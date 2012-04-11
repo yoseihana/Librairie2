@@ -58,20 +58,32 @@ blockquote, q {
 /************************************************
 /* FIN RESTE MEYER
 ************************************************/
-html {
-
-}
-
 body {
-    background-image: url("./img/library.jpg");
-    font-family: Helvetica, Arial, sans-serif;
+    background-image: url("./img/bg.jpg");
+    font-family: Helvetica Neue, Arial, sans-serif;
     font-size: 14px;
 }
 
 div.header {
-    background-color: black;
-    color: white;
+    background-image: url("./img/bg_header.png");
     height: 4em;
+}
+
+div#title {
+    background-color: #F26622;
+    width: 750px;
+    margin: 0 auto;
+    margin-top: 4em;
+    padding: 1em;
+    border: 1px solid black;
+    font-size: 2em;
+    font-weight: lighter;
+    text-shadow: 1px 1px 0 #636868;
+}
+
+div#title a:hover, div#title a:visited, div#title a:focus, div#title a {
+    color: black;
+    text-decoration: none;
 }
 
 div.connection {
@@ -89,39 +101,45 @@ div.connection a {
 }
 
 div.content {
-    background-color: rgba(128, 128, 128, .8);
     width: 750px;
     margin: 0 auto;
     margin-top: 4em;
     padding: 2em;
-    border: 1px solid black;
 }
 
 div.content h1 {
     font-size: 2em;
-    font-family: Futura, sans-serif;
-    color: #f5f5f5;
+    font-family: Helvetica Neue, sans-serif;
+    font-weight: lighter;
+    color: #F26622;
     text-transform: uppercase;
     margin-bottom: 1em;
 }
 
 div.content li {
     margin: 0.5em;
-    list-style-type: circle;
-    color: white;
+    list-style-type: square;
+    color: #F2F2F2;
 }
 
 div.content h2 {
     font-size: 1.5em;
     margin-bottom: 0.5em;
-}
-
-div.content h2 a {
     color: white;
 }
 
 div.content a {
-    color: black;
+    color: #F2F2F2;
+    text-decoration: none;
+}
+
+div.content a:hover {
+    color: #67C0BE;
+    text-decoration: underline;
+}
+
+div.content a:visited {
+    color: #67C0BE;
 }
 
 div.content p {
@@ -130,7 +148,7 @@ div.content p {
 
 label {
     color: white;
-    text-transform: uppercase;
+    font-weight: lighter;
 }
 
 input {
@@ -141,29 +159,29 @@ div.ajouter {
     text-align: right;
 }
 
-div.ajouter a {
-    background-color: black;
-    padding: 1em;
-    color: white;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
+div.ajouter a, div.ajouter a:hover, div.ajouter a:visited {
+    color: black;
+    background-color: #67C0BE;
+    padding: 0.5em;
+    border: 1px solid black;
+    text-decoration: none;
+    box-shadow: 1px 1px 0 #555555;
 }
 
 div.voir {
-    border: 1px solid black;
+    border: 1px solid white;
     width: 50%;
     padding: 1em;
 }
 
-div.voir h3 {
-    font-weight: bold;
+h3 {
     padding-bottom: 0.5em;
-    text-decoration: underline;
+    color: #F26622;
 }
 
 div.voir p {
     padding-bottom: 0.5em;
+    font-weight: lighter;
 }
 
 div.content p.first {
@@ -176,11 +194,11 @@ div.bouton {
 
 p.supprimer {
     font-style: italic;
+    font-weight: lighter;
 }
 
 p.erreur {
     font-weight: bold;
-    font-family: Futura, sans-serif;
 }
 
 div.menu {
@@ -193,9 +211,10 @@ div.menu li {
 }
 
 div.menu li a {
-    color: white;
-    background-color: rgb(128, 128, 128);
-    padding: 0.75em;
-    -moz-border-radius: 0.5em;
-    -webkit-border-radius: 0.5em;
+    color: black;
+    background-color: #67C0BE;
+    padding: 0.5em;
+    border: 1px solid black;
+    box-shadow: 1px 1px 0 #555555;
+    text-decoration: none;
 }
