@@ -1,18 +1,27 @@
 <?php
 
 include 'modeles/livre.php';
-include 'modeles/auteur.php';
-include 'modeles/zone.php';
 
-function lister()
+class C_livre
 {
-    global $a, $c;
 
-    $data['view_title'] = 'Liste des livres';
-    $data['livres'] = getAllBooks();
+    function __construct()
+    {
+        $this->livre = new M_livre();
+    }
 
-    $html = $a . $c . '.php';
-    return array('data' => $data, 'html' => $html);
+
+    function lister()
+    {
+        global $a, $c;
+
+        $data['view_title'] = 'Liste des livres';
+        $data['livres'] = $this->livre->getAll();
+
+        $html = $a . $c . '.php';
+        return array('data' => $data, 'html' => $html);
+    }
+
 }
 
 function modifier()
@@ -31,17 +40,14 @@ function modifier()
     {
         if (empty($_FILES['fichier']['name']))
         {
-
             $name = $_POST['image'];
 
         } else
         {
-
             $verifImage = verifierImage();
             $name = $verifImage['name'];
             $error = $verifImage['error'];
         }
-
 
         if (empty($error))
         {
@@ -54,7 +60,6 @@ function modifier()
             $champs['livre']['image'] = $name;
 
             $champs['auteur']['id_auteur'] = $_POST['id_auteur'];
-
 
             updateBook($champs, $champs['livre']['image']);
         }
@@ -165,7 +170,17 @@ function supprimer()
 
 function voir()
 { // récupérer 1x les informations d'1 seul livre
+
+    include ('auteur.php');
+    include ('zone.php');
+
     global $a, $c;
+
+    //Instantiation
+    /*function __construct () {
+        $this->auteur = new C_auteur();
+        $this->zone = new C_zone();
+    }*/
 
     $isbn = _getIsbnFromRequest();
     _testIsbn($isbn);
@@ -176,6 +191,7 @@ function voir()
     $data['livres'] = getAllBooks();
     $data['livre'] = $livre; // Le livre à voir
     $data['livre']['auteur'] = findAuthorByBook($livre['isbn']);
+    /*$this->auteur->findAuthorByBook($livre['isbn']);*/
     $data['livre']['zone'] = findZoneByCode($livre['code_zone']);
 
     $html = $a . $c . '.php';
