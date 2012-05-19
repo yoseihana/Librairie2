@@ -6,15 +6,13 @@ function getMemberCount($data)
 
     $req = 'SELECT count(id_membre) AS nb_membre FROM membre WHERE email = :email AND mdp = :mdp';
 
-    try
-    {
+    try {
         $ps = $connex->prepare($req);
         $ps->bindValue(':email', $data['email']);
         $ps->bindValue(':mdp', $data['mdp']);
         $ps->execute();
     }
-    catch (PDOException $e)
-    {
+    catch (PDOException $e) {
         die($e->getMessage());
         //header ('Location: index.php?c=error&a=e_database');
     }

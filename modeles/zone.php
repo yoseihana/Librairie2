@@ -1,23 +1,22 @@
 <?php
 
-class M_zone
+class ZoneModel extends AbstractModel
 {
+    function __construct(PDO $dbConnection)
+    {
+        parent::__construct($dbConnection);
+    }
+
     function getAllZones()
     {
-        global $connex;
+        $req = 'SELECT * FROM zone ORDER BY piece';
 
-        $req = 'SELECT *
-            FROM zone
-            ORDER BY piece';
-
-        try
-        {
+        try {
 
             $res = $connex->query($req);
             $zones = $res->fetchAll();
         }
-        catch (PDOException $e)
-        {
+        catch (PDOException $e) {
             die($e->getMessage());
         }
 
@@ -29,16 +28,14 @@ class M_zone
         global $connex;
 
         $req = 'SELECT * FROM zone WHERE code_zone = :code_zone';
-        try
-        {
+        try {
             $ps = $connex->prepare($req);
             $ps->bindValue(':code_zone', $code_zone);
             $ps->execute();
 
             $zone = $ps->fetch();
         }
-        catch (PDOException $e)
-        {
+        catch (PDOException $e) {
             die($e->getMessage());
             //header ('Location: index.php?c=erreor&a=e_database');
         }
@@ -52,14 +49,12 @@ class M_zone
 
         $req = 'DELETE FROM zone WHERE code_zone = :code_zone';
 
-        try
-        {
+        try {
             $ps = $connex->prepare($req);
             $ps->bindValue(':code_zone', $code_zone);
             $ps->execute();
         }
-        catch (PDOException $e)
-        {
+        catch (PDOException $e) {
             die($e->getMessage());
         }
 
@@ -73,8 +68,7 @@ class M_zone
 
         $req = 'UPDATE zone SET piece = :piece, meuble = :meuble WHERE code_zone = :code_zone';
 
-        try
-        {
+        try {
             $ps = $connex->prepare($req);
 
             $ps->bindValue(':code_zone', $data['zone']['code_zone']);
@@ -83,8 +77,7 @@ class M_zone
 
             $ps->execute();
         }
-        catch (PDOException $e)
-        {
+        catch (PDOException $e) {
             die($e->getMessage());
             //header('Location: index.php?c=error&a=e_database');
         }
@@ -98,8 +91,7 @@ class M_zone
 
         $req = 'INSERT INTO zone VALUES (:code_zone, :piece, :meuble);'; //on place soit le ? ou le nom de var qu'on veut ajouter. On peux tuilier aussi :isbn au lieu du ?. Ici avec : on prépare une requête et la donnée
 
-        try
-        {
+        try {
             $ps = $connex->prepare($req);
 
             $ps->bindValue(':code_zone', $_POST['code_zone']);
@@ -108,8 +100,7 @@ class M_zone
             $ps->execute();
 
         }
-        catch (PDOException $e)
-        {
+        catch (PDOException $e) {
             die($e->getMessage());
             //header('Location: index.php?c=error&a=e_database');
         }
@@ -120,14 +111,12 @@ class M_zone
         global $connex;
         $req = 'SELECT count(code_zone) AS nb_code_zone FROM zone WHERE code_zone = :code_zone';
 
-        try
-        {
+        try {
             $ps = $connex->prepare($req);
             $ps->bindValue(':code_zone', $code_zone);
             $ps->execute(); // execution
         }
-        catch (PDOException $e)
-        {
+        catch (PDOException $e) {
             die($e->getMessage());
             //header ('Location: index.php?c=error&a=e_database');
         }
