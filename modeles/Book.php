@@ -1,6 +1,6 @@
 <?php
 
-class Book extends AbstractModel
+final class Book extends AbstractModel
 {
     const TABLE = 'livre';
     const ISBN = 'isbn';
@@ -11,40 +11,43 @@ class Book extends AbstractModel
     const GENRE = 'genre';
     const IMAGE = 'image'; //TODO Check column name
 
+    function __construct()
+    {
+        parent::__construct();
+    }
+
     /**
      * Récupére tout les livres trié par titre en ordre alphabétique
      * @return array
      */
-    public static function getAll()
+    public function getAll()
     {
         $req = 'SELECT * FROM ' . self::TABLE . ' ORDER BY ' . self::TITLE;
 
-        return self::fetchAll($req);
+        return $this->fetchAll($req);
     }
 
     /**
      * Récupère un livre avec son ISBN
-     * @static
      * @param $isbn
      * @return mixed
      */
-    public static function findByIsbn($isbn)
+    public function findByIsbn($isbn)
     {
         $req = 'SELECT * FROM ' . self::TABLE . ' WHERE ' . self::ISBN . ' = :isbn';
         $param = array(
             ':isbn' => $isbn
         );
 
-        return self::fetch($req, $param);
+        return $this->fetch($req, $param);
     }
 
     /**
      * Récupère la liste des livres écrit par l'auteur
-     * @static
      * @param $id_auteur
      * @return array
      */
-    public static function findByAuthor($id_auteur)
+    public function findByAuthor($id_auteur)
     {
         $req = 'SELECT l.* '
             . 'FROM ' . self::TABLE . ' AS l '
@@ -55,48 +58,45 @@ class Book extends AbstractModel
             ':id_auteur' => $id_auteur
         );
 
-        return self::fetchAll($req, $param);
+        return $this->fetchAll($req, $param);
     }
 
     /**
      * Récupère la liste des livres situé dans la zone définie
-     * @static
      * @param $code_zone
      * @return array
      */
-    public static function findByZone($code_zone)
+    public function findByZone($code_zone)
     {
         $req = 'SELECT * FROM ' . self::TABLE . ' WHERE ' . self::ZONE . ' = :code_zone';
         $param = array(
             ':code_zone' => $code_zone
         );
 
-        return self::fetchAll($req, $param);
+        return $this->fetchAll($req, $param);
     }
 
     /**
      * Supprime SEULEMENT le livre par son ISBN.
-     * @static
      * @param $isbn
      * @return bool
      */
-    public static function delete($isbn)
+    public function delete($isbn)
     {
         $req = 'DELETE FROM ' . self::TABLE . ' WHERE ' . self::ISBN . ' = :isbn';
         $param = array(
             ':isbn' => $isbn
         );
 
-        return self::execute($req, $param);
+        return $this->execute($req, $param);
     }
 
     /**
      * Met à jour SEULEMENT le livre avec les valeurs contenues dans $data
-     * @static
      * @param array $data
      * @return bool
      */
-    public static function update(array $data)
+    public function update(array $data)
     {
         $req = 'UPDATE ' . self::TABLE
             . ' SET ' . self::TITLE . ' = :titre, '
@@ -117,16 +117,15 @@ class Book extends AbstractModel
             ':image' => $data[self::IMAGE]
         );
 
-        return self::execute($req, $param);
+        return $this->execute($req, $param);
     }
 
     /**
      * Ajoute SEULEMENT le livre avec les valeurs contenues dans $data (sauf l'ISBN)
-     * @static
      * @param array $data
      * @return bool
      */
-    public static function add(array $data)
+    public function add(array $data)
     {
         $req = 'INSERT INTO ' . self::TABLE . ' VALUES (:isbn, :titre, :date_parution, :nombre_page, :zone, :genre, :image)';
         $param = array(
@@ -139,17 +138,16 @@ class Book extends AbstractModel
             ':image' => $data[self::IMAGE]
         );
 
-        return self::execute($req, $param);
-        // TODO : idée récupérer le nouvel ID et le retourner
+        return $this->execute($req, $param);
+        // TODO : (idée) récupérer le nouvel ID et le retourner
     }
 
     /**
      * Retourne 1 si un livre avec l'ISBN fourni existe sinon 0
-     * @static
      * @param $isbn
      * @return mixed
      */
-    public static function countByIsbn($isbn)
+    public function countByIsbn($isbn)
     {
         $req = 'SELECT count(' . self::ISBN . ') AS nb_livre FROM ' . self::TABLE . ' WHERE ' . self::ISBN . ' = :isbn';
 
@@ -157,9 +155,8 @@ class Book extends AbstractModel
             ':isbn' => $isbn
         );
 
-        $result = self::fetch($req, $param);
+        $result = $this->fetch($req, $param);
 
         return $result['nb_livre']; // retourne 0 ou 1
     }
-
 }

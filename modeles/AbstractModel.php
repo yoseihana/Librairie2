@@ -4,14 +4,11 @@ require_once './config/DB.php';
 
 abstract class AbstractModel
 {
-    /**
-     * Obtenir par référence l'instance de la connexion PDO (unique)
-     * @static
-     * @return PDO
-     */
-    protected static function &getConnection()
+    protected $connection;
+
+    function __construct()
     {
-        return DB::getPdoInstance();
+        $this->connection =& DB::getPdoInstance();
     }
 
     /**
@@ -19,10 +16,10 @@ abstract class AbstractModel
      * @param string $request - La requête SQL
      * @param array $parameters - Les paramètres de la requête SQL [optional]
      */
-    protected static function execute($request, array $parameters = NULL)
+    protected function execute($request, array $parameters = NULL)
     {
         try {
-            $statement = self::getConnection()->prepare($request);
+            $statement = $this->connection->prepare($request);
             return $statement->execute($parameters);
         } catch (PDOException $e) {
             self::_PDOExceptionHandling($e);
@@ -34,10 +31,10 @@ abstract class AbstractModel
      * @param string $request - La requête SQL
      * @param array $parameters - Les paramètres de la requête SQL [optional]
      */
-    protected static function fetchAll($request, array $parameters = NULL)
+    protected function fetchAll($request, array $parameters = NULL)
     {
         try {
-            $statement = self::getConnection()->prepare($request);
+            $statement = $this->connection->prepare($request);
             $statement->execute($parameters);
 
             return $statement->fetchAll();
@@ -51,10 +48,10 @@ abstract class AbstractModel
      * @param string $request - La requête SQL
      * @param array $parameters - Les paramètres de la requête SQL [optional]
      */
-    protected static function fetch($request, array $parameters = NULL)
+    protected function fetch($request, array $parameters = NULL)
     {
         try {
-            $statement = self::getConnection()->prepare($request);
+            $statement = $this->connection->prepare($request);
             $statement->execute($parameters);
 
             return $statement->fetch();
@@ -68,11 +65,11 @@ abstract class AbstractModel
      * Le but de cette méthode est du refactoring pure
      * @param PDOException $e
      */
-    private static function _PDOExceptionHandling(PDOException $e)
+    private function _PDOExceptionHandling(PDOException $e)
     {
         // D'abord on annule la transaction, s'il y a.
-        if (self::getConnection()->inTransaction()) {
-            self::getConnection()->rollBack();
+        if ($this->connection()->inTransaction()) {
+            $this->connection()->rollBack();
         }
         die($e->getMessage());
     }
