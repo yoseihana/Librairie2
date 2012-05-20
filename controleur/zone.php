@@ -1,6 +1,6 @@
 <?php
 
-include 'modeles/zone.php';
+include 'modeles/Zone.php';
 
 class C_zone
 {

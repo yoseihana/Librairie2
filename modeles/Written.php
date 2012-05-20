@@ -20,14 +20,32 @@ final class Written extends AbstractModel
     {
         $req = 'DELETE FROM ' . self::TABLE
             . ' WHERE ' . self::ISBN . ' = :isbn'
-            . ' AND ' . self::AUTHOR_ID . ' = :old_id_auteur';
+            . ' AND ' . self::AUTHOR_ID . ' = :id_auteur';
 
         $param = array(
-            ':isbn' => $data[self::ISBN],
+            ':isbn'      => $data[self::ISBN],
             ':id_auteur' => $data[self::AUTHOR_ID]
         );
 
         return $this->execute($req, $param);
+    }
+
+    /**
+     * Supprime toutes les relations d'auteurs d'un livre
+     * @static
+     * @param $isbn
+     * @return bool
+     */
+    public static function deleteAllByIsbn($isbn)
+    {
+        $req = 'DELETE FROM ' . self::TABLE
+            . ' WHERE ' . self::ISBN . ' = :isbn';
+
+        $param = array(
+            ':isbn' => $isbn,
+        );
+
+        return self::execute($req, $param);
     }
 
     /**
@@ -40,7 +58,7 @@ final class Written extends AbstractModel
         $req = 'INSERT INTO ' . self::TABLE . 'VALUES (:isbn, :id_auteur)';
 
         $param = array(
-            ':isbn' => $data[self::ISBN],
+            ':isbn'      => $data[self::ISBN],
             ':id_auteur' => $data[self::AUTHOR_ID]
         );
 

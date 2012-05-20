@@ -4,12 +4,12 @@ final class Book extends AbstractModel
 {
     const TABLE = 'livre';
     const ISBN = 'isbn';
-    const TITLE = 'titre';
-    const RELEASE_DATE = 'date_parution';
+    const TITRE = 'titre';
+    const DATE_PARUTION = 'date_parution';
     const PAGES = 'nombre_page';
     const ZONE = 'code_zone';
     const GENRE = 'genre';
-    const IMAGE = 'image'; //TODO Check column name
+    const IMAGE = 'image';
 
     function __construct()
     {
@@ -22,7 +22,7 @@ final class Book extends AbstractModel
      */
     public function getAll()
     {
-        $req = 'SELECT * FROM ' . self::TABLE . ' ORDER BY ' . self::TITLE;
+        $req = 'SELECT * FROM ' . self::TABLE . ' ORDER BY ' . self::TITRE;
 
         return $this->fetchAll($req);
     }
@@ -99,22 +99,22 @@ final class Book extends AbstractModel
     public function update(array $data)
     {
         $req = 'UPDATE ' . self::TABLE
-            . ' SET ' . self::TITLE . ' = :titre, '
+            . ' SET ' . self::TITRE . ' = :titre, '
             . self::PAGES . ' = :nombre_page, '
-            . self::RELEASE_DATE . ' = :date_parution, '
+            . self::DATE_PARUTION . ' = :date_parution, '
             . self::GENRE . ' = :genre, '
             . self::ZONE . ' = :zone, '
             . self::IMAGE . ' = :image '
             . 'WHERE ' . self::ISBN . ' = :isbn';
 
         $param = array(
-            ':isbn' => $data[self::ISBN],
-            ':titre' => $data[self::TITLE],
-            ':nombre_page' => $data[self::PAGES],
-            ':date_parution' => $data[self::RELEASE_DATE],
-            ':genre' => $data[self::GENRE],
-            ':zone' => $data[self::ZONE],
-            ':image' => $data[self::IMAGE]
+            ':isbn'          => $data[self::ISBN],
+            ':titre'         => $data[self::TITRE],
+            ':nombre_page'   => $data[self::PAGES],
+            ':date_parution' => $data[self::DATE_PARUTION],
+            ':genre'         => $data[self::GENRE],
+            ':zone'          => $data[self::ZONE],
+            ':image'         => $data[self::IMAGE]
         );
 
         return $this->execute($req, $param);
@@ -129,13 +129,13 @@ final class Book extends AbstractModel
     {
         $req = 'INSERT INTO ' . self::TABLE . ' VALUES (:isbn, :titre, :date_parution, :nombre_page, :zone, :genre, :image)';
         $param = array(
-            ':isbn' => $data[self::ISBN],
-            ':titre' => $data[self::TITLE],
-            ':date_parution' => $data[self::RELEASE_DATE],
-            ':nombre_page' => $data[self::PAGES],
-            ':zone' => $data[self::ZONE],
-            ':genre' => $data[self::GENRE],
-            ':image' => $data[self::IMAGE]
+            ':isbn'          => $data[self::ISBN],
+            ':titre'         => $data[self::TITRE],
+            ':date_parution' => $data[self::DATE_PARUTION],
+            ':nombre_page'   => $data[self::PAGES],
+            ':zone'          => $data[self::ZONE],
+            ':genre'         => $data[self::GENRE],
+            ':image'         => $data[self::IMAGE]
         );
 
         return $this->execute($req, $param);

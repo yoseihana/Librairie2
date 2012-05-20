@@ -14,15 +14,17 @@ abstract class AbstractModel
     /**
      * Cette fonction pépare et exécute un PDOStatement
      * @param string $request - La requête SQL
-     * @param array $parameters - Les paramètres de la requête SQL [optional]
+     * @param array $paramete rs - Les paramètres de la requête SQL [optional]
      */
     protected function execute($request, array $parameters = NULL)
     {
-        try {
+        try
+        {
             $statement = $this->connection->prepare($request);
             return $statement->execute($parameters);
-        } catch (PDOException $e) {
-            self::_PDOExceptionHandling($e);
+        } catch (PDOException $e)
+        {
+            $this->_PDOExceptionHandling($e);
         }
     }
 
@@ -33,13 +35,15 @@ abstract class AbstractModel
      */
     protected function fetchAll($request, array $parameters = NULL)
     {
-        try {
+        try
+        {
             $statement = $this->connection->prepare($request);
             $statement->execute($parameters);
 
             return $statement->fetchAll();
-        } catch (PDOException $e) {
-            self::_PDOExceptionHandling($e);
+        } catch (PDOException $e)
+        {
+            $this->_PDOExceptionHandling($e);
         }
     }
 
@@ -50,13 +54,15 @@ abstract class AbstractModel
      */
     protected function fetch($request, array $parameters = NULL)
     {
-        try {
+        try
+        {
             $statement = $this->connection->prepare($request);
             $statement->execute($parameters);
 
             return $statement->fetch();
-        } catch (PDOException $e) {
-            self::_PDOExceptionHandling($e);
+        } catch (PDOException $e)
+        {
+            $this->_PDOExceptionHandling($e);
         }
     }
 
@@ -68,7 +74,8 @@ abstract class AbstractModel
     private function _PDOExceptionHandling(PDOException $e)
     {
         // D'abord on annule la transaction, s'il y a.
-        if ($this->connection()->inTransaction()) {
+        if ($this->connection()->inTransaction())
+        {
             $this->connection()->rollBack();
         }
         die($e->getMessage());
