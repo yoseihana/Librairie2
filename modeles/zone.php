@@ -1,129 +1,103 @@
 <?php
 
-class ZoneModel extends AbstractModel
+class Zone extends AbstractModel
 {
-    function __construct(PDO $dbConnection)
+    const TABLE = 'zone';
+    const CODE_ZONE = 'code_zone';
+    const PIECE = 'piece';
+    const MEUBLE = 'meuble';
+
+    function __construct()
     {
-        parent::__construct($dbConnection);
+        parent::__construct();
     }
 
+    /**
+     * Retourne tous les éléments des zones
+     * @return array
+     */
     function getAllZones()
     {
-        $req = 'SELECT * FROM zone ORDER BY piece';
+        $req = 'SELECT * FROM' . self::TABLE . ' ORDER BY ' . self::PIECE;
 
-        try {
-
-            $res = $connex->query($req);
-            $zones = $res->fetchAll();
-        }
-        catch (PDOException $e) {
-            die($e->getMessage());
-        }
-
-        return $zones;
+        return $this->fetchAll($req);
     }
 
+    /**
+     * Retourne les éléments selon le code_zone
+     * @param $code_zone
+     * @return mixed
+     */
     function findZoneByCode($code_zone)
     {
-        global $connex;
-
-        $req = 'SELECT * FROM zone WHERE code_zone = :code_zone';
-        try {
-            $ps = $connex->prepare($req);
-            $ps->bindValue(':code_zone', $code_zone);
-            $ps->execute();
-
-            $zone = $ps->fetch();
-        }
-        catch (PDOException $e) {
-            die($e->getMessage());
-            //header ('Location: index.php?c=erreor&a=e_database');
-        }
-
-        return $zone;
+        $req = 'SELECT * FROM ' . self::TABLE . ' WHERE ' . self::CODE_ZONE . ' = :code_zone';
+        $param = Array(
+            ':code_zone' => self::CODE_ZONE
+        );
+        return $this->fetchAll($req, $param);
     }
 
+    /**
+     * Suppression de la zone
+     * @param $code_zone
+     * @return bool
+     */
     function deleteZone($code_zone)
     {
-        global $connex;
+        $req = 'DELETE FROM ' . self::TABLE . ' WHERE ' . self::CODE_ZONE . '= :code_zone';
+        $param = Array(
+            ':code_zone' => self::CODE_ZONE
+        );
 
-        $req = 'DELETE FROM zone WHERE code_zone = :code_zone';
-
-        try {
-            $ps = $connex->prepare($req);
-            $ps->bindValue(':code_zone', $code_zone);
-            $ps->execute();
-        }
-        catch (PDOException $e) {
-            die($e->getMessage());
-        }
-
-        return true;
+        return $this->execute($req, $param);
     }
 
-    function updateZone($data)
+    /**
+     * Mise à jour d'une zone
+     * @param array $data
+     * @return bool
+     */
+    function updateZone(array $data)
     {
+        $req = 'UPDATE ' . self::TABLE . ' SET ' . self::PIECE . '= :piece,' . self::MEUBLE . '= :meuble WHERE ' . self::CODE_ZONE . '= :code_zone';
+        $param = Array(
+            ':piece'     => $data[self::PIECE],
+            ':meuble'    => $data[self::MEUBLE],
+            ':code_zone' => $data[self::CODE_ZONE]
+        );
+        return $this->execute($req, $param);
 
-        global $connex;
-
-        $req = 'UPDATE zone SET piece = :piece, meuble = :meuble WHERE code_zone = :code_zone';
-
-        try {
-            $ps = $connex->prepare($req);
-
-            $ps->bindValue(':code_zone', $data['zone']['code_zone']);
-            $ps->bindValue(':piece', $data['zone']['piece']);
-            $ps->bindValue(':meuble', $data['zone']['meuble']);
-
-            $ps->execute();
-        }
-        catch (PDOException $e) {
-            die($e->getMessage());
-            //header('Location: index.php?c=error&a=e_database');
-        }
-
-        return true;
     }
 
-    function addZone()
+    /**
+     * Ajouter une zone
+     * @param array $data
+     * @return bool
+     */
+    function addZone(array $data)
     {
-        global $connex;
+        $req = 'INSERT INTO ' . self::TABLE . ' VALUES (:code_zone, :piece, :meuble);'; //on place soit le ? ou le nom de var qu'on veut ajouter. On peux tuilier aussi :isbn au lieu du ?. Ici avec : on prépare une requête et la donnée
+        $param = Array(
+            ':code_zone' => $data[self::CODE_ZONE],
+            ':piece'     => $data[self::PIECE],
+            ':meubme'    => $data[self::MEUBLE]
+        );
 
-        $req = 'INSERT INTO zone VALUES (:code_zone, :piece, :meuble);'; //on place soit le ? ou le nom de var qu'on veut ajouter. On peux tuilier aussi :isbn au lieu du ?. Ici avec : on prépare une requête et la donnée
-
-        try {
-            $ps = $connex->prepare($req);
-
-            $ps->bindValue(':code_zone', $_POST['code_zone']);
-            $ps->bindValue(':piece', $_POST['piece']);
-            $ps->bindValue(':meuble', $_POST['meuble']);
-            $ps->execute();
-
-        }
-        catch (PDOException $e) {
-            die($e->getMessage());
-            //header('Location: index.php?c=error&a=e_database');
-        }
+        return $this->execute($req, $param);
     }
 
+    /**
+     * Compte si il existe déjà une élément avec ce code_zone. Retourne 1 si il existee t 0 si il n'existe pas
+     * @param $code_zone
+     * @return mixed
+     */
     function countZoneByCode($code_zone)
     {
-        global $connex;
-        $req = 'SELECT count(code_zone) AS nb_code_zone FROM zone WHERE code_zone = :code_zone';
-
-        try {
-            $ps = $connex->prepare($req);
-            $ps->bindValue(':code_zone', $code_zone);
-            $ps->execute(); // execution
-        }
-        catch (PDOException $e) {
-            die($e->getMessage());
-            //header ('Location: index.php?c=error&a=e_database');
-        }
-
-        $nbCodeZone = $ps->fetch();
-        $nbCodeZone = $nbCodeZone['nb_code_zone'];
-
-        return $nbCodeZone['nb_code_zone'];
+        $req = 'SELECT count(' . self::CODE_ZONE . ') AS nb_code_zone FROM ' . self::TABLE . ' WHERE ' . self::CODE_ZONE . '= :code_zone';
+        $param = Array(
+            ':code_zone' => self::CODE_ZONE
+        );
+        $result = $this->execute($req, $param);
+        return $result['nb_code_zone']; //Retourne 0 ou 1
     }
 }
