@@ -100,7 +100,7 @@ class Author extends AbstractModel
      * @param array $data
      * @return bool
      */
-    public function addAuthor(array$data)
+    public function addAuthor(array $data)
     {
         $req = 'INSERT INTO ' . self::TABLE . ' VALUE (null, :nom, :prenom, :date_naissance, :image)';
         $param = Array(
