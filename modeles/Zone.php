@@ -16,9 +16,9 @@ class Zone extends AbstractModel
      * Retourne tous les éléments des zones
      * @return array
      */
-    function getAllZones()
+    function getAll()
     {
-        $req = 'SELECT * FROM' . self::TABLE . ' ORDER BY ' . self::PIECE;
+        $req = 'SELECT * FROM ' . self::TABLE . ' ORDER BY ' . self::PIECE;
 
         return $this->fetchAll($req);
     }

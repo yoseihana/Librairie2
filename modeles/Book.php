@@ -1,5 +1,7 @@
 <?php
 
+require_once 'AbstractModel.php';
+
 final class Book extends AbstractModel
 {
     const TABLE = 'livre';
@@ -10,6 +12,16 @@ final class Book extends AbstractModel
     const ZONE = 'code_zone';
     const GENRE = 'genre';
     const IMAGE = 'image';
+
+    private static $genres = array(
+        'roman',
+        'policier',
+        'historique',
+        'théâtre',
+        'fantastique',
+        'bd',
+        'document'
+    );
 
     function __construct()
     {
@@ -158,5 +170,11 @@ final class Book extends AbstractModel
         $result = $this->fetch($req, $param);
 
         return $result['nb_livre']; // retourne 0 ou 1
+    }
+
+    public static function getAllGenres()
+    {
+        sort(self::$genres, SORT_STRING);
+        return self::$genres;
     }
 }

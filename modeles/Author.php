@@ -56,7 +56,7 @@ class Author extends AbstractModel
      */
     public function findByBook($isbn)
     {
-        $req = 'SELECT a.* FROM ' . self::TABLE . ' AS a JOIN ' . self::ECRIT . ' AS e ON e.' . self::ID_AUTEUR . 'WHERE e.' . self::ISBN . '=:isbn';
+        $req = 'SELECT a.* FROM ' . self::TABLE . ' AS a JOIN ' . self::ECRIT . ' AS e ON e.' . self::ID_AUTEUR . ' WHERE e.' . self::ISBN . '=:isbn';
         $param = Array(
             ':isbn' => $isbn
         );

@@ -14,9 +14,10 @@ abstract class AbstractModel
     /**
      * Cette fonction pépare et exécute un PDOStatement
      * @param string $request - La requête SQL
-     * @param array $paramete rs - Les paramètres de la requête SQL [optional]
+     * @param array|null $parameters  - Les paramètres de la requête SQL [optional]
+     * @return bool
      */
-    protected function execute($request, array $parameters = NULL)
+    protected final function execute($request, array $parameters = NULL)
     {
         try
         {
@@ -32,8 +33,9 @@ abstract class AbstractModel
      * Cette fonction pépare, exécute et collecte tout les résultats d'un PDOStatement
      * @param string $request - La requête SQL
      * @param array $parameters - Les paramètres de la requête SQL [optional]
+     * @return array
      */
-    protected function fetchAll($request, array $parameters = NULL)
+    protected final function fetchAll($request, array $parameters = NULL)
     {
         try
         {
@@ -51,8 +53,9 @@ abstract class AbstractModel
      * Cette fonction pépare, exécute et collecte un seul résultat d'un PDOStatement
      * @param string $request - La requête SQL
      * @param array $parameters - Les paramètres de la requête SQL [optional]
+     * @return mixed
      */
-    protected function fetch($request, array $parameters = NULL)
+    protected final function fetch($request, array $parameters = NULL)
     {
         try
         {
@@ -74,9 +77,9 @@ abstract class AbstractModel
     private function _PDOExceptionHandling(PDOException $e)
     {
         // D'abord on annule la transaction, s'il y a.
-        if ($this->connection()->inTransaction())
+        if ($this->connection->inTransaction())
         {
-            $this->connection()->rollBack();
+            $this->connection->rollBack();
         }
         die($e->getMessage());
     }
