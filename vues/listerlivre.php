@@ -1,16 +1,14 @@
-<h1>
-    <?php echo $c;?>
-</h1>
+<h1><?php echo $view['data']['view_title']?></h1>
 <?php if (count($view['data']['livres']) > 0): ?>
 <ul>
     <?php foreach ($view['data']['livres'] as $livre): ?>
     <li>
-        <h2><a href="<?php echo voirLivreUrl($livre['isbn']); ?>"><?php echo $livre['titre']; ?></a></h2>
+        <h2><a href="<?php echo Url::voirLivre($livre[Book::ISBN]); ?>"><?php echo $livre[Book::TITRE]; ?></a></h2>
         <?php if ($connected): ?>
         <br/>
-        <a href="<?php echo modifierLivreUrl($livre['isbn']); ?>">Modifier</a>
+        <a href="<?php echo Url::modifierLivre($livre[Book::ISBN]); ?>">Modifier</a>
         -
-        <a href="<?php echo supprimerLivreUrl($livre['isbn']); ?>">Supprimer</a>
+        <a href="<?php echo Url::supprimerLivre($livre[Book::ISBN]); ?>">Supprimer</a>
         <?php endif; ?>
     </li>
     <?php endforeach; ?>
@@ -18,6 +16,6 @@
 <?php endif; ?>
 <div class="ajouter">
     <?php if ($connected): ?>
-    <p><a href="<?php echo ajouterLivreUrl(); ?>">Ajouter un livre</a></p>
+    <p><a href="<?php echo Url::ajouterLivre(); ?>">Ajouter un livre</a></p>
     <?php endif; ?>
 </div>

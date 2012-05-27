@@ -7,7 +7,7 @@ class C_zone
 
     function __construct()
     {
-        $this->zone = new M_zone();
+        $this->zone = new Zone();
     }
 
     function lister()
@@ -15,9 +15,10 @@ class C_zone
         global $a, $c;
 
         $data['view_title'] = 'Liste des zones';
-        $data['zones'] = $this->zone->getAllZones(); // !! modifier à regarder partout si c'est pas getAllLivre
+        $data['zones'] = $this->zone->getAll(); // !! modifier à regarder partout si c'est pas getAllLivre
         $html = $a . $c . '.php';
-        return array('data' => $data, 'html' => $html);
+        return array('data' => $data,
+                     'html' => $html);
     }
 
     function modifier()
@@ -50,7 +51,8 @@ class C_zone
             $data['zone'] = $zone; // Le livre à modifier
 
             $html = $a . $c . '.php';
-            return array('data' => $data, 'html' => $html);
+            return array('data' => $data,
+                         'html' => $html);
         }
     }
 
@@ -72,7 +74,8 @@ class C_zone
                 $champs['erreur'] = 'code_zone "' . $code_zone . '" existe déjà';
 
                 $html = $a . $c . '.php';
-                return array('data' => $champs, 'html' => $html);
+                return array('data' => $champs,
+                             'html' => $html);
             }
 
             addZone($champs);
@@ -84,7 +87,8 @@ class C_zone
             $data['view_title'] = 'Ajout de la zone: ';
 
             $html = $a . $c . '.php';
-            return array('data' => $data, 'html' => $html); // returne
+            return array('data' => $data,
+                         'html' => $html); // returne
         }
     }
 
@@ -109,7 +113,8 @@ class C_zone
             $data['zone'] = $zone;
 
             $html = $a . $c . '.php';
-            return array('data' => $data, 'html' => $html); // returne
+            return array('data' => $data,
+                         'html' => $html); // returne
         }
 
     }
@@ -129,7 +134,8 @@ class C_zone
         $data['zone']['livre'] = findBooksByZone($zone['code_zone']);
 
         $html = $a . $c . '.php';
-        return array('data' => $data, 'html' => $html);
+        return array('data' => $data,
+                     'html' => $html);
     }
 
     function _getCodezoneFromRequest()

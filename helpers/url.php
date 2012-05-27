@@ -1,57 +1,88 @@
 <?php
 
-function listerLivreUrl()
+final class Url
 {
-    global $validActions, $validControllers;
+    /**
+     * Méthode générique utilisée pour contruire toute les Urls
+     * @static
+     * @param $controller
+     * @param $action
+     * @param array|null $params
+     * @return string
+     */
+    private static function build($controller, $action, array $params = array())
+    {
+        $p = array(
+            'c' => $controller,
+            'a' => $action
+        );
 
-    $params['a'] = $validActions['lister'];
-    $params['c'] = $validControllers['livre'];
+        return $_SERVER['PHP_SELF'] . '?' . http_build_query(array_merge($p, $params));
+    }
 
-    return $_SERVER['PHP_SELF'] . '?' . http_build_query($params);
+
+    /**
+     * Retourne l'url pour lister les livres
+     * @static
+     * @return string
+     */
+    public static function listerLivre()
+    {
+        return Url::build(LivreController::getName(), 'lister');
+    }
+
+    /**
+     * Retourne l'url pour modifier un livre
+     * @static
+     * @param $isbn
+     * @return string
+     */
+    public static function modifierLivre($isbn)
+    {
+        return Url::build(LivreController::getName(), 'modifier', array(
+            'isbn' => $isbn
+        ));
+    }
+
+    /**
+     * Retourne l'url pour voir un livre
+     * @param $isbn
+     * @return string
+     */
+    public static function voirLivre($isbn)
+    {
+        return Url::build(LivreController::getName(), 'voir', array(
+            'isbn' => $isbn
+        ));
+    }
+
+    /**
+     * Retourne l'url pour supprimer un livre
+     * @static
+     * @param $isbn
+     * @return string
+     */
+    public static function supprimerLivre($isbn)
+    {
+        return Url::build(LivreController::getName(), 'supprimer', array(
+            'isbn' => $isbn
+        ));
+    }
+
+    /**
+     * Retourne l'url pour ajouter un livre
+     * @static
+     * @return string
+     */
+    public static function ajouterLivre()
+    {
+        return Url::build(LivreController::getName(), 'ajouter');
+    }
 }
 
-function modifierLivreUrl($isbn)
-{
-    global $validActions, $validControllers;
-
-    $params['a'] = $validActions['modifier'];
-    $params['c'] = $validControllers['livre'];
-    $params['isbn'] = $isbn;
-
-    return $_SERVER['PHP_SELF'] . '?' . http_build_query($params);
-}
-
-function ajouterLivreUrl()
-{
-    global $validActions, $validControllers;
-
-    $params['a'] = $validActions['ajouter'];
-    $params['c'] = $validControllers['livre'];
-
-    return $_SERVER['PHP_SELF'] . '?' . http_build_query($params);
-}
-
-function supprimerLivreUrl($isbn)
-{
-    global $validActions, $validControllers;
-
-    $params['a'] = $validActions['supprimer'];
-    $params['c'] = $validControllers['livre'];
-    $params['isbn'] = $isbn;
-
-    return $_SERVER['PHP_SELF'] . '?' . http_build_query($params);
-}
-
-function voirLivreUrl($isbn)
-{
-    global $validActions, $validControllers;
-
-    $params['a'] = $validActions['voir'];
-    $params['c'] = $validControllers['livre'];
-    $params['isbn'] = $isbn;
-
-    return $_SERVER['PHP_SELF'] . '?' . http_build_query($params);
-}
+/* TODO
+ * Les fonctions ci-dessous doivent passer dans la classe Url au fur et à mesure de la migration des controlleurs en classes
+ */
 
 function listerAuteurUrl()
 {
