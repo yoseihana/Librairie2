@@ -1,5 +1,5 @@
-<?php if ($connected): ?>
-<h1><?php echo $c . ' a ' . $a; ?></h1>
+<?php if (TRUE): ?>
+<h1><?php echo $view['data']['view_title'] ?></h1>
 <form action="<?php echo ($_SERVER['PHP_SELF']) ?>" method="post" enctype="multipart/form-data">
     <fieldset>
         <label for="titre">
@@ -31,21 +31,10 @@
         </label>
         <br/>
         <select name="genre" id="genre">
-            <option value="roman">
-                Roman
-            </option>
-            <option value="policier">
-                Policier
-            </option>
-            <option value="historique">
-                Historique
-            </option>
-            <option value="théâtre">
-                Théâtre
-            </option>
-            <option value="fantastique">
-                Fantastique
-            </option>
+            <!-- Ici nous pouvons appeler directement Book, car la liste des genres n'est pas liée à la BDD (donc invariable) -->
+            <?php foreach (Book::getAllGenres() as $genre): ?>
+            <option><?php echo $genre ?></option>
+            <?php endforeach; ?>
         </select>
         <br/>
         <label for="zone">
@@ -54,7 +43,8 @@
         <br/>
         <select name="code_zone" id="zone">
             <?php foreach ($view['data']['zones'] as $zone): ?>
-            <option value="<?php echo $zone['code_zone']; ?>"><?php echo $zone['piece'] . ' - ' . $zone['meuble']; ?></option>
+            <option
+                value="<?php echo $zone[Zone::CODE_ZONE]; ?>"><?php echo $zone[Zone::PIECE] . ' - ' . $zone[Zone::MEUBLE]; ?></option>
             <?php endforeach; ?>
         </select>
         <br/>
@@ -64,7 +54,8 @@
         <br/>
         <select name="id_auteur" id="auteur">
             <?php foreach ($view['data']['auteurs'] as $auteur): ?>
-            <option value="<?php echo $auteur['id_auteur']; ?>"><?php echo $auteur['nom'] . ' ' . $auteur['prenom']; ?></option>
+            <option
+                value="<?php echo $auteur[Author::ID_AUTEUR]; ?>"><?php echo $auteur[Author::NOM] . ' ' . $auteur[Author::PRENOM]; ?></option>
             <?php endforeach; ?>
         </select>
         <br/>
@@ -74,16 +65,17 @@
         <br/>
         <input type="file" name="fichier" id="fichier">
 
-        <input type="hidden" name="c" value="<?php echo ($validControllers['livre']); ?>"/>
-        <input type="hidden" name="a" value="<?php echo ($validActions['ajouter']); ?>"/>
-        <input type="hidden" name="image" value="<?php echo $view['data']['livre']['image'] ?>"/>
+        <input type="hidden" name="c" value="<?php echo MainController::getLastController() ?>"/>
+        <input type="hidden" name="a" value="<?php echo MainController::getLastAction() ?>"/>
+        <input type="hidden" name="image" value="<?php echo $view['data']['livre'][Book::IMAGE] ?>"/>
 
         <div class="bouton">
             <input type="submit" value="Ajouter"/>
         </div>
     </fieldset>
 </form>
-<?php else:
+<?php
+else:
     // Redirection vers la page de login ou une page d'erreur, c'est pas mieux ?
     echo '<p>Vous devez vous connecter pour acceder à cette page </p>';
 endif; ?>
