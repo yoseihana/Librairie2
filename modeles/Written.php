@@ -1,5 +1,7 @@
 <?php
 
+require_once 'AbstractModel.php';
+
 final class Written extends AbstractModel
 {
     const TABLE = 'ecrit';
@@ -32,11 +34,10 @@ final class Written extends AbstractModel
 
     /**
      * Supprime toutes les relations d'auteurs d'un livre
-     * @static
      * @param $isbn
      * @return bool
      */
-    public static function deleteAllByIsbn($isbn)
+    public function deleteAllByIsbn($isbn)
     {
         $req = 'DELETE FROM ' . self::TABLE
             . ' WHERE ' . self::ISBN . ' = :isbn';
@@ -55,7 +56,7 @@ final class Written extends AbstractModel
      */
     public function add($data)
     {
-        $req = 'INSERT INTO ' . self::TABLE . 'VALUES (:isbn, :id_auteur)';
+        $req = 'INSERT INTO ' . self::TABLE . ' VALUES (:isbn, :id_auteur)';
 
         $param = array(
             ':isbn'      => $data[self::ISBN],

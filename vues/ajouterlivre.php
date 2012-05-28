@@ -65,6 +65,8 @@
         <br/>
         <input type="file" name="fichier" id="fichier">
 
+        <input type="hidden" name="c" value="<?php echo MainController::getLastController() ?>"/>
+        <input type="hidden" name="a" value="<?php echo MainController::getLastAction() ?>"/>
         <input type="hidden" name="image" value="<?php echo $view['data']['livre'][Book::IMAGE] ?>"/>
 
         <div class="bouton">

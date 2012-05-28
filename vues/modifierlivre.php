@@ -73,6 +73,8 @@
         <br/>
         <input style="color:red" type="file" name="fichier" id="fichier"/>
 
+        <input type="hidden" name="c" value="<?php echo MainController::getLastController() ?>"/>
+        <input type="hidden" name="a" value="<?php echo MainController::getLastAction() ?>"/>
         <input type="hidden" name="isbn" value="<?php echo $view['data']['livre'][Book::ISBN] ?>"/>
         <input type="hidden" name="image" value="<?php echo $view['data']['livre'][Book::IMAGE] ?>"/>
         <input type="hidden" name="id_auteur2" value="<?php echo $view['data']['auteur'][Author::ID_AUTEUR] ?>"/>
