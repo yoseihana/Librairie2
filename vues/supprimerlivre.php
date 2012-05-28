@@ -14,6 +14,8 @@
 
         <p class="supprimer">"<?php echo ($view['data']['livre'][Book::TITRE]); ?>"</p>
 
+        <input type="hidden" name="c" value="<?php echo MainController::getLastController() ?>"/>
+        <input type="hidden" name="a" value="<?php echo MainController::getLastAction() ?>"/>
         <input type="hidden" name="isbn" value="<?php echo ($view['data']['livre'][Book::ISBN]); ?>"/>
 
         <div class="bouton">

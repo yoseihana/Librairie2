@@ -59,7 +59,7 @@ final class LivreController extends AbstractController
                 Book::DATE_PARUTION => $this->getParameter('date_parution'),
                 Book::GENRE         => $this->getParameter('genre'),
                 Book::ZONE          => $this->getParameter('code_zone'),
-                // TODO Book::IMAGE => $name
+                Book::IMAGE         => null //TODO
             );
 
             $ecritDelete = array(
@@ -105,7 +105,6 @@ final class LivreController extends AbstractController
 
     function ajouter()
     {
-        $livre = array();
         // POST - modifier le livre en DB
         // GET - données pour le formulaire
         if ($this->isPost())
@@ -117,7 +116,7 @@ final class LivreController extends AbstractController
                 Book::DATE_PARUTION => $this->getParameter('date_parution'),
                 Book::GENRE         => $this->getParameter('genre'),
                 Book::ZONE          => $this->getParameter('code_zone'),
-                // TODO Book::IMAGE => $name
+                Book::IMAGE         => null //TODO
             );
 
             $ecrit = array(
@@ -132,6 +131,7 @@ final class LivreController extends AbstractController
 
             // Redirection
             header('Location:' . Url::voirLivre($this->getParameter('isbn')));
+
         }
         elseif ($this->isGet())
         {
