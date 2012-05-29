@@ -13,9 +13,7 @@ class Author extends AbstractModel
     const PRENOM = 'prenom';
     const ID_AUTEUR = 'id_auteur';
     const DATE_NAISSANCE = 'date_naissance';
-    const IMAGE = ':image';
-    const ECRIT = 'ecrit';
-    const ISBN = 'isbn';
+    const IMAGE = 'image';
 
     //Apple au __construct pour être sûr qu'il y a une connection PDO
     function __construct()
@@ -56,7 +54,7 @@ class Author extends AbstractModel
      */
     public function findByBook($isbn)
     {
-        $req = 'SELECT a.* FROM ' . self::TABLE . ' AS a JOIN ' . self::ECRIT . ' AS e ON e.' . self::ID_AUTEUR . ' WHERE e.' . self::ISBN . '=:isbn';
+        $req = 'SELECT a.* FROM ' . self::TABLE . ' AS a JOIN ' . Written::TABLE . ' AS e ON a.' . self::ID_AUTEUR . ' = e.' . Written::AUTHOR_ID .' WHERE e.' . Written::ISBN . '=:isbn';
         $param = Array(
             ':isbn' => $isbn
         );
@@ -68,9 +66,9 @@ class Author extends AbstractModel
      * @param $id_auteur
      * @return bool
      */
-    public function deleteAuthor($id_auteur)
+    public function delete($id_auteur)
     {
-        $req = 'DELET FROM ' . self::TABLE . ' WHERE ' . self::ID_AUTEUR . '=:id_auteur';
+        $req = 'DELETE FROM ' . self::TABLE . ' WHERE ' . self::ID_AUTEUR . '=:id_auteur';
         $param = Array(
             ':id_auteur' => $id_auteur
         );
@@ -82,7 +80,7 @@ class Author extends AbstractModel
      * @param array $data
      * @return bool
      */
-    public function updateAuthor(array $data)
+    public function update(array $data)
     {
         $req = 'UPDATE ' . self::TABLE . ' SET ' . self::NOM . '=:nom, ' . self::PRENOM . '=:prenom, ' . self::DATE_NAISSANCE . '=:date_naissance, ' . self::IMAGE . '=:image WHERE ' . self::ID_AUTEUR . '=:id_auteur';
         $param = Array(
@@ -100,7 +98,7 @@ class Author extends AbstractModel
      * @param array $data
      * @return bool
      */
-    public function addAuthor(array $data)
+    public function add(array $data)
     {
         $req = 'INSERT INTO ' . self::TABLE . ' VALUE (null, :nom, :prenom, :date_naissance, :image)';
         $param = Array(
@@ -122,7 +120,7 @@ class Author extends AbstractModel
     {
         $req = 'SELECT count(' . self::ID_AUTEUR . ') as nb_id_auteur FROM ' . self::TABLE . ' WHERE ' . self::ID_AUTEUR . '=:id_auteur';
         $param = Array(
-            ':id_auteur' => self::ID_AUTEUR
+            ':id_auteur' => $id_auteur
         );
         $result = $this->fetch($req, $param);
 

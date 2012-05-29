@@ -25,7 +25,6 @@ final class DB
 
         if ($conn)
         {
-
             return $conn;
         }
 

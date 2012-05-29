@@ -1,43 +1,30 @@
 <h1>
-    <?php echo $c; ?>
+    <?php echo ($view['data']['view_title']); ?>
 </h1>
-<?php if (count($view['data'] ['zones'])): ?>
-<ul>
-    <?php foreach ($view['data']['zones'] as $zone): ?> <!-- Conmpte si il y a au moins 1 livre -->
-    <li>
-        <h2><a
-            href="<?php echo voirZoneUrl($zone['code_zone']); ?>"><?php echo $zone['piece'] . ' - ' . $zone['meuble']; ?></a>
-        </h2>
-        <?php if ($connected): ?>
-        <a href="<?php echo modifierZoneUrl($zone['code_zone']); ?>">Modifier</a>
-        -
-        <a href="<?php echo supprimerZoneUrl($zone['code_zone']); ?>">Supprimer</a>
-        <?php endif; ?>
-    </li>
-    <?php endforeach; ?>
-</ul>
-<?php endif; ?>
 <div class="voir">
     <h3>
         Pièce:
     </h3>
 
-    <p><?php echo($view['data']['zone']['piece']); ?></p>
+    <p><?php echo($view['data']['zone'][Zone::PIECE]); ?></p>
 
     <h3>
         Meuble:
     </h3>
 
-    <p><?php echo($view['data']['zone']['meuble']); ?> </p>
+    <p><?php echo($view['data']['zone'][Zone::MEUBLE]); ?> </p>
 
     <h3>
         Livre dans cette zone:
     </h3>
 
-    <p><?php echo ($view['data']['zone']['livre'] != null) ? $view['data']['zone']['livre']['titre'] : 'Il n\'y a pas de livre sur cette commode'; ?></p>
+    <p><?php echo ($view['data']['livre'] != null) ? $view['data']['livre'][Book::TITRE] : 'Il n\'y a pas de livre sur cette commode'; ?></p>
 </div>
 <div class="ajouter">
-    <?php if ($connected): ?><a
-    href="<?php echo ajouterZoneUrl($zone['code_zone']); ?>">Ajouter
-    une zone</a> <?php endif; ?>
+    <?php if (true): ?>
+    <p><a href="<?php echo Url::modifierZone($view['data']['zone'][Zone::CODE_ZONE]); ?>">Modifier la zone</a></p>
+    <p><a href="<?php echo Url::supprimerZone($view['data']['zone'][Zone::CODE_ZONE]); ?>">Supprimer la Zone</a></p>
+    <p><a href="<?php echo Url::ajouterZone(); ?>">Ajouter une zone</a></p>
+    <p class="retour"><a href="<?php echo Url::listerZone(); ?>">Retour à liste des zones</a></p>
+    <?php endif; ?>
 </div>

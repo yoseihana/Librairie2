@@ -1,7 +1,7 @@
-<?php if ($connected)
+<?php if (true)
 {
     ?>
-<h1><?php echo $c . ' a ' . $a; ?></h1>
+<h1><?php echo $view['data']['view_title'] ?></h1>
 <form action="<?php echo ($_SERVER['PHP_SELF']) ?>" method="post" enctype="multipart/form-data">
     <fieldset>
         <label for="nom">
@@ -29,17 +29,25 @@
         <input type="file" name="fichier" id="fichier">
 
 
-        <input type="hidden" name="c" value="<?php echo ($validControllers['auteur']); ?>"/>
-        <input type="hidden" name="a" value="<?php echo ($validActions['ajouter']); ?>"/>
         <input type="hidden" name="image" value="<?php echo $view['data']['auteur']['image'] ?>"/>
 
         <div class="bouton">
             <input type="submit" value="Ajouter"/>
         </div>
+
+        <input type="hidden" name="c" value="<?php echo MainController::getLastController() ?>"/>
+        <input type="hidden" name="a" value="<?php echo MainController::getLastAction() ?>"/>
+        <input type="hidden" name="image" value="<?php echo $view['data']['auteur'][Author::IMAGE] ?>"/>
     </fieldset>
 </form>
+<div class="ajouter">
+    <?php if (true): ?>
+    <p class="retour"><a href="<?php echo Url::listerAuteur(); ?>">Retour à liste des auteurs</a></p>
+    <?php endif; ?>
+</div>
 <?php
-} else
+}
+else
 {
     echo '<p>Vous devez vous connecter pour acceder à cette page </p>';
 } ?>

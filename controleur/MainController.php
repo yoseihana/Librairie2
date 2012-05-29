@@ -1,5 +1,9 @@
 <?php
 
+require_once './controleur/LivreController.php';
+require_once './controleur/AuteurController.php';
+require_once './controleur/ZoneController.php';
+
 abstract class MainController
 {
     const DEFAULT_CONTROLLER = 'def_controller';
@@ -28,8 +32,10 @@ abstract class MainController
 
         if (!class_exists($lastControllerClass, false))
         {
-            die('No valid controller found for "' . self::$lastController . '".');
+            die('No controller found for "' . self::$lastController . '".');
         }
+
+        //Changement, passe d'un string à un objet instancier de la dernière classe
         $lastControllerClass = new $lastControllerClass;
 
         // Check if controller class name (above) is a valid controller (extends AbstractController)
@@ -50,7 +56,7 @@ abstract class MainController
             die ('No action "' . self::$lastAction . '" for controller "' . self::$lastController . '"');
         }
 
-        // Call the requested method from the requested controller
+        // Call the requested method from the requested controller  /!\ Trés important!
         return call_user_func(array(
             $lastControllerClass,
             self::$lastAction

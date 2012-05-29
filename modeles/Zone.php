@@ -32,9 +32,9 @@ class Zone extends AbstractModel
     {
         $req = 'SELECT * FROM ' . self::TABLE . ' WHERE ' . self::CODE_ZONE . ' = :code_zone';
         $param = Array(
-            ':code_zone' => self::CODE_ZONE
+            ':code_zone' => $code_zone
         );
-        return $this->fetchAll($req, $param);
+        return $this->fetch($req, $param);
     }
 
     /**
@@ -42,11 +42,11 @@ class Zone extends AbstractModel
      * @param $code_zone
      * @return bool
      */
-    function deleteZone($code_zone)
+    function delete($code_zone)
     {
         $req = 'DELETE FROM ' . self::TABLE . ' WHERE ' . self::CODE_ZONE . '= :code_zone';
         $param = Array(
-            ':code_zone' => self::CODE_ZONE
+            ':code_zone' => $code_zone
         );
 
         return $this->execute($req, $param);
@@ -57,9 +57,13 @@ class Zone extends AbstractModel
      * @param array $data
      * @return bool
      */
-    function updateZone(array $data)
+    function update(array $data)
     {
-        $req = 'UPDATE ' . self::TABLE . ' SET ' . self::PIECE . '= :piece,' . self::MEUBLE . '= :meuble WHERE ' . self::CODE_ZONE . '= :code_zone';
+        $req = 'UPDATE ' . self::TABLE .
+            ' SET ' . self::PIECE . '= :piece,'
+            . self::MEUBLE . '= :meuble WHERE '
+            . self::CODE_ZONE . '= :code_zone';
+
         $param = Array(
             ':piece'     => $data[self::PIECE],
             ':meuble'    => $data[self::MEUBLE],
@@ -74,13 +78,13 @@ class Zone extends AbstractModel
      * @param array $data
      * @return bool
      */
-    function addZone(array $data)
+    function add(array $data)
     {
         $req = 'INSERT INTO ' . self::TABLE . ' VALUES (:code_zone, :piece, :meuble);'; //on place soit le ? ou le nom de var qu'on veut ajouter. On peux tuilier aussi :isbn au lieu du ?. Ici avec : on prépare une requête et la donnée
         $param = Array(
             ':code_zone' => $data[self::CODE_ZONE],
             ':piece'     => $data[self::PIECE],
-            ':meubme'    => $data[self::MEUBLE]
+            ':meuble'    => $data[self::MEUBLE]
         );
 
         return $this->execute($req, $param);
@@ -94,10 +98,12 @@ class Zone extends AbstractModel
     function countZoneByCode($code_zone)
     {
         $req = 'SELECT count(' . self::CODE_ZONE . ') AS nb_code_zone FROM ' . self::TABLE . ' WHERE ' . self::CODE_ZONE . '= :code_zone';
+
         $param = Array(
-            ':code_zone' => self::CODE_ZONE
+            ':code_zone' => $code_zone
         );
-        $result = $this->execute($req, $param);
+        $result = $this->fetch($req, $param);
         return $result['nb_code_zone']; //Retourne 0 ou 1
+
     }
 }

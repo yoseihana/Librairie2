@@ -74,6 +74,11 @@
         </div>
     </fieldset>
 </form>
+<div class="ajouter">
+    <?php if (true): ?>
+    <p class="retour"><a href="<?php echo Url::listerLivre(); ?>">Retour à la liste des livres</a></p>
+    <?php endif; ?>
+</div>
 <?php
 else:
     // Redirection vers la page de login ou une page d'erreur, c'est pas mieux ?

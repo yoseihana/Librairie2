@@ -20,7 +20,7 @@ final class Url
         return $_SERVER['PHP_SELF'] . '?' . http_build_query(array_merge($p, $params));
     }
 
-
+    /*--------------------- LIVRE --------------------*/
     /**
      * Retourne l'url pour lister les livres
      * @static
@@ -78,114 +78,57 @@ final class Url
     {
         return Url::build(LivreController::getName(), 'ajouter');
     }
+
+    /*----------------- AUTEUR -----------------------*/
+    public static function listerAuteur()
+    {
+        return Url::build(AuteurController::getName(), 'lister');
+    }
+
+    public static function voirAuteur($id_auteur)
+    {
+        return Url::build(AuteurController::getName(), 'voir', array('id_auteur'=> $id_auteur));
+    }
+
+    public static function modifierAuteur($id_auteur)
+    {
+        return Url::build(AuteurController::getName(), 'modifier', array('id_auteur'=> $id_auteur));
+    }
+
+    public static function supprimerAuteur($id_auteur)
+    {
+        return Url::build(AuteurController::getName(), 'supprimer', array('id_auteur'=> $id_auteur));
+    }
+
+    public static function ajouterAuteur()
+    {
+        return Url::build(AuteurController::getName(), 'ajouter');
+    }
+
+    /*-----------------ZONE --------------------->*/
+    public static function listerZone()
+    {
+        return Url::build(ZoneController::getName(), 'lister');
+    }
+
+    public static function voirZone($code_zone)
+    {
+        return Url::build(ZoneController::getName(), 'voir', array('code_zone'=> $code_zone));
+    }
+
+    public static function modifierZone($code_zone)
+    {
+        return Url::build(ZoneController::getName(), 'modifier', array('code_zone'=> $code_zone));
+    }
+
+    public static function ajouterZone()
+    {
+        return Url::build(ZoneController::getName(), 'ajouter');
+    }
+
+    public static function supprimerZone($code_zone)
+    {
+        return Url::build(ZoneController::getName(), 'supprimer', array('code_zone'=> $code_zone));
+    }
 }
 
-/* TODO
- * Les fonctions ci-dessous doivent passer dans la classe Url au fur et à mesure de la migration des controlleurs en classes
- */
-
-function listerAuteurUrl()
-{
-    global $validActions, $validControllers;
-
-    $params['a'] = $validActions['lister'];
-    $params['c'] = $validControllers['auteur'];
-
-    return $_SERVER['PHP_SELF'] . '?' . http_build_query($params);
-}
-
-function voirAuteurUrl($id_auteur)
-{
-    global $validActions, $validControllers;
-
-    $params['a'] = $validActions['voir'];
-    $params['c'] = $validControllers['auteur'];
-    $params['id_auteur'] = $id_auteur;
-
-    return $_SERVER['PHP_SELF'] . '?' . http_build_query($params);
-}
-
-function modifierAuteurUrl($id_auteur)
-{
-    global $validActions, $validControllers;
-
-    $params['a'] = $validActions['modifier'];
-    $params['c'] = $validControllers['auteur'];
-    $params['id_auteur'] = $id_auteur;
-
-    return $_SERVER['PHP_SELF'] . '?' . http_build_query($params);
-}
-
-function supprimerAuteurUrl($id_auteur)
-{
-    global $validActions, $validControllers;
-
-    $params['a'] = $validActions['supprimer'];
-    $params['c'] = $validControllers['auteur'];
-    $params['id_auteur'] = $id_auteur;
-
-    return $_SERVER['PHP_SELF'] . '?' . http_build_query($params);
-}
-
-function ajouterAuteurUrl()
-{
-    global $validActions, $validControllers;
-
-    $params['a'] = $validActions['ajouter'];
-    $params['c'] = $validControllers['auteur'];
-
-    return $_SERVER['PHP_SELF'] . '?' . http_build_query($params);
-}
-
-function listerZoneUrl()
-{
-    global $validActions, $validControllers;
-
-    $params['a'] = $validActions['lister'];
-    $params['c'] = $validControllers['zone'];
-
-    return $_SERVER['PHP_SELF'] . '?' . http_build_query($params);
-}
-
-function modifierZoneUrl($code_zone)
-{
-    global $validActions, $validControllers;
-
-    $params['a'] = $validActions['modifier'];
-    $params['c'] = $validControllers['zone'];
-    $params['code_zone'] = $code_zone;
-
-    return $_SERVER['PHP_SELF'] . '?' . http_build_query($params);
-}
-
-function ajouterZoneUrl()
-{
-    global $validActions, $validControllers;
-
-    $params['a'] = $validActions['ajouter'];
-    $params['c'] = $validControllers['zone'];
-
-    return $_SERVER['PHP_SELF'] . '?' . http_build_query($params);
-}
-
-function supprimerZoneUrl($code_zone)
-{
-    global $validActions, $validControllers;
-
-    $params['a'] = $validActions['supprimer'];
-    $params['c'] = $validControllers['zone'];
-    $params['code_zone'] = $code_zone;
-
-    return $_SERVER['PHP_SELF'] . '?' . http_build_query($params);
-}
-
-function voirZoneUrl($code_zone)
-{
-    global $validActions, $validControllers;
-
-    $params['a'] = $validActions['voir'];
-    $params['c'] = $validControllers['zone'];
-    $params['code_zone'] = $code_zone;
-
-    return $_SERVER['PHP_SELF'] . '?' . http_build_query($params);
-}

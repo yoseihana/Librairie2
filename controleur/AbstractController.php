@@ -34,6 +34,11 @@ abstract class AbstractController
         return $_SERVER['REQUEST_METHOD'] == 'GET';
     }
 
+    /**
+     * Recherche la valeur du paramètre passer en post ou get dont la clé est passée en argument de la fonction
+     * @param $paramKey
+     * @return mixed
+     */
     protected final function getParameter($paramKey)
     {
         switch ($_SERVER['REQUEST_METHOD'])

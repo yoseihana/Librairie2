@@ -34,13 +34,13 @@
     <div class="menu">
         <ol>
             <li>
-                <a href="<?php echo listerLivreUrl() ?>" title="Lister les livres">Livres</a>
+                <a href="<?php echo Url::listerLivre() ?>" title="Lister les livres">Livres</a>
             </li>
             <li>
-                <a href="<?php echo listerAuteurUrl() ?>" title="Lister les auteurs">Auteurs</a>
+                <a href="<?php echo Url::listerAuteur() ?>" title="Lister les auteurs">Auteurs</a>
             </li>
             <li>
-                <a href="<?php echo listerZoneUrl() ?>" title="Lister les zones">Zones</a>
+                <a href="<?php echo Url::listerZone() ?>" title="Lister les zones">Zones</a>
             </li>
         </ol>
     </div>

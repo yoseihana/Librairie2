@@ -103,7 +103,7 @@ div.connection a {
 div.content {
     width: 750px;
     margin: 0 auto;
-    margin-top: 4em;
+    margin-top: 2em;
     padding: 2em;
 }
 
@@ -117,7 +117,7 @@ div.content h1 {
 }
 
 div.content li {
-    margin: 0.5em;
+    margin: 1.5em 0.5em;
     list-style-type: square;
     color: #F2F2F2;
 }
@@ -149,14 +149,32 @@ div.content p {
 label {
     color: white;
     font-weight: lighter;
+    margin-bottom: 0.5em;
 }
 
 input {
     margin-bottom: 1em;
 }
 
+input[type="file"] {
+    color: white;
+}
+
+select {
+    margin-bottom: 1em;
+}
+
 div.ajouter {
-    text-align: right;
+    margin-top: 2em;
+}
+
+div.ajouter p.retour{
+    float: right;
+}
+
+div.ajouter p {
+    float: left;
+    margin: 0 2em 2em 0;
 }
 
 div.ajouter a, div.ajouter a:hover, div.ajouter a:visited {
@@ -180,8 +198,12 @@ h3 {
 }
 
 div.voir p {
-    padding-bottom: 0.5em;
+    padding-bottom: 1em;
     font-weight: lighter;
+}
+
+div.voir ul li.auteurLivre{
+    margin:0.5em 0 0.5em 1em;
 }
 
 div.content p.first {

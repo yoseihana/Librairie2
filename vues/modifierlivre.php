@@ -71,7 +71,7 @@
         <br/>
         <img src="./img/<?php echo $view['data']['livre'][Book::IMAGE] ?>" alt="image"/>
         <br/>
-        <input style="color:red" type="file" name="fichier" id="fichier"/>
+        <input type="file" name="fichier" id="fichier"/>
 
         <input type="hidden" name="c" value="<?php echo MainController::getLastController() ?>"/>
         <input type="hidden" name="a" value="<?php echo MainController::getLastAction() ?>"/>
@@ -84,6 +84,11 @@
         </div>
     </fieldset>
 </form>
+<div class="ajouter">
+    <?php if (true): ?>
+    <p class="retour"><a href="<?php echo Url::voirLivre($view['data']['livre'][Book::ISBN]); ?>">Retour à la fiche du livre</a></p>
+    <?php endif; ?>
+</div>
 <?php
 else:
     // Redirection vers la page de login ou une page d'erreur, c'est pas mieux ?

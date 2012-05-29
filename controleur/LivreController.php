@@ -59,7 +59,7 @@ final class LivreController extends AbstractController
                 Book::DATE_PARUTION => $this->getParameter('date_parution'),
                 Book::GENRE         => $this->getParameter('genre'),
                 Book::ZONE          => $this->getParameter('code_zone'),
-                // TODO Book::IMAGE => $name
+                Book::IMAGE => NULL //TODO
             );
 
             $ecritDelete = array(
@@ -105,7 +105,6 @@ final class LivreController extends AbstractController
 
     function ajouter()
     {
-        $livre = array();
         // POST - modifier le livre en DB
         // GET - données pour le formulaire
         if ($this->isPost())
@@ -117,7 +116,7 @@ final class LivreController extends AbstractController
                 Book::DATE_PARUTION => $this->getParameter('date_parution'),
                 Book::GENRE         => $this->getParameter('genre'),
                 Book::ZONE          => $this->getParameter('code_zone'),
-                // TODO Book::IMAGE => $name
+                Book::IMAGE => NULL //TODO
             );
 
             $ecrit = array(
@@ -135,9 +134,11 @@ final class LivreController extends AbstractController
         }
         elseif ($this->isGet())
         {
-            $data['view_title'] = 'Ajout d\'un livre';
-            $data['auteurs'] = $this->author->getAll(); // La liste des auteurs
-            $data['zones'] = $this->zone->getAll(); // La liste des zones
+            $data = array(
+                'view_title' => 'Ajouter un livre',
+                'auteurs'    => $this->author->getAll(),
+                'zones'      => $this->zone->getAll()
+            );
 
             return array(
                 'data' => $data,
@@ -169,7 +170,7 @@ final class LivreController extends AbstractController
             $livre = $this->book->findByIsbn($isbn);
 
             $data = array(
-                'view_title' => 'Supression du livre: ' . $livre['titre'],
+                'view_title' => 'Supression du livre: ' . $livre[Book::TITRE],
                 'livre'      => $livre
 
             );
@@ -179,7 +180,6 @@ final class LivreController extends AbstractController
                 'html' => MainController::getLastViewFileName()
             );
         }
-
     }
 
     public function voir()
