@@ -46,7 +46,7 @@ final class Written extends AbstractModel
             ':isbn' => $isbn,
         );
 
-        return self::execute($req, $param);
+        return $this->execute($req, $param);
     }
 
     /**
