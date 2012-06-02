@@ -31,9 +31,29 @@ final class AuteurController extends AbstractController
 
     public function lister()
     {
+        $totaleAuteur = $this->author->countAuthor();
+        $nombrePage = ceil($totaleAuteur['totale'] / 5);
+
+        if (isset($_GET['page']))
+        {
+            $pageActuelle = intval($_GET['page']);
+
+            if ($pageActuelle > $nombrePage)
+            {
+                    $pageActuelle = $nombrePage;
+            }
+        }
+        else
+        {
+            $pageActuelle = 1;
+        }
+
+        $premiereEntree = ($pageActuelle-1)*5;
+
         $data = array(
             'view_title' => 'Liste des auteurs',
-            'auteurs'    => $this->author->getAll()
+            'auteurs'    => $this->author->getAll($premiereEntree),
+            'nbPage'     =>  $nombrePage
         );
 
         $html = MainController::getLastViewFileName();
@@ -48,8 +68,8 @@ final class AuteurController extends AbstractController
         $auteur = $this->author->findById($id_auteur);
 
         $data = array(
-            'view_title'=> 'Fiche de l\'auteur ' . $auteur[Author::PRENOM] . ' ' . $auteur[Author::NOM],
-            'auteur'    => $auteur,
+            'view_title' => 'Fiche de l\'auteur ' . $auteur[Author::PRENOM] . ' ' . $auteur[Author::NOM],
+            'auteur'     => $auteur,
             'livres'     => $this->book->findByAuthor($auteur[Author::ID_AUTEUR])
         );
 
@@ -68,7 +88,7 @@ final class AuteurController extends AbstractController
                 Author::NOM           => $this->getParameter('nom'),
                 Author::PRENOM        => $this->getParameter('prenom'),
                 Author::DATE_NAISSANCE=> $this->getParameter('date_naissance'),
-                Author::IMAGE => NULL
+                Author::IMAGE         => NULL
             );
 
             $this->author->update($auteur);
@@ -98,14 +118,14 @@ final class AuteurController extends AbstractController
                 Author::NOM           => $this->getParameter('nom'),
                 Author::PRENOM        => $this->getParameter('prenom'),
                 Author::DATE_NAISSANCE=> $this->getParameter('date_naissance'),
-                Author::IMAGE => NULL
+                Author::IMAGE         => NULL
             );
 
             DB::getPdoInstance()->beginTransaction();
             $this->author->add($auteur);
             DB::getPdoInstance()->commit();
 
-           // header('Location: ' . Url::voirAuteur($this->getParameter('id')));      NE FONCTIONNE  PAS
+            // header('Location: ' . Url::voirAuteur($this->getParameter('id')));      NE FONCTIONNE  PAS
             header('Location: ' . Url::listerAuteur());
         }
         elseif ($this->isGet())

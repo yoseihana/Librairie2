@@ -17,8 +17,13 @@
     <h3>
         Livre dans cette zone:
     </h3>
-
-    <p><?php echo ($view['data']['livre'] != null) ? $view['data']['livre'][Book::TITRE] : 'Il n\'y a pas de livre sur cette commode'; ?></p>
+    <?php if (count($view['data']['livres']) < 1): ?>
+        <p>Il n'y a pas de livres sur cette commode</p>
+    <?php else: ?>
+        <?php foreach ($view['data']['livres'] as $livres): ?>
+            <p><?php echo $livres[Book::TITRE]; ?></p>
+        <?php endforeach; ?>
+    <?php endif; ?>
 </div>
 <div class="ajouter">
     <?php if (true): ?>

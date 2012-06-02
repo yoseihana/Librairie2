@@ -16,7 +16,14 @@ class Zone extends AbstractModel
      * Retourne tous les éléments des zones
      * @return array
      */
-    function getAll()
+    function getAll($premiereEntree)
+    {
+        $req = 'SELECT * FROM ' . self::TABLE . ' ORDER BY ' . self::PIECE.' DESC LIMIT '.$premiereEntree.', 5';
+
+        return $this->fetchAll($req);
+    }
+
+    function getAllZone()
     {
         $req = 'SELECT * FROM ' . self::TABLE . ' ORDER BY ' . self::PIECE;
 
@@ -106,4 +113,11 @@ class Zone extends AbstractModel
         return $result['nb_code_zone']; //Retourne 0 ou 1
 
     }
+
+    public function countZone(){
+        $req = 'SELECT count(*) AS totale FROM '.self::TABLE;
+        $totaleZone = $this->fetch($req);
+        return $totaleZone;
+    }
+
 }

@@ -32,12 +32,20 @@ final class Book extends AbstractModel
      * Récupére tout les livres trié par titre en ordre alphabétique
      * @return array
      */
-    public function getAll()
+    public function getAll($premiereEntree)
+    {
+        $req = 'SELECT * FROM ' . self::TABLE . ' ORDER BY ' . self::TITRE.' DESC LIMIT '.$premiereEntree.', 5';
+
+        return $this->fetchAll($req);
+    }
+
+    public function getAllBook()
     {
         $req = 'SELECT * FROM ' . self::TABLE . ' ORDER BY ' . self::TITRE;
 
         return $this->fetchAll($req);
     }
+
 
     /**
      * Récupère un livre avec son ISBN
@@ -170,6 +178,12 @@ final class Book extends AbstractModel
         $result = $this->fetch($req, $param);
 
         return $result['nb_livre']; // retourne 0 ou 1
+    }
+
+    public function countBook(){
+        $req = 'SELECT count(*) AS totale FROM '.self::TABLE;
+        $totaleLivres = $this->fetch($req);
+        return $totaleLivres;
     }
 
     public static function getAllGenres()

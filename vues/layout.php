@@ -25,7 +25,7 @@
 <body>
 <div class="header">
     <div class="connection">
-        <?php if ($connected): ?>
+        <?php if (true): ?>
         <p><a href="index.php?c=membre&a=deconnecter">Se déconnecter</a></p>
         <?php else: ?>
         <p><a href="index.php?a=connecter&c=membre">Se connecter</a></p>
@@ -47,7 +47,8 @@
 
 </div>
 <div id="title">
-    <p><a href="index.php" title="Retour à la page accueil" all="Retour à la page accueil">Gestion de bibliothèque de l'INPRES</a></p>
+    <p><a href="index.php" title="Retour à la page accueil" all="Retour à la page accueil">Gestion de bibliothèque de
+        l'INPRES</a></p>
 </div>
 <div class="content">
     <?php include($view['html']); ?>

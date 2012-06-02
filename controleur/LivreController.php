@@ -29,8 +29,27 @@ final class LivreController extends AbstractController
 
     public function lister()
     {
+        $totaleLivres = $this->book->countBook();
+        $nombrePages = ceil($totaleLivres['totale'] / 5);
+
+        if (isset($_GET['page']))
+        {
+            $pageActuelle = intval($_GET['page']);
+            if ($pageActuelle > $nombrePages)
+            {
+                $pageActuelle = $nombrePages;
+            }
+        }
+        else
+        {
+            $pageActuelle = 1;
+        }
+
+        $premiereEntree = ($pageActuelle -1)*5;
+
         $data['view_title'] = 'Liste des livres';
-        $data['livres'] = $this->book->getAll();
+        $data['livres'] = $this->book->getAll($premiereEntree);
+        $data['nbPage'] = $nombrePages;
 
         $html = MainController::getLastViewFileName();
         return array(
@@ -59,7 +78,7 @@ final class LivreController extends AbstractController
                 Book::DATE_PARUTION => $this->getParameter('date_parution'),
                 Book::GENRE         => $this->getParameter('genre'),
                 Book::ZONE          => $this->getParameter('code_zone'),
-                Book::IMAGE => NULL //TODO
+                Book::IMAGE         => NULL //TODO
             );
 
             $ecritDelete = array(
@@ -84,9 +103,9 @@ final class LivreController extends AbstractController
         {
             $livre = $this->book->findByIsbn($isbn);
             $auteur = $this->author->findByBook($isbn);
-            $auteurs = $this->author->getAll();
+            $auteurs = $this->author->getAllAuthor();
             $zone = $this->zone->findZoneByCode($livre[Book::ZONE]);
-            $zones = $this->zone->getAll();
+            $zones = $this->zone->getAllZone();
 
             $data = array(
                 'view_title' => 'Modification du livre: ' . $livre[Book::TITRE],
@@ -116,7 +135,7 @@ final class LivreController extends AbstractController
                 Book::DATE_PARUTION => $this->getParameter('date_parution'),
                 Book::GENRE         => $this->getParameter('genre'),
                 Book::ZONE          => $this->getParameter('code_zone'),
-                Book::IMAGE => NULL //TODO
+                Book::IMAGE         => NULL //TODO
             );
 
             $ecrit = array(
@@ -136,8 +155,8 @@ final class LivreController extends AbstractController
         {
             $data = array(
                 'view_title' => 'Ajouter un livre',
-                'auteurs'    => $this->author->getAll(),
-                'zones'      => $this->zone->getAll()
+                'auteurs'    => $this->author->getAllAuthor(),
+                'zones'      => $this->zone->getAllZone()
             );
 
             return array(
@@ -192,7 +211,7 @@ final class LivreController extends AbstractController
         $data = array(
             'view_title' => 'Fiche du livre: ' . $livre['titre'],
             'livre'      => $livre,
-            'livres'     => $this->book->getAll(),
+            'livres'     => $this->book->getAllBook(),
             'auteur'     => $this->author->findByBook($isbn),
             'zone'       => $this->zone->findZoneByCode($livre[Book::ZONE])
         );

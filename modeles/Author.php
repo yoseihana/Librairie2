@@ -26,7 +26,14 @@ class Author extends AbstractModel
      * Récupère toutes les données sur l'auteur triées par ordre alpha
      * @return array
      */
-    public function getAll()
+    public function getAll($premiereEntree)
+    {
+        $req = 'SELECT * FROM ' . self::TABLE . ' ORDER BY ' . self::NOM.' DESC LIMIT '.$premiereEntree.', 5';
+
+        return $this->fetchAll($req);
+    }
+
+    public function getAllAuthor()
     {
         $req = 'SELECT * FROM ' . self::TABLE . ' ORDER BY ' . self::NOM;
 
@@ -125,5 +132,11 @@ class Author extends AbstractModel
         $result = $this->fetch($req, $param);
 
         return $result['nb_id_auteur']; //Retourn 1 ou 0
+    }
+
+    public function countAuthor(){
+        $req = 'SELECT count(*) AS totale FROM '.self::TABLE;
+        $totaleAuteur = $this->fetch($req);
+        return $totaleAuteur;
     }
 }

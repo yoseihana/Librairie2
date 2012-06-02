@@ -29,7 +29,10 @@
     </h3>
 
     <p><?php echo ($view['data']['auteur'] != null) ? $view['data']['auteur'][Author::NOM] . ' ' . $view['data']['auteur'][Author::PRENOM] : 'Il n\'y a pas d\'auteur enregistré pour ce livre'; ?></p>
-
+     <h3>
+         Zone de rangement
+     </h3>
+    <p>Pièce: <?php echo($view['data']['zone'][Zone::PIECE]); ?> - Meuble: <?php echo($view['data']['zone'][Zone::MEUBLE]); ?></p>
     <img src="./img/<?php echo $view['data']['livre'][Book::IMAGE] ?>" alt="image"/>
 </div>
 <div class="ajouter">

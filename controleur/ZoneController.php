@@ -29,9 +29,29 @@ final class ZoneController extends AbstractController
 
     public function lister()
     {
+        $totaleZone = $this->zone->countZone();
+        $nombrePage = ceil($totaleZone['totale'] / 5);
+
+        if (isset($_GET['page']))
+        {
+            $pageActuelle = intval($_GET['page']);
+
+            if ($pageActuelle > $nombrePage)
+            {
+                $pageActuelle = $nombrePage;
+            }
+        }
+        else
+        {
+            $pageActuelle = 1;
+        }
+
+        $premiereEntree = ($pageActuelle-1)*5;
+
         $data = array(
             'view_title'=> 'Liste des zones',
-            'zones'     => $this->zone->getAll()
+            'zones'     => $this->zone->getAll($premiereEntree),
+            'nbPage' => $nombrePage
         );
 
         return array('data'=> $data, 'html'=> MainController::getLastViewFileName());
@@ -46,7 +66,7 @@ final class ZoneController extends AbstractController
         $data = array(
             'view_title'=> 'Fiche de la zone ' . $zone['piece'] . ' - ' . $zone['meuble'],
             'zone'      => $zone,
-            'livre'     => $this->book->findByZone($code_zone)
+            'livres'     => $this->book->findByZone($code_zone)
         );
 
         return array('data'=> $data, 'html'=> MainController::getLastViewFileName());
