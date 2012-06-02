@@ -40,7 +40,7 @@ final class AuteurController extends AbstractController
 
             if ($pageActuelle > $nombrePage)
             {
-                    $pageActuelle = $nombrePage;
+                $pageActuelle = $nombrePage;
             }
         }
         else
@@ -48,12 +48,12 @@ final class AuteurController extends AbstractController
             $pageActuelle = 1;
         }
 
-        $premiereEntree = ($pageActuelle-1)*5;
+        $premiereEntree = ($pageActuelle - 1) * 5;
 
         $data = array(
             'view_title' => 'Liste des auteurs',
             'auteurs'    => $this->author->getAll($premiereEntree),
-            'nbPage'     =>  $nombrePage
+            'nbPage'     => $nombrePage
         );
 
         $html = MainController::getLastViewFileName();
@@ -125,7 +125,6 @@ final class AuteurController extends AbstractController
             $this->author->add($auteur);
             DB::getPdoInstance()->commit();
 
-            // header('Location: ' . Url::voirAuteur($this->getParameter('id')));      NE FONCTIONNE  PAS
             header('Location: ' . Url::listerAuteur());
         }
         elseif ($this->isGet())
