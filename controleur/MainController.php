@@ -8,6 +8,7 @@ abstract class MainController
 {
     const DEFAULT_CONTROLLER = 'def_controller';
     const DEFAULT_ACTION = 'def_action';
+    const SESSION_CONNECTED = 'connected';
 
     private static $lastController;
     private static $lastAction;
@@ -76,6 +77,11 @@ abstract class MainController
     public static function getLastViewFileName()
     {
         return strtolower(self::$lastAction . self::$lastController . '.php');
+    }
+
+    public static function isAuthenticated()
+    {
+        return isset($_SESSION[self::SESSION_CONNECTED]) ? $_SESSION[self::SESSION_CONNECTED] : false;
     }
 
 }

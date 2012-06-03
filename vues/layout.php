@@ -25,11 +25,15 @@
 <body>
 <div class="header">
     <div class="connection">
-        <?php if (true): ?>
-        <p><a href="index.php?c=membre&a=deconnecter">Se déconnecter</a></p>
+        <?php if (!MainController::isAuthenticated()): ?>
+        <p>
+            Vous n'êtes pas connecté - <a href="<?php echo Url::connexionMembre(); ?>">Connexion</a>
+        </p>
         <?php else: ?>
-        <p><a href="index.php?a=connecter&c=membre">Se connecter</a></p>
-        <?php endif ?>
+        <p>
+            Vous êtes connecté - <a href="<?php echo Url::deconnexionMembre(); ?>">Deconnexion</a>
+        </p>
+        <?php endif; ?>
     </div>
     <div class="menu">
         <ol>
