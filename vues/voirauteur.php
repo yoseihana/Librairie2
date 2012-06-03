@@ -24,9 +24,15 @@
         Livre(s) de cet auteur
     </h3>
     <ul>
+        <?php if ($view['data']['livres'] != null): ?>
         <?php foreach ($view['data']['livres'] as $auteurs): ?>
-        <li class="auteurLivre"><?php echo ($auteurs != null) ? $auteurs[Book::TITRE] : 'Il n\'y a pas de livre pour cet auteur'; ?></li>
-        <?php endforeach; ?>
+            <li class="auteurLivre"><?php echo $auteurs[Book::TITRE] ?></li>
+            <?php endforeach; ?>
+        <?php else: ?>
+        <p>
+            Il n'y a pas de livre pour cet auteur
+        </p>
+        <?php endif; ?>
     </ul>
     <img src="./img/<?php echo $view['data']['auteur']['image'] ?>" alt="image"/>
 </div>

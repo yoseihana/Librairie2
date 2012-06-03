@@ -28,7 +28,7 @@ class Author extends AbstractModel
      */
     public function getAll($premiereEntree)
     {
-        $req = 'SELECT * FROM ' . self::TABLE . ' ORDER BY ' . self::NOM.' DESC LIMIT '.$premiereEntree.', 5';
+        $req = 'SELECT * FROM ' . self::TABLE . ' ORDER BY ' . self::NOM . ' ASC LIMIT ' . $premiereEntree . ', 5';
 
         return $this->fetchAll($req);
     }
@@ -61,7 +61,7 @@ class Author extends AbstractModel
      */
     public function findByBook($isbn)
     {
-        $req = 'SELECT a.* FROM ' . self::TABLE . ' AS a JOIN ' . Written::TABLE . ' AS e ON a.' . self::ID_AUTEUR . ' = e.' . Written::AUTHOR_ID .' WHERE e.' . Written::ISBN . '=:isbn';
+        $req = 'SELECT a.* FROM ' . self::TABLE . ' AS a JOIN ' . Written::TABLE . ' AS e ON a.' . self::ID_AUTEUR . ' = e.' . Written::AUTHOR_ID . ' WHERE e.' . Written::ISBN . '=:isbn';
         $param = Array(
             ':isbn' => $isbn
         );
@@ -115,7 +115,8 @@ class Author extends AbstractModel
             ':image'         => $data[self::IMAGE]
         );
 
-        return $this->execute($req, $param);
+        $this->execute($req, $param);
+        return $this->connection->lastInsertId();
     }
 
     /**
@@ -134,8 +135,9 @@ class Author extends AbstractModel
         return $result['nb_id_auteur']; //Retourn 1 ou 0
     }
 
-    public function countAuthor(){
-        $req = 'SELECT count(*) AS totale FROM '.self::TABLE;
+    public function countAuthor()
+    {
+        $req = 'SELECT count(*) AS totale FROM ' . self::TABLE;
         $totaleAuteur = $this->fetch($req);
         return $totaleAuteur;
     }

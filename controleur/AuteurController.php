@@ -70,9 +70,8 @@ final class AuteurController extends AbstractController
         $data = array(
             'view_title' => 'Fiche de l\'auteur ' . $auteur[Author::PRENOM] . ' ' . $auteur[Author::NOM],
             'auteur'     => $auteur,
-            'livres'     => $this->book->findByAuthor($auteur[Author::ID_AUTEUR])
+            'livres'     => $this->book->findByAuthor($id_auteur)
         );
-
         return array('data'=> $data, 'html'=> MainController::getLastViewFileName());
     }
 
@@ -114,6 +113,7 @@ final class AuteurController extends AbstractController
     {
         if ($this->isPost())
         {
+            DB::getPdoInstance()->beginTransaction();
             $auteur = array(
                 Author::NOM           => $this->getParameter('nom'),
                 Author::PRENOM        => $this->getParameter('prenom'),
@@ -121,11 +121,12 @@ final class AuteurController extends AbstractController
                 Author::IMAGE         => NULL
             );
 
-            DB::getPdoInstance()->beginTransaction();
-            $this->author->add($auteur);
+
+            $new_id_auteur = $this->author->add($auteur);
+
             DB::getPdoInstance()->commit();
 
-            header('Location: ' . Url::listerAuteur());
+            header('Location: ' . Url::voirAuteur($new_id_auteur));
         }
         elseif ($this->isGet())
         {
