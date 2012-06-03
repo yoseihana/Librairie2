@@ -1,8 +1,6 @@
-<?php if (true)
-{
-    ?>
 <h1><?php echo $view['data']['view_title']; ?></h1>
 <div class="voir">
+    <?php if (MainController::isAuthenticated()): ?>
     <form action="<?php echo ($_SERVER['PHP_SELF']) ?>" method="post">
         <fieldset>
             <label for="piece">
@@ -26,16 +24,15 @@
             <input type="hidden" name="code_zone" value="<?php echo $view['data']['zone'][Zone::CODE_ZONE] ?>"/>
         </fieldset>
     </form>
-</div>
-<div class="ajouter">
-    <?php if (true): ?>
-    <p class="retour"><a href="<?php echo Url::voirZone($view['data']['zone'][Zone::CODE_ZONE]); ?>">Retour à la fiche
-        de la zone</a></p>
+    <?php else: ?>
+    <p>Vous devez vous connecter pour modifier une zone.</p>
     <?php endif; ?>
 </div>
-<?php
-}
-else
-{
-    echo '<p>Vous devez vous connecter pour acceder à cette page </p>';
-} ?>
+<div class="ajouter">
+    <?php if (MainController::isAuthenticated()): ?>
+    <p class="retour"><a href="<?php echo Url::voirZone($view['data']['zone'][Zone::CODE_ZONE]); ?>">Retour à la fiche
+        de la zone</a></p>
+    <?php else: ?>
+    <p class="retour"><a href="<?php echo Url::connexionMembre(); ?>">Se connecter</a></p>
+    <?php endif; ?>
+</div>

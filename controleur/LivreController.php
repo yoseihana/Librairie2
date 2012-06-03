@@ -45,7 +45,7 @@ final class LivreController extends AbstractController
             $pageActuelle = 1;
         }
 
-        $premiereEntree = ($pageActuelle -1)*5;
+        $premiereEntree = ($pageActuelle - 1) * 5;
 
         $data['view_title'] = 'Liste des livres';
         $data['livres'] = $this->book->getAll($premiereEntree);
@@ -227,7 +227,8 @@ final class LivreController extends AbstractController
     {
         if ($this->book->countByIsbn($isbn) < 1)
         {
-            die('L\'isbn "' . $isbn . '" n\'existe pas dans la base de donnée');
+            Erreur::erreurId();
+            //die('L\'isbn "' . $isbn . '" n\'existe pas dans la base de donnée');
         }
         return true;
     }

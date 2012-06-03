@@ -57,10 +57,10 @@ abstract class AbstractController
 
         if (!isset($param))
         {
-            // TODO use error handling via utils
-            die('Parametre manquant : "' . $paramKey . '"'
-                . ' pour l\'action "' . MainController::getLastAction() . '"'
-                . ' et le controlleur "' . MainController::getLastController() . '".');
+            /* die('Parametre manquant : "' . $paramKey . '"'
+ . ' pour l\'action "' . MainController::getLastAction() . '"'
+ . ' et le controlleur "' . MainController::getLastController() . '".');  */
+            Erreur::erreurParam();
         }
 
         return $param;

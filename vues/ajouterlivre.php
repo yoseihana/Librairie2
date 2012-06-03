@@ -1,6 +1,6 @@
-<?php if (TRUE): ?>
 <h1><?php echo $view['data']['view_title'] ?></h1>
 <div class="voir">
+    <?php if (MainController::isAuthenticated()): ?>
     <form action="<?php echo ($_SERVER['PHP_SELF']) ?>" method="post" enctype="multipart/form-data">
         <fieldset>
             <label for="titre">
@@ -75,14 +75,14 @@
             </div>
         </fieldset>
     </form>
-</div>
-<div class="ajouter">
-    <?php if (true): ?>
-    <p class="retour"><a href="<?php echo Url::listerLivre(); ?>">Retour à la liste des livres</a></p>
+    <?php else: ?>
+    <p>Vous devez vous connecter pour ajouter un livre.</p>
     <?php endif; ?>
 </div>
-<?php
-else:
-    // Redirection vers la page de login ou une page d'erreur, c'est pas mieux ?
-    echo '<p>Vous devez vous connecter pour acceder à cette page </p>';
-endif; ?>
+<div class="ajouter">
+    <?php if (MainController::isAuthenticated()): ?>
+    <p class="retour"><a href="<?php echo Url::listerLivre(); ?>">Retour à liste des livres</a></p>
+    <?php else: ?>
+    <p class="retour"><a href="<?php echo Url::connexionMembre(); ?>">Se connecter</a></p>
+    <?php endif; ?>
+</div>

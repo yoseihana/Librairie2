@@ -29,17 +29,20 @@
     </h3>
 
     <p><?php echo ($view['data']['auteur'] != null) ? $view['data']['auteur'][Author::NOM] . ' ' . $view['data']['auteur'][Author::PRENOM] : 'Il n\'y a pas d\'auteur enregistré pour ce livre'; ?></p>
-     <h3>
-         Zone de rangement
-     </h3>
-    <p>Pièce: <?php echo($view['data']['zone'][Zone::PIECE]); ?> - Meuble: <?php echo($view['data']['zone'][Zone::MEUBLE]); ?></p>
+
+    <h3>
+        Zone de rangement
+    </h3>
+
+    <p>Pièce: <?php echo($view['data']['zone'][Zone::PIECE]); ?> -
+        Meuble: <?php echo($view['data']['zone'][Zone::MEUBLE]); ?></p>
     <img src="./img/<?php echo $view['data']['livre'][Book::IMAGE] ?>" alt="image"/>
 </div>
 <div class="ajouter">
-    <?php if (true): ?>
+    <?php if (MainController::isAuthenticated()): ?>
     <p><a href="<?php echo Url::modifierLivre($view['data']['livre'][Book::ISBN]); ?>">Modifier le livre</a></p>
     <p><a href="<?php echo Url::supprimerLivre($view['data']['livre'][Book::ISBN]); ?>">Supprimer le livre</a></p>
     <p><a href="<?php echo Url::ajouterLivre(); ?>">Ajouter un livre</a></p>
-    <p class="retour"><a href="<?php echo Url::listerLivre(); ?>">Retour à liste de livres</a></p>
     <?php endif; ?>
+    <p class="retour"><a href="<?php echo Url::listerLivre(); ?>">Retour à liste de livres</a></p>
 </div>

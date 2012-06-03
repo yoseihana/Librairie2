@@ -10,7 +10,7 @@
                 <a href="<?php echo Url::voirZone($zone[Zone::CODE_ZONE]); ?>"><?php echo $zone[Zone::PIECE] . ' - ' . $zone[Zone::MEUBLE]; ?></a>
             </h2>
             <br/>
-            <?php if (true): ?>
+            <?php if (MainController::isAuthenticated()): ?>
             <a href="<?php echo Url::modifierZone($zone[Zone::CODE_ZONE]); ?>">Modifier</a> -
             <a href="<?php echo Url::supprimerZone($zone[Zone::CODE_ZONE]); ?>">Supprimer</a>
             <?php endif; ?>
@@ -20,7 +20,11 @@
     <?php endif; ?>
 </div>
 <div class="ajouter">
-    <?php if (true): ?> <p><a href="<?php echo Url::ajouterZone(); ?>">Ajouter une zone</a></p><?php endif; ?>
+    <?php if (MainController::isAuthenticated()): ?>
+    <p class="retour"><a href="<?php echo Url::ajouterAuteur(); ?>">Ajouter une zone</a></p>
+    <?php else: ?>
+    <p class="retour"><a href="<?php echo Url::connexionMembre(); ?>">Se connecter</a></p>
+    <?php endif; ?>
 </div>
 <div class="pagination">
     <?php for ($i = 1; $i <= $view['data']['nbPage']; $i++): ?>

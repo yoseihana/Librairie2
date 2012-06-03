@@ -1,8 +1,6 @@
-<?php if (true)
-{
-    ?>
 <h1><?php echo $view['data']['view_title'] ?></h1>
 <div class="voir">
+    <?php if (MainController::isAuthenticated()): ?>
     <form action="<?php echo ($_SERVER['PHP_SELF']) ?>" method="post" enctype="multipart/form-data">
         <fieldset>
             <label for="nom">
@@ -41,15 +39,14 @@
             <input type="hidden" name="image" value="<?php echo $view['data']['auteur'][Author::IMAGE] ?>"/>
         </fieldset>
     </form>
-</div>
-<div class="ajouter">
-    <?php if (true): ?>
-    <p class="retour"><a href="<?php echo Url::listerAuteur(); ?>">Retour à liste des auteurs</a></p>
+    <?php else: ?>
+    <p>Vous devez vous connecter pour ajouter un auteur.</p>
     <?php endif; ?>
 </div>
-<?php
-}
-else
-{
-    echo '<p>Vous devez vous connecter pour acceder à cette page </p>';
-} ?>
+<div class="ajouter">
+    <?php if (MainController::isAuthenticated()): ?>
+    <p class="retour"><a href="<?php echo Url::listerAuteur(); ?>">Retour à liste des auteur.</a></p>
+    <?php else: ?>
+    <p class="retour"><a href="<?php echo Url::connexionMembre(); ?>">Se connecter</a></p>
+    <?php endif; ?>
+</div>

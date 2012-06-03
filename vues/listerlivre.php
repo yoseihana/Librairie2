@@ -5,7 +5,7 @@
         <?php foreach ($view['data']['livres'] as $livre): ?>
         <li>
             <h2><a href="<?php echo Url::voirLivre($livre[Book::ISBN]); ?>"><?php echo $livre[Book::TITRE]; ?></a></h2>
-            <?php if (true): ?>
+            <?php if (MainController::isAuthenticated()): ?>
             <a href="<?php echo Url::modifierLivre($livre[Book::ISBN]); ?>">Modifier</a>
             -
             <a href="<?php echo Url::supprimerLivre($livre[Book::ISBN]); ?>">Supprimer</a>
@@ -16,8 +16,10 @@
     <?php endif; ?>
 </div>
 <div class="ajouter">
-    <?php if (true): ?>
-    <p><a href="<?php echo Url::ajouterLivre(); ?>">Ajouter un livre</a></p>
+    <?php if (MainController::isAuthenticated()): ?>
+    <p class="retour"><a href="<?php echo Url::ajouterLivre(); ?>">Ajouter un livre</a></p>
+    <?php else: ?>
+    <p class="retour"><a href="<?php echo Url::connexionMembre(); ?>">Se connecter</a></p>
     <?php endif; ?>
 </div>
 <div class="pagination">

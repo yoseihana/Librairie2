@@ -46,12 +46,12 @@ final class ZoneController extends AbstractController
             $pageActuelle = 1;
         }
 
-        $premiereEntree = ($pageActuelle-1)*5;
+        $premiereEntree = ($pageActuelle - 1) * 5;
 
         $data = array(
             'view_title'=> 'Liste des zones',
             'zones'     => $this->zone->getAll($premiereEntree),
-            'nbPage' => $nombrePage
+            'nbPage'    => $nombrePage
         );
 
         return array('data'=> $data, 'html'=> MainController::getLastViewFileName());
@@ -64,8 +64,8 @@ final class ZoneController extends AbstractController
         $zone = $this->zone->findZoneByCode($code_zone);
 
         $data = array(
-            'view_title'=> 'Fiche de la zone ' . $zone['piece'] . ' - ' . $zone['meuble'],
-            'zone'      => $zone,
+            'view_title' => 'Fiche de la zone ' . $zone['piece'] . ' - ' . $zone['meuble'],
+            'zone'       => $zone,
             'livres'     => $this->book->findByZone($code_zone)
         );
 
@@ -88,7 +88,7 @@ final class ZoneController extends AbstractController
         {
             $zone = $this->zone->findZoneByCode($code_zone);
             $data = array(
-                'view_title'=> 'Zone a supprimée '. $zone[Zone::PIECE].' - '.$zone[Zone::MEUBLE],
+                'view_title'=> 'Zone a supprimée ' . $zone[Zone::PIECE] . ' - ' . $zone[Zone::MEUBLE],
                 'zone'      => $zone
             );
 
@@ -154,7 +154,8 @@ final class ZoneController extends AbstractController
     {
         if ($this->zone->countZoneByCode($code_zone) < 1)
         {
-            die('Le code zone ' . $code_zone . ' n\'existe pas');
+            Erreur::erreurId();
+            //die('Le code zone ' . $code_zone . ' n\'existe pas');
         }
 
         return true;

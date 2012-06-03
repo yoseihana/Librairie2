@@ -1,7 +1,6 @@
-<?php if (true) : ?>
 <h1><?php echo $view['data']['view_title']; ?></h1>
 <div class="voir">
-    <?php if (isset($view['data']['erreur'])): ?><h1><?php echo $view['data']['erreur']; ?></h1><?php endif; ?>
+    <?php if (MainController::isAuthenticated()) : ?>
     <form action="<?php echo ($_SERVER['PHP_SELF']) ?>" method="post">
         <fieldset>
             <label for="cd">
@@ -30,12 +29,14 @@
             <input type="hidden" name="a" value="<?php echo MainController::getLastAction() ?>"/>
         </fieldset>
     </form>
-</div>
-<div class="ajouter">
-    <?php if (true): ?>
-    <p class="retour"><a href="<?php echo Url::listerZone(); ?>">Retour à la liste des zones</a></p>
+    <?php else: ?>
+    <p>Vous devez vous connecter pour ajouter une zone.</p>
     <?php endif; ?>
 </div>
-<?php else: ?>
-<p>Vous devez vous connecter pour acceder à cette page </p>
-<?php endif; ?>
+<div class="ajouter">
+    <?php if (MainController::isAuthenticated()): ?>
+    <p class="retour"><a href="<?php echo Url::listerZone(); ?>">Retour à liste des zones</a></p>
+    <?php else: ?>
+    <p class="retour"><a href="<?php echo Url::connexionMembre(); ?>">Se connecter</a></p>
+    <?php endif; ?>
+</div>

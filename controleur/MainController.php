@@ -33,7 +33,8 @@ abstract class MainController
 
         if (!class_exists($lastControllerClass, false))
         {
-            die('No controller found for "' . self::$lastController . '".');
+            Erreur::erreurControllerExiste();
+            // die('No controller found for "' . self::$lastController . '".');
         }
 
         //Changement, passe d'un string à un objet instancier de la dernière classe
@@ -42,7 +43,8 @@ abstract class MainController
         // Check if controller class name (above) is a valid controller (extends AbstractController)
         if (!($lastControllerClass instanceof AbstractController))
         {
-            die('No valid controller found for "' . self::$lastController . '".');
+            Erreur::erreurController();
+            //die('No valid controller found for "' . self::$lastController . '".');
         }
 
         // Retrieve all valid action for the given controller
@@ -54,7 +56,8 @@ abstract class MainController
         // Check if requested action is available for the requested controller
         if (!in_array(self::getLastAction(), $availableActions))
         {
-            die ('No action "' . self::$lastAction . '" for controller "' . self::$lastController . '"');
+            Erreur::erreurAction();
+            //die ('No action "' . self::$lastAction . '" for controller "' . self::$lastController . '"');
         }
 
         // Call the requested method from the requested controller  /!\ Trés important!

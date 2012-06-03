@@ -1,19 +1,20 @@
-<?php if (true) : ?>
 <h1><?php echo $view['data']['view_title']; ?></h1>
- <div class="voir">
+<div class="voir">
 <form action="<?php echo ($_SERVER['PHP_SELF']) ?>" method="post" enctype="multipart/form-data">
+    <?php if (MainController::isAuthenticated()): ?>
     <fieldset>
         <label for="titre">
             Titre:
         </label>
         <br/>
-        <input type="text" name="titre" id="titre" value="<?php echo ($view['data']['livre'][Book::TITRE]); ?>"/>
+        <input type="text" name="titre" id="titre" size="30"
+               value="<?php echo ($view['data']['livre'][Book::TITRE]); ?>"/>
         <br/>
         <label for="nombre_page">
             Nombre de page:
         </label>
         <br/>
-        <input type="text" name="nombre_page" id="nombre_page"
+        <input type="text" name="nombre_page" id="nombre_page" size="10"
                value="<?php echo ($view['data']['livre'][Book::PAGES]); ?>"/>
         <br/>
         <label for="date_parution">
@@ -83,15 +84,17 @@
             <input type="submit" value="Modifier"/>
         </div>
     </fieldset>
-</form>
-    </div>
+    </form>
+        <?php else: ?>
+    <p>Vous devez vous connecter pour modifier un livre.</p>
+    <?php endif; ?>
+</div>
 <div class="ajouter">
-    <?php if (true): ?>
-    <p class="retour"><a href="<?php echo Url::voirLivre($view['data']['livre'][Book::ISBN]); ?>">Retour à la fiche du livre</a></p>
+    <?php if (MainController::isAuthenticated()): ?>
+    <p class="retour"><a href="<?php echo Url::voirLivre($view['data']['livre'][Book::ISBN]); ?>">Retour à la fiche du
+        livre</a></p>
+    <?php else: ?>
+    <p class="retour"><a href="<?php echo Url::connexionMembre(); ?>">Se connecter</a></p>
     <?php endif; ?>
 </div>
 
-<?php else:?>
-    <!--- Redirection vers la page de login ou une page d'erreur, c'est pas mieux ?   --->
-    <p>Vous devez vous connecter pour acceder à cette page </p>
-<?php endif; ?>

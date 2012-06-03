@@ -10,7 +10,7 @@
                 href="<?php echo Url::voirAuteur($auteur['id_auteur']); ?>"><?php echo $auteur[Author::PRENOM] . ' ' . $auteur[Author::NOM]; ?></a>
             </h2>
             <br/>
-            <?php if (true): ?>
+            <?php if (MainController::isAuthenticated()): ?>
             <a href="<?php echo Url::modifierAuteur($auteur['id_auteur']); ?>">Modifier</a> -
             <a href="<?php echo Url::supprimerAuteur($auteur['id_auteur']); ?>">Supprimer</a>
             <?php endif; ?>
@@ -19,7 +19,11 @@
     </ul>
  </div>
 <div class="ajouter">
-    <?php if (true): ?> <p><a href="<?php echo Url::ajouterAuteur(); ?>">Ajouter un auteur</a></p><?php endif; ?>
+    <?php if (MainController::isAuthenticated()): ?>
+    <p class="retour"><a href="<?php echo Url::ajouterAuteur(); ?>">Ajouter un auteur</a></p>
+    <?php else: ?>
+    <p class="retour"><a href="<?php echo Url::connexionMembre(); ?>">Se connecter</a></p>
+    <?php endif; ?>
 </div>
 
 <?php endif; ?>

@@ -168,7 +168,8 @@ final class AuteurController extends AbstractController
     {
         if ($this->author->countAuthorById($id_auteur) < 1)
         {
-            die ('l\'id "' . $id_auteur . '" de cet auteur n\' existe pas');
+            Erreur::erreurId();
+            // die ('l\'id "' . $id_auteur . '" de cet auteur n\' existe pas');
         }
 
         return true;

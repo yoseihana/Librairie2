@@ -1,4 +1,8 @@
 <?php
+require_once './controleur/LivreController.php';
+require_once './controleur/AuteurController.php';
+require_once './controleur/ZoneController.php';
+require_once './controleur/MembreController.php';
 
 final class Url
 {
@@ -129,6 +133,17 @@ final class Url
     public static function supprimerZone($code_zone)
     {
         return Url::build(ZoneController::getName(), 'supprimer', array('code_zone'=> $code_zone));
+    }
+
+    /*------------Connexion ---------------*/
+    public static function connexionMembre()
+    {
+        return Url::build(MembreController::getName(), 'connexion');
+    }
+
+    public static function deconnexionMembre()
+    {
+        return Url::build(MembreController::getName(), 'deconnexion');
     }
 }
 

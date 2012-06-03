@@ -94,6 +94,7 @@ div.connection {
 
 div.connection p {
     float: left;
+    color: rgb(128, 128, 128);
 }
 
 div.connection a {
@@ -168,7 +169,7 @@ div.ajouter {
     margin-top: 2em;
 }
 
-div.ajouter p.retour{
+div.ajouter p.retour {
     float: right;
 }
 
@@ -201,8 +202,8 @@ div.voir p {
     font-weight: lighter;
 }
 
-div.voir ul li.auteurLivre{
-    margin:0.5em 0 0.5em 1em;
+div.voir ul li.auteurLivre {
+    margin: 0.5em 0 0.5em 1em;
 }
 
 div.content p.first {
