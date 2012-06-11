@@ -89,29 +89,12 @@ final class AuteurController extends AbstractController
 
         if ($this->isPost())
         {
-            if ($imgUploader->getErrorCode('fichier') != UPLOAD_ERR_NO_FILE)
-            {
-                $result = $this->uploadImg();
-                if ($result == false)
-                {
-                    Erreur::erreurChargement();
-                }
-                $result = $imgResizer->resizeImage($imgUploader->getDestinationFolder() . $result);
-                // Ici result aura le nom de l'image resized ou pas. Mais on a une image
-
-            }
-            else
-            {
-                $result = $this->getParameter('image');
-
-            }
-
             $auteur = array(
                 Author::ID_AUTEUR     => $id_auteur,
                 Author::NOM           => $this->getParameter('nom'),
                 Author::PRENOM        => $this->getParameter('prenom'),
                 Author::DATE_NAISSANCE=> $this->getParameter('date_naissance'),
-                Book::IMAGE           => pathinfo($result, PATHINFO_BASENAME)
+                Book::IMAGE           => $this->uploadImg('fichier', $this->getParameter('image'))
             );
 
             $this->author->update($auteur);
@@ -142,7 +125,7 @@ final class AuteurController extends AbstractController
                 Author::NOM           => $this->getParameter('nom'),
                 Author::PRENOM        => $this->getParameter('prenom'),
                 Author::DATE_NAISSANCE=> $this->getParameter('date_naissance'),
-                Author::IMAGE         => $this->uploadImg()
+                Author::IMAGE         => $this->uploadImg('fichier', NULL)
             );
 
 
@@ -199,33 +182,36 @@ final class AuteurController extends AbstractController
         return true;
     }
 
-
-    public function uploadImg()
+    public function uploadImg($file, $defautValue = NULL)
     {
-        global $imgUploader;
+        global $imgUploader, $imgResizer;
 
-        $f = 'fichier';
+        if ($imgUploader->getErrorCode($file) == UPLOAD_ERR_NO_FILE)
+        {
+            return $defautValue;
+        }
 
-        if (!$imgUploader->isFileExists($f))
+        if (!$imgUploader->isFileExists($file))
         {
             Erreur::erreurFichier();
         }
 
-        if (!$imgUploader->isValidExtension($f))
+        if (!$imgUploader->isValidExtension($file))
         {
             Erreur::erreurExtention();
         }
 
-        if (!$imgUploader->isValidFileSize($f))
+        if (!$imgUploader->isValidFileSize($file))
         {
             Erreur::erreurTaille();
         }
 
-        $return = $imgUploader->save($f, 'f' . rand(0, 100) . time());
+        $return = $imgResizer->resizeImage($_FILES[$file]['tmp_name'], 'f' . rand(0, 100) . time());
         if (!$return)
         {
             Erreur::erreurChargement();
         }
+
         return $return;
     }
 }

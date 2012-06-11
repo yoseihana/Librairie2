@@ -75,24 +75,6 @@ final class LivreController extends AbstractController
         // GET - données pour le formulaire
         if ($this->isPost())
         {
-
-            if ($imgUploader->getErrorCode('fichier') != UPLOAD_ERR_NO_FILE)
-            {
-                $result = $this->uploadImg();
-                if ($result == false)
-                {
-                    Erreur::erreurChargement();
-                }
-                $result = $imgResizer->resizeImage($imgUploader->getDestinationFolder() . $result);
-                // Ici result aura le nom de l'image resized ou pas. Mais on a une image
-
-            }
-            else
-            {
-                $result = $this->getParameter('image');
-
-            }
-
             $livre = array(
                 Book::ISBN          => $isbn,
                 Book::TITRE         => $this->getParameter('titre'),
@@ -100,7 +82,7 @@ final class LivreController extends AbstractController
                 Book::DATE_PARUTION => $this->getParameter('date_parution'),
                 Book::GENRE         => $this->getParameter('genre'),
                 Book::ZONE          => $this->getParameter('code_zone'),
-                Book::IMAGE         => pathinfo($result, PATHINFO_BASENAME)
+                Book::IMAGE         => $this->uploadImg('fichier', $this->getParameter('image'))
             );
 
             $ecritDelete = array(
@@ -157,7 +139,7 @@ final class LivreController extends AbstractController
                 Book::DATE_PARUTION => $this->getParameter('date_parution'),
                 Book::GENRE         => $this->getParameter('genre'),
                 Book::ZONE          => $this->getParameter('code_zone'),
-                Book::IMAGE         => $this->uploadImg()
+                Book::IMAGE         => $this->uploadImg('fichier', NULL)
             );
 
             $ecrit = array(
@@ -254,32 +236,38 @@ final class LivreController extends AbstractController
         return true;
     }
 
-    public function uploadImg()
+    public function uploadImg($file, $defautValue = NULL)
     {
-        global $imgUploader;
+        global $imgUploader, $imgResizer;
 
-        $f = 'fichier';
+        if ($imgUploader->getErrorCode($file) == UPLOAD_ERR_NO_FILE)
+        {
+            return $defautValue;
+        }
 
-        if (!$imgUploader->isFileExists($f))
+        if (!$imgUploader->isFileExists($file))
         {
             Erreur::erreurFichier();
         }
 
-        if (!$imgUploader->isValidExtension($f))
+        if (!$imgUploader->isValidExtension($file))
         {
             Erreur::erreurExtention();
         }
 
-        if (!$imgUploader->isValidFileSize($f))
+        if (!$imgUploader->isValidFileSize($file))
         {
             Erreur::erreurTaille();
         }
 
-        $return = $imgUploader->save($f, 'f' . rand(0, 100) . time());
+        //$return = $imgUploader->save($file, 'f' . rand(0, 100) . time());
+
+        $return = $imgResizer->resizeImage($_FILES[$file]['tmp_name'], 'f' . rand(0, 100) . time());
         if (!$return)
         {
             Erreur::erreurChargement();
         }
+
         return $return;
     }
 }

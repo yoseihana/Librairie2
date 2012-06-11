@@ -23,11 +23,13 @@ final class Resizer
         $this->imgWidth = $imgWidth;
     }
 
-    public function resizeImage($file) // file = './img/mon_image.png'
+    public function resizeImage($file, $fileName = NULL) // file = './img/mon_image.png'
     {
         $imgInfo = getimagesize($file);
         $imgFullPath = $file;
-        $resizedFileName = pathinfo($file, PATHINFO_FILENAME) . '_RESIZED_.' . pathinfo($file, PATHINFO_EXTENSION);
+
+        $resizedFileName = pathinfo(($fileName) ? $fileName : $file, PATHINFO_FILENAME) . '_RESIZED_.';
+        $resizedFileName = $resizedFileName . '.' . pathinfo($file, PATHINFO_EXTENSION);
 
         switch ($imgInfo[2])
         {
@@ -62,15 +64,15 @@ final class Resizer
                     {
                         case IMAGETYPE_JPEG:
                             imagejpeg($image, $this->destinationFolder . $resizedFileName);
-                            return $this->destinationFolder . $resizedFileName;
+                            return $resizedFileName;
 
                         case IMAGETYPE_GIF:
                             imagegif($image, $this->destinationFolder . $resizedFileName);
-                            return $this->destinationFolder . $resizedFileName;
+                            return $resizedFileName;
 
                         case IMAGETYPE_PNG:
                             imagepng($image, $this->destinationFolder . $resizedFileName);
-                            return $this->destinationFolder . $resizedFileName;
+                            return $resizedFileName;
 
                         default:
                             return $file; // On ne devrais jamais passer par ici mais on ne sait jamais
