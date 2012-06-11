@@ -142,7 +142,7 @@ final class AuteurController extends AbstractController
                 Author::NOM           => $this->getParameter('nom'),
                 Author::PRENOM        => $this->getParameter('prenom'),
                 Author::DATE_NAISSANCE=> $this->getParameter('date_naissance'),
-                Author::IMAGE         => NULL
+                Author::IMAGE         => $this->uploadImg()
             );
 
 
