@@ -36,7 +36,9 @@
 
     <p>Pièce: <?php echo($view['data']['zone'][Zone::PIECE]); ?> -
         Meuble: <?php echo($view['data']['zone'][Zone::MEUBLE]); ?></p>
-    <img src="./img/<?php echo $view['data']['livre'][Book::IMAGE] ?>" alt="image"/>
+    <?php if (isset($view['data']['livre'][Book::IMAGE])): ?><img
+    src="./vues/img/<?php echo $view['data']['livre'][Book::IMAGE] ?>" alt="image"/> <?php else: ?> <p>Il n'y a pas
+    d'image pour ce livre</p> <?php endif; ?>
 </div>
 <div class="ajouter">
     <?php if (MainController::isAuthenticated()): ?>

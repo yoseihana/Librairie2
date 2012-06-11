@@ -1,1 +1,0 @@
-<p class="erreur">Il y a un problème de connexion membre!</p>

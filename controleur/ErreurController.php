@@ -85,4 +85,63 @@ final class ErreurController extends AbstractController
 
         return array('data'=> $data, 'html'=> 'erreur.php');
     }
+
+    public function erreurCreationImage()
+    {
+        $data = array(
+            'view_title' => 'Erreur de création d\'image',
+            'message'    => 'Une erreur est survenue lors du redimensionnement de l\'image'
+        );
+
+        return array('data'=> $data, 'html'=> 'erreur.php');
+    }
+
+    public function erreurCopieImage()
+    {
+        $data = array(
+            'view_title' => 'Erreur copie d\'image',
+            'message'    => 'Une erreur est survenue lors de la copie de l\'image'
+        );
+
+        return array('data'=> $data, 'html'=> 'erreur.php');
+    }
+
+    public function erreurFichier()
+    {
+        $data = array(
+            'view_title'=> 'Erreur du fichier',
+            'message'   => 'Il n\'y a pas de fichier pour cette demande'
+        );
+
+        return array('data'=> $data, 'html' => 'erreur.php');
+    }
+
+    public function erreurExtention()
+    {
+        $data = array(
+            'view_title'=> 'Erreur dans l\'extention',
+            'message'   => 'Le fichier fournit ne correspond pas au type de fichier demander. Veuillez charger des "png", "jpg", "gif", "jpeg" uniquement'
+        );
+
+        return array('data'=> $data, 'html'=> 'erreur.php');
+    }
+
+    public function erreurTaille()
+    {
+        $data = array(
+            'view_title'=> 'Fichier trop lourd',
+            'message'   => 'Le fichier envoyer est trop lourd. La capacité maximum supportée est de 50Mo'
+        );
+        return array('data'=> $data, 'html'=> 'erreur.php');
+    }
+
+    public function erreurChargement()
+    {
+        $data = array(
+            'view_title'=> 'Erreur dans le chargement',
+            'message'   => 'Une erreur est survenue lors du chargement de l\'image dans la base de donnée'
+        );
+
+        return array('data'=> $data, 'html'=> 'erreur.php');
+    }
 }

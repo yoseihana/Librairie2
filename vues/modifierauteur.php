@@ -28,7 +28,8 @@
                 Ajouter une image
             </label>
             <br/>
-            <img src="./img/<?php echo $view['data']['auteur']['image'] ?>" alt="image"/>
+            <?php if (isset($view['data']['auteur'][Author::IMAGE])): ?><img
+            src="./vues/img/<?php echo $view['data']['auteur'][Author::IMAGE] ?>" alt="image"/><?php endif; ?>
             <br/>
             <input type="file" name="fichier" id="fichier"/>
 

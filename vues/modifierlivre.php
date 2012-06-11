@@ -1,4 +1,4 @@
-<h1><?php echo $view['data']['view_title']; ?></h1>
+<h1 xmlns="http://www.w3.org/1999/html"><?php echo $view['data']['view_title']; ?></h1>
 <div class="voir">
 <form action="<?php echo ($_SERVER['PHP_SELF']) ?>" method="post" enctype="multipart/form-data">
     <?php if (MainController::isAuthenticated()): ?>
@@ -70,9 +70,11 @@
             Ajouter une image
         </label>
         <br/>
-        <img src="./img/<?php echo $view['data']['livre'][Book::IMAGE] ?>" alt="image"/>
+        <?php if (isset($view['data']['livre'][Book::IMAGE])): ?><img
+        src="./vues/img/<?php echo $view['data']['livre'][Book::IMAGE] ?>" alt="image"/><?php endif; ?>
         <br/>
         <input type="file" name="fichier" id="fichier"/>
+
 
         <input type="hidden" name="c" value="<?php echo MainController::getLastController() ?>"/>
         <input type="hidden" name="a" value="<?php echo MainController::getLastAction() ?>"/>

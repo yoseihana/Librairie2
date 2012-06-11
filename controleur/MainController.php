@@ -57,7 +57,6 @@ abstract class MainController
         if (!in_array(self::getLastAction(), $availableActions))
         {
             Erreur::erreurAction();
-            //die ('No action "' . self::$lastAction . '" for controller "' . self::$lastController . '"');
         }
 
         // Call the requested method from the requested controller  /!\ Trés important!

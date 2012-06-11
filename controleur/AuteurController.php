@@ -11,6 +11,7 @@ require_once 'AbstractController.php';
 require_once './modeles/Book.php';
 require_once './modeles/Author.php';
 require_once './modeles/Written.php';
+
 final class AuteurController extends AbstractController
 {
     private $book;
@@ -19,6 +20,8 @@ final class AuteurController extends AbstractController
 
     function __construct()
     {
+        global $imgUploader;
+        global $imgResizer;
         $this->book = new Book();
         $this->author = new Author();
         $this->written = new Written();
@@ -80,14 +83,35 @@ final class AuteurController extends AbstractController
         $id_auteur = $this->getParameter('id_auteur');
         $this->isIdExiste($id_auteur);
 
+        global $imgUploader;
+        global $imgResizer;
+
+
         if ($this->isPost())
         {
+            if ($imgUploader->getErrorCode('fichier') != UPLOAD_ERR_NO_FILE)
+            {
+                $result = $this->uploadImg();
+                if ($result == false)
+                {
+                    Erreur::erreurChargement();
+                }
+                $result = $imgResizer->resizeImage($imgUploader->getDestinationFolder() . $result);
+                // Ici result aura le nom de l'image resized ou pas. Mais on a une image
+
+            }
+            else
+            {
+                $result = $this->getParameter('image');
+
+            }
+
             $auteur = array(
                 Author::ID_AUTEUR     => $id_auteur,
                 Author::NOM           => $this->getParameter('nom'),
                 Author::PRENOM        => $this->getParameter('prenom'),
                 Author::DATE_NAISSANCE=> $this->getParameter('date_naissance'),
-                Author::IMAGE         => NULL
+                Book::IMAGE           => pathinfo($result, PATHINFO_BASENAME)
             );
 
             $this->author->update($auteur);
@@ -173,5 +197,35 @@ final class AuteurController extends AbstractController
         }
 
         return true;
+    }
+
+
+    public function uploadImg()
+    {
+        global $imgUploader;
+
+        $f = 'fichier';
+
+        if (!$imgUploader->isFileExists($f))
+        {
+            Erreur::erreurFichier();
+        }
+
+        if (!$imgUploader->isValidExtension($f))
+        {
+            Erreur::erreurExtention();
+        }
+
+        if (!$imgUploader->isValidFileSize($f))
+        {
+            Erreur::erreurTaille();
+        }
+
+        $return = $imgUploader->save($f, 'f' . rand(0, 100) . time());
+        if (!$return)
+        {
+            Erreur::erreurChargement();
+        }
+        return $return;
     }
 }

@@ -34,7 +34,9 @@
         </p>
         <?php endif; ?>
     </ul>
-    <img src="./img/<?php echo $view['data']['auteur']['image'] ?>" alt="image"/>
+    <?php if (isset($view['data']['auteur'][Author::IMAGE])): ?><img
+    src="./vues/img/<?php echo $view['data']['auteur'][Author::IMAGE] ?>" alt="image"/> <?php else: ?> <p>Il n'y a pas
+    d'image pour ce livre</p> <?php endif; ?>
 </div>
 <div class="ajouter">
     <?php if (MainController::isAuthenticated()): ?>

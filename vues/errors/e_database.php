@@ -1,1 +1,0 @@
-<p class="erreur">Il y a un problème d'accès à la base de données!</p>

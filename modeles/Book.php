@@ -159,7 +159,6 @@ final class Book extends AbstractModel
         );
 
         return $this->execute($req, $param);
-        // TODO : (idée) récupérer le nouvel ID et le retourner
     }
 
     /**

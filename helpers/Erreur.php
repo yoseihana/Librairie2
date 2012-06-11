@@ -57,4 +57,34 @@ final class Erreur
     {
         return Erreur::build(('erreurId'));
     }
+
+    public static function erreurCopieImage()
+    {
+        return Erreur::build('erreurCopie');
+    }
+
+    public static function erreurCreationImage()
+    {
+        return Erreur::build('erreurCreation');
+    }
+
+    public static function erreurFichier()
+    {
+        return Erreur::build('erreurFichier');
+    }
+
+    public static function erreurExtention()
+    {
+        return Erreur::build('erreurExtention');
+    }
+
+    public static function erreurTaille()
+    {
+        return Erreur::build('erreurTaille');
+    }
+
+    public static function  erreurChargement()
+    {
+        return Erreur::build('erreurChargement');
+    }
 }

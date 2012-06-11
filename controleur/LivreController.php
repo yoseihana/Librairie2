@@ -16,6 +16,8 @@ final class LivreController extends AbstractController
 
     function __construct()
     {
+        global $imgUploader;
+        global $imgResizer;
         $this->book = new Book();
         $this->written = new Written();
         $this->author = new Author();
@@ -66,10 +68,30 @@ final class LivreController extends AbstractController
         // Test l'existance de l'isbn dans la DB
         $this->isIsbnExists($isbn);
 
+        global $imgUploader;
+        global $imgResizer;
+
         // POST - modifier le livre en DB
         // GET - données pour le formulaire
         if ($this->isPost())
         {
+
+            if ($imgUploader->getErrorCode('fichier') != UPLOAD_ERR_NO_FILE)
+            {
+                $result = $this->uploadImg();
+                if ($result == false)
+                {
+                    Erreur::erreurChargement();
+                }
+                $result = $imgResizer->resizeImage($imgUploader->getDestinationFolder() . $result);
+                // Ici result aura le nom de l'image resized ou pas. Mais on a une image
+
+            }
+            else
+            {
+                $result = $this->getParameter('image');
+
+            }
 
             $livre = array(
                 Book::ISBN          => $isbn,
@@ -78,7 +100,7 @@ final class LivreController extends AbstractController
                 Book::DATE_PARUTION => $this->getParameter('date_parution'),
                 Book::GENRE         => $this->getParameter('genre'),
                 Book::ZONE          => $this->getParameter('code_zone'),
-                Book::IMAGE         => NULL //TODO
+                Book::IMAGE         => pathinfo($result, PATHINFO_BASENAME)
             );
 
             $ecritDelete = array(
@@ -135,7 +157,7 @@ final class LivreController extends AbstractController
                 Book::DATE_PARUTION => $this->getParameter('date_parution'),
                 Book::GENRE         => $this->getParameter('genre'),
                 Book::ZONE          => $this->getParameter('code_zone'),
-                Book::IMAGE         => NULL //TODO
+                Book::IMAGE         => $this->uploadImg()
             );
 
             $ecrit = array(
@@ -228,59 +250,36 @@ final class LivreController extends AbstractController
         if ($this->book->countByIsbn($isbn) < 1)
         {
             Erreur::erreurId();
-            //die('L\'isbn "' . $isbn . '" n\'existe pas dans la base de donnée');
         }
         return true;
     }
-}
-/*
-function verifierImage()
-{
-    global $validExtentions, $upload_dir;
 
-    $fichier = $_FILES['fichier'];
-    $extention = explode('.', $fichier['name']);
-    $extentionFichier = $extention[1];
-
-    $name = 'f' . rand(0, 100) . time() . '.' . $extentionFichier;
-    $error = '';
-
-    if (is_uploaded_file($fichier['tmp_name']))
+    public function uploadImg()
     {
+        global $imgUploader;
 
-        $tmp_name = $fichier['tmp_name'];
+        $f = 'fichier';
 
-        if (in_array($extentionFichier, $validExtentions))
+        if (!$imgUploader->isFileExists($f))
         {
-            move_uploaded_file($tmp_name, $upload_dir . '/' . $name); // Finir test
+            Erreur::erreurFichier();
         }
-        else
+
+        if (!$imgUploader->isValidExtension($f))
         {
-            die('Error extentions'); // voir une autre solution
+            Erreur::erreurExtention();
         }
+
+        if (!$imgUploader->isValidFileSize($f))
+        {
+            Erreur::erreurTaille();
+        }
+
+        $return = $imgUploader->save($f, 'f' . rand(0, 100) . time());
+        if (!$return)
+        {
+            Erreur::erreurChargement();
+        }
+        return $return;
     }
-    else
-    {
-        switch ($_FILES['fichier']['error'])
-        {
-            case 1:
-                $error = 'Le fichier est trop grand';
-                break;
-            case 2:
-                $error = 'Le fichier est plus grand que la taille spécifiée dans le formulaire';
-                break;
-            case 3:
-                $error = 'La totalitée du fichiée n\'a pas été reçu';
-                break;
-            case 4:
-                $error = 'Aucun fichier n\'a été téléchargé';
-                break;
-            case 7:
-                $error = 'Le fichier n\'a pas été écrit sur le serveur';
-                break;
-        }
-    }
-
-    return array('error' => $error, 'name' => $name);
 }
-*/
